@@ -47,7 +47,7 @@
  * ===========================================================================
  */
 
-/* Avoid 'console' errors in browsers that lack a console.*/
+/* Avoid 'console' errors in browsers that lack a console*/
 (function() {
   var method;
   var noop = function(){};
@@ -247,6 +247,17 @@
     return(parseFloat(str*(1.0)));
   };
 
+  klib.dotToX = function(dottedName, X){
+    return ((dottedName).replace(/\./g, X));
+  };
+  klib.dotToCamelCase = function(dottedName){
+    var newName = (dottedName).replace(/\./g," ").toProperCase().replace(/ /g, "");
+    return (newName[0].toLowerCase()+newName.substring(1));
+  };
+  klib.dotToTitleCase = function(dottedName){
+    return ((dottedName).replace(/\./g," ").toProperCase().replace(/ /g, ""));
+  };
+
   klib.ifBlank = klib.ifEmpty = klib.ifNull = function(src, replaceWithIfBlank)
   { replaceWithIfBlank = (""+(replaceWithIfBlank || "")).trim();
     return ( klib.isBlank(src)? (replaceWithIfBlank) : ((""+src).trim()) ) ;
@@ -323,7 +334,7 @@
   };
 
   klib.getDocObj = function(objId)
-  { var jqSelector = (objId.beginsWith("#")? "" : "#") + objId ;
+  { var jqSelector = ((typeof objId)=="object")? objId : ((objId.beginsWith("#")? "" : "#") + objId);
     return ( $(jqSelector).get(0) );
   };
   klib.getDocObjs = function(objId)
@@ -751,6 +762,12 @@
     } ));
   };
 
+  klib.keys_ = function(a) {
+    return (_.map(klib.keysDotted(a), function(name){
+      return ((name).replace(/\./g,"_"));
+    } ));
+  };
+
   $.cachedScript = function(url, options) {
     /* allow user to set any option except for dataType, cache, and url */
     options = $.extend(options || {}, {
@@ -982,6 +999,228 @@
     { console.info(templateCollectionId+" Found! skip template collection load from "+dataTemplatesCollectionUrl);
     };
     return (retValue);
+  };
+
+  /* i18n support */
+  klib.i18n = {};
+  klib.i18n.loaded = false;
+  klib.i18n.settings = {
+    name    : 'Language',
+    path    : 'language/',
+    encoding: 'UTF-8',
+    cache   :	true,
+    mode    : 'map',
+    callback: null
+  };
+  klib.i18n.setLanguage = function(lang, i18nSettings) {
+    if ($.i18n)
+    { lang = lang || ($.i18n.browserLang()).replace(/-/g,"_");
+      i18nSettings = $.extend(klib.i18n.settings, i18nSettings);
+      $.i18n.properties({
+        name    : i18nSettings.name,
+        language: lang,
+        path    : i18nSettings.path,
+        encoding: i18nSettings.encoding,
+        cache   : i18nSettings.cache,
+        mode    : i18nSettings.mode,
+        callback: function() {
+          $.i18n.loaded = (typeof $.i18n.loaded == "undefined")? (!$.isEmptyObject($.i18n.map)) : $.i18n.loaded;
+          klib.i18n.loaded = klib.i18n.loaded || $.i18n.loaded;
+          if ((lang.length > 1) && (!$.i18n.loaded))
+          { console.log("Error Loading Language File ["+lang+"]. Loading default.");
+            klib.i18n.setLanguage("_", i18nSettings);
+          };
+          klib.i18n.apply();
+          if(i18nSettings.callback){ i18nSettings.callback($.i18n.loaded); };
+        }
+      });
+    };
+  };
+
+  klib.i18n.apply = klib.i18n.render = function(contextRoot) {
+    if (klib.i18n.loaded)
+    { contextRoot = contextRoot || "body";
+      $("[data-i18n]", contextRoot).each(function(indes, el){
+        var i18nSpec = klib.toJSON($(el).data("i18n")||"{}");
+        if (i18nSpec && !$.isEmptyObject(i18nSpec)){
+          _.each(_.keys(i18nSpec), function(attrSpec){
+            var i18nKey   = i18nSpec[attrSpec];
+            var i18nValue = $.i18n.prop(i18nKey);
+            _.each(attrSpec.split("_"), function(attribute){
+              switch (attribute.toLowerCase())
+              { case "text":
+                $(el).text(i18nValue);
+                break;
+                case "html":
+                  $(el).html(i18nValue);
+                  break;
+                default:
+                  $(el).attr(attribute, i18nValue);
+                  break;
+              };
+            });
+          });
+        };
+      });
+    };
+  };
+
+  klib.fillData = function(data, context, options) {
+    var ready2Fill = ((typeof data) == "object");
+
+    if (context && ((typeof context)=="object"))
+    { options = context;
+      context = null;
+    };
+    context = context || "body";
+
+    var fillOptions = {
+      dataParams      : {},
+      dataCache       : false,
+      keyFormat       : "aBc",
+      selectPattern   : "[name='?']",
+      formatterCommon : null,
+      formatterOnKeys : null,
+      keysMap: {}
+    };
+    $.extend(fillOptions, options);
+
+    if (!ready2Fill)
+    { //make Ajax call to load remote data and apply....
+      $.ajaxSetup({async: false}); /*wait till this data loads*/
+      $.ajax({
+        url: data,
+        data: fillOptions.dataParams,
+        cache: fillOptions.dataCache,
+        dataType: "text",
+        async: false,
+        success: function (result){
+          data = klib.toJSON(result);
+          ready2Fill = ((typeof data) == "object");
+          $.ajaxSetup({async: true});
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+          $.ajaxSetup({async: true});
+          console.error("Failed loading data from ["+data+"]. ["+textStatus+":"+errorThrown+"]");
+        }
+      });
+    };
+
+    if (ready2Fill)
+    {
+      var keyFormat = fillOptions.keyFormat;
+
+      keyFormat = (keyFormat.match(/^[a-z]/) != null)? "aBc" : keyFormat;
+      keyFormat = (keyFormat.match(/^[A-Z]/) != null)? "AbC" : keyFormat;
+
+      var dataKeys = klib.keysDotted(data);
+      console.group("fillData");
+      console.info(dataKeys);
+
+      _.each(dataKeys, function(dataKeyPath){
+        console.group(">>"+dataKeyPath);
+        var dataKey = dataKeyPath.replace(/[\[\]]/g,"_");
+        var dataKeyForFormatterFnSpec = dataKeyPath.replace(/\[[0-9]+\]/g, "");
+        var isArrayKey = (/\[[0-9]+\]/).test(dataKeyPath);
+
+        switch (keyFormat) {
+          case "_" :
+            dataKey = klib.dotToX(dataKey, "_");
+            dataKeyForFormatterFnSpec = klib.dotToX(dataKeyForFormatterFnSpec, "_");
+            break;
+          case "AbC":
+            dataKey = klib.dotToTitleCase(dataKey);
+            dataKeyForFormatterFnSpec = klib.dotToTitleCase(dataKeyForFormatterFnSpec);
+            break;
+          default:
+            dataKey = klib.dotToCamelCase(dataKey);
+            dataKeyForFormatterFnSpec = klib.dotToCamelCase(dataKeyForFormatterFnSpec);
+            break;
+        };
+        console.info({"patternKey":dataKey+(isArrayKey?  (" || "+dataKeyForFormatterFnSpec) : ""), "formatterKey":dataKeyForFormatterFnSpec, "isArrayChild":isArrayKey});
+
+        var elSelector = (fillOptions.selectPattern).replace(/\?/g, dataKey);
+        if (fillOptions.keysMap[dataKey] || fillOptions.keysMap[dataKeyForFormatterFnSpec])
+        { fillOptions.keysMap[dataKey] = fillOptions.keysMap[dataKey] || {};
+          fillOptions.keysMap[dataKeyForFormatterFnSpec] = fillOptions.keysMap[dataKeyForFormatterFnSpec] || {};
+          fillOptions.keysMap[dataKey].pattern = fillOptions.keysMap[dataKey].pattern || fillOptions.keysMap[dataKeyForFormatterFnSpec].pattern;
+          if (fillOptions.keysMap[dataKey].pattern){
+            elSelector = (fillOptions.keysMap[dataKey].pattern).replace(/\?/g, dataKey);
+          };
+          if (fillOptions.keysMap[dataKeyForFormatterFnSpec].formatter){
+            fillOptions.formatterOnKeys = fillOptions.formatterOnKeys || {};
+            fillOptions.formatterOnKeys[dataKeyForFormatterFnSpec] = fillOptions.keysMap[dataKeyForFormatterFnSpec].formatter;
+          };
+        };
+
+        console.info(">> "+elSelector+" found: "+$(elSelector, context).length);
+        var dataValue=null;
+        if ($(elSelector, context).length>0)
+        { dataValue=klib.find(data,dataKeyPath);
+          if ((!fillOptions.formatterOnKeys) && (fillOptions.formatterCommon)) {
+            dataValue = fillOptions.formatterCommon(dataValue, dataKeyPath, data);
+          };
+          if (fillOptions.formatterOnKeys) {
+            if (fillOptions.formatterOnKeys[dataKeyForFormatterFnSpec]) {
+              dataValue = fillOptions.formatterOnKeys[dataKeyForFormatterFnSpec](dataValue, dataKeyPath, data);
+            } else if (fillOptions.formatterCommon) {
+              dataValue = fillOptions.formatterCommon(dataValue, dataKeyPath, data);
+            };
+          };
+          console.info({value:dataValue});
+        };
+
+        $(elSelector, context).each(function(index, el){
+          console.info(el);
+          switch((el.tagName).toUpperCase()) {
+            case "INPUT":
+              switch((el.type).toLowerCase()){
+                case "text":
+                case "password":
+                case "hidden":
+                case "color":
+                case "date":
+                case "datetime":
+                case "datetime-local":
+                case "email":
+                case "month":
+                case "number":
+                case "search":
+                case "tel":
+                case "time":
+                case "url":
+                case "range":
+                  $(el).val(dataValue);
+                  break;
+
+                case "checkbox":
+                case "radio":
+                  el.checked = (el.value).equalsIgnoreCase(dataValue);
+                  break;
+              };
+              break;
+
+            case "SELECT":
+              klib.selectOptionForValue(el, dataValue);
+              break;
+
+            case "TEXTAREA":
+              $(el).val(dataValue);
+              break;
+
+            default:
+              $(el).html(dataValue);
+              break;
+          };
+
+        });
+
+        console.groupEnd(">>"+dataKeyPath);
+      });
+
+      console.groupEnd("fillData");
+    };
+
   };
 
   /* each kRender's view and model will be stored in renderHistory */
@@ -1559,6 +1798,12 @@
               retValue.cron = ""+klib.now();
               klib.renderHistory[retValue.id] = retValue;
 
+              /*init KeyTracking*/
+              klib.initKeyTracking();
+
+              /*apply i18n*/
+              klib.i18n.apply(viewContainderId);
+
               /*run callback if any*/
               var fnCallbackAfterRender = (""+$(viewContainderId).data("renderCallback")).replace(/undefined/, "");
               if (!klib.isBlank(kRVOptions.dataRenderCallback))
@@ -1604,6 +1849,21 @@
     { retValue = klib.render("#"+viewContainderId);
     };
     return retValue;
+  };
+
+  /* regex support on jQuery selector
+  * http://james.padolsey.com/javascript/regex-selector-for-jquery/
+  * */
+  $.expr[':'].regex = function(elem, index, match) {
+    var matchParams = match[3].split(','),
+      validLabels = /^(data|css):/,
+      attr = {
+        method: matchParams[0].match(validLabels) ? matchParams[0].split(':')[0] : 'attr',
+        property: matchParams.shift().replace(validLabels,'')
+      },
+      regexFlags = 'ig',
+      regex = new RegExp(matchParams.join('').replace(/^\s+|\s+$/g,''), regexFlags);
+    return regex.test($(elem)[attr.method](attr.property));
   };
 
   /* Extend to jQuery as
