@@ -10,6 +10,7 @@
  * Optional
  * {backbone}     : http://backbonejs.org/
  * {thorax}       : http://thoraxjs.org/ || https://github.com/walmartlabs/thorax
+ * {epoxy}        : http://epoxyjs.org/ || https://github.com/gmac/backbone.epoxy
  *
  * {handlebars}   : http://handlebarsjs.com/ || https://github.com/wycats/handlebars.js/
  * {mustache}     : http://mustache.github.io/ || https://github.com/janl/mustache.js
@@ -21,6 +22,8 @@
  * {weld}         : https://github.com/tmpvar/weld
  * {doT}          : http://olado.github.io/doT/index.html || https://github.com/olado/doT
  * {tjs}          : https://github.com/jasonmoo/t.js
+ *
+ * {i18n}         : https://code.google.com/p/jquery-i18n-properties/
  *
  * THIS CODE LICENSE: The MIT License (MIT)
 
@@ -89,7 +92,7 @@
   win.klib = klib;
 
   /* Current version. */
-  klib.VERSION = '1.0.0';
+  klib.VERSION = '1.13.6';
 
   /* isIE or isNonIE */
   var isById   = (document.getElementById);
@@ -144,14 +147,14 @@
   if ( !(new String).isNumber ){
     String.prototype.isNumber = function() { return ((((""+this).replace(/[0-9.]/g, "")).trim()).length==0); };
   };
-  if ( !(new String).normalize && (new String).trim ){
-    String.prototype.normalize = String.prototype.normalise = function() {return (this).trim().replace(/\s+/g,' ');};
+  if ( !(new String).normalizeStr && (new String).trim ){
+    String.prototype.normalizeStr = function() {return (this).trim().replace(/\s+/g,' ');};
   };
   if ( !(new String).beginsWith ){
-    String.prototype.beginsWith = function(str,i){i=(i)?'i':'';var re=new RegExp('^'+str,i);return ((this).normalize().match(re)) ? true : false ;};
+    String.prototype.beginsWith = function(str,i){i=(i)?'i':'';var re=new RegExp('^'+str,i);return ((this).normalizeStr().match(re)) ? true : false ;};
   };
   if ( !(new String).endsWith ){
-    String.prototype.endsWith = function(str,i){i=(i)?'gi':'g';var re=new RegExp(str+'$',i);return ((this).normalize().match(re)) ? true : false ;};
+    String.prototype.endsWith = function(str,i){i=(i)?'gi':'g';var re=new RegExp(str+'$',i);return ((this).normalizeStr().match(re)) ? true : false ;};
   };
   if ( !(new String).equals ){
     String.prototype.equals = function(arg) {return (this==arg);};
@@ -160,7 +163,7 @@
     String.prototype.equalsIgnoreCase = function(arg) {return ((new String(this.toLowerCase())==(new String(arg)).toLowerCase()));};
   };
   if ( !(new String).toProperCase ){
-    String.prototype.toProperCase = function(normalize) { return ((this).normalize().toLowerCase().replace(/^(.)|\s(.)/g, function($1) {return $1.toUpperCase();})); };
+    String.prototype.toProperCase = function(normalize) { return ((this).normalizeStr().toLowerCase().replace(/^(.)|\s(.)/g, function($1) {return $1.toUpperCase();})); };
   };
   if ( !(new String).toJSON ){
     String.prototype.toJSON = function() {
@@ -174,7 +177,7 @@
       { case          "":
         case         "0":
         case        "-0":
-        case       "NaN":
+        case       "nan":
         case      "null":
         case     "false":
         case "undefined": retValue = false; break;
@@ -223,7 +226,7 @@
     { case          "":
       case         "0":
       case        "-0":
-      case       "NaN":
+      case       "nan":
       case      "null":
       case     "false":
       case "undefined": retValue = false; break;
@@ -245,6 +248,14 @@
   { str = (""+str).replace(/[^+-0123456789.]/g, "");
     str = klib.isBlank(str)? "0" : str;
     return(parseFloat(str*(1.0)));
+  };
+  
+  klib.toString = function(obj)
+  { var retValue = ""+obj;
+    if (_.isObject(obj))
+    { retValue = JSON.stringify(obj);
+    };
+    return (retValue);
   };
 
   klib.dotToX = function(dottedName, X){
@@ -640,11 +651,11 @@
 
   klib.filterJSON = function(jsonData, xFilter)
   { return $(jsonData).filter(function(index, item) {
-    for( var i in xFilter ) {
-      if( ! item[i].toString().match( xFilter[i] ) ) return null;
-    };
-    return item;
-  });
+      for( var i in xFilter ) {
+        if( ! item[i].toString().match( xFilter[i] ) ) return null;
+      };
+      return item;
+    });
   };
 
   /* randomPassword: Random Password for requested length */
@@ -694,6 +705,51 @@
     return obj;
   };
 
+  klib.getElValue = function(el) {
+    el = $(el).get(0);
+    var elValue;
+    switch((el.tagName).toUpperCase()) {
+            case "INPUT":
+              switch((el.type).toLowerCase()) {
+                case "checkbox":
+                case "radio":
+                  elValue = el.checked? (el.value) : "";
+                  break;
+
+                default:
+                  elValue = $(el).val();
+                break;
+              };
+              break;
+
+            case "TEXTAREA":
+              elValue = $(el).val();
+              break;
+
+            case "SELECT":
+              elValue = $.map(($(el).find("option:selected")), function(option){return (option.value);}).join(",");
+              break;
+
+            default:
+              elValue = $(el).html();
+              break;
+          };
+    return elValue;
+  };
+  
+  klib.serializeForms = function(formSelector, disabledElementsInForms)
+  { var retValue = $(formSelector).serialize();
+    if ((!_.isString(disabledElementsInForms)) && klib.toBoolean(disabledElementsInForms))
+    { disabledElementsInForms = formSelector;
+    };
+    if (disabledElementsInForms && !klib.isBlank(disabledElementsInForms))
+    { $(disabledElementsInForms).find("[disabled][name]").each( function() {
+        retValue += '&'+$(this).attr('name')+'='+klib.getElValue(this);
+      });
+    };
+    return retValue;
+  };
+
   /* Serialize form elements to Json Object
    * $("#formId").serializeFormToJson(obj, keyNameToLowerCase);
    * keyNameToLowerCase: converts form element names to its correponding lowercase obj's attribute
@@ -722,6 +778,16 @@
     if (typeof eval("tObj."+path) != "undefined") retValue = eval("tObj."+path);
     return retValue;
   };
+  
+  klib.findSafe = klib.locateSafe = klib.valueOfKeyPath = function(obj, path, def) {
+    for(var i = 0, path = path.replace(/(\[|\]\[|(\]\.))/g, '.').split('.'), len = path.length; i < len; i++){
+      if (!obj || typeof obj !== 'object') return def;
+      obj = obj[path[i]];
+    };
+    if (obj === 'undefined') return def;
+    return obj;
+  };
+    
   klib.has = klib.hasKey = function(obj, path)
   { var tObj = obj;
     return (typeof eval("tObj."+path) != "undefined");
@@ -971,13 +1037,14 @@
       };
       $("#kViewTemplateCotainer").append("<div id='"+(templateCollectionId.substring(1))+"' style='display:none' rel='Template Collection Container'></div>");
 
-      $.ajaxSetup({async: false}); /*wait till this template collection loads*/
+      /*$.ajaxSetup({async: false});*/ /*wait till this template collection loads*/
       $.ajax({
         url: dataTemplatesCollectionUrl,
         cache: true,
         dataType: "html",
         async: false,
         success: function (result){
+          /*$.ajaxSetup({async: true});*/
           $(templateCollectionId).html(result);
           console.info("Loaded Template Collection ["+templateCollectionId+"] from ["+dataTemplatesCollectionUrl+"]");
 
@@ -987,10 +1054,9 @@
             retValue[$(element).attr("id")] = 'script';
           });
           console.info({o:retValue});
-
-          $.ajaxSetup({async: true});
         },
         error: function(jqXHR, textStatus, errorThrown){
+          /*$.ajaxSetup({async: true});*/
           console.error("Failed Loading Template Collection ["+templateCollectionId+"] from ["+dataTemplatesCollectionUrl+"]. ["+textStatus+":"+errorThrown+"]");
         }
       });
@@ -1000,6 +1066,59 @@
     };
     return (retValue);
   };
+
+  /*Get URL Parameters as Object
+  * if url = http://xyz.com/page?param0=value0&param1=value1&paramX=valueA&paramX=valueB
+  * klib.urlParams() => {param0: "value0", param1:"value1", paramX:["valueA", "valueB"]}
+  * klib.urlParams()["param0"] => "value0"
+  * klib.urlParams().param0    => "value0"
+  * klib.urlParams().paramX    => ["valueA", "valueB"]
+  * klib.urlParams().paramZ    => undefined
+  * */
+  klib.urlParams = function(urlQuery){
+    urlQuery = (urlQuery || window.location.search || "");
+    urlQuery = (urlQuery.beginsWith("\\?") || urlQuery.indexOf("//")<7)? urlQuery.substr(urlQuery.indexOf("?")+1) : urlQuery;
+    var qParams = {};
+    urlQuery.replace(/([^&=]+)=?([^&]*)(?:&+|$)/g, function(match, key, value) {
+      (qParams[key] = qParams[key] || []).push(decodeURIComponent(value));
+    });
+    _.each(qParams, function(value, key){
+      qParams[key] = (_.isArray(value) && value.length==1)? value[0] : value;
+    });
+    return qParams;
+  };
+  /*Get URL Parameter value
+  * if url = http://xyz.com/page?param0=value0&param1=value1&paramX=valueA&paramX=valueB
+  * klib.urlParam("param0") => "value0"
+  * klib.urlParam("paramX") => ["valueA", "valueB"]
+  * klib.urlParam("paramZ") => undefined
+  * */
+  klib.urlParam = function(name, queryString){
+    return (klib.urlParams(queryString)[name]);
+  };
+  /*Get URL Hash value
+  * if url = http://xyz.com/page#/hash0/hash1/hash2
+  * klib.urlHash()   => "/hash0/hash1/hash2"
+  * klib.urlHash(1)  => "hash1"
+  * klib.urlHash([]) => ["hash0", "hash1", "hash2"]
+  * klib.urlHash(["key0", "key1", "key3"]) => {"key0":"hash0", "key1":"hash1", "key2":"hash2"}
+  * */
+  klib.urlHash = function(returnOf, hashDelimiter){
+    var retValue = (window.location.hash || "#").substring(1);
+    if (returnOf)
+    { hashDelimiter = hashDelimiter || "/";
+      retValue = retValue.beginsWith(hashDelimiter)? retValue.substring(retValue.indexOf(hashDelimiter)+(hashDelimiter.length)) : retValue;
+      var hashArray = retValue.split(hashDelimiter);
+      if (_.isNumber(returnOf)){
+        retValue = (hashArray && hashArray.length>returnOf)? hashArray[returnOf] : "";
+      }
+      else if (_.isArray(returnOf))
+      { retValue = (returnOf.length===0)? hashArray : _.object(returnOf, hashArray);
+      };
+    };
+    return retValue;
+  };
+
 
   /* i18n support */
   klib.i18n = {};
@@ -1027,7 +1146,7 @@
           $.i18n.loaded = (typeof $.i18n.loaded == "undefined")? (!$.isEmptyObject($.i18n.map)) : $.i18n.loaded;
           klib.i18n.loaded = klib.i18n.loaded || $.i18n.loaded;
           if ((lang.length > 1) && (!$.i18n.loaded))
-          { console.log("Error Loading Language File ["+lang+"]. Loading default.");
+          { console.warn("Error Loading Language File ["+lang+"]. Loading default.");
             klib.i18n.setLanguage("_", i18nSettings);
           };
           klib.i18n.apply();
@@ -1037,10 +1156,11 @@
     };
   };
 
-  klib.i18n.apply = klib.i18n.render = function(contextRoot) {
+  klib.i18n.apply = klib.i18n.render = function(contextRoot, elSelector) {
     if (klib.i18n.loaded)
     { contextRoot = contextRoot || "body";
-      $("[data-i18n]", contextRoot).each(function(indes, el){
+      elSelector = elSelector || "";
+      $(elSelector+"[data-i18n]", contextRoot).each(function(indes, el){
         var i18nSpec = klib.toJSON($(el).data("i18n")||"{}");
         if (i18nSpec && !$.isEmptyObject(i18nSpec)){
           _.each(_.keys(i18nSpec), function(attrSpec){
@@ -1065,6 +1185,151 @@
     };
   };
 
+  /* Backbone.Model extended for CRUD specific URLs support
+   * urlRoot: URL or {default:URL, create:URL, read:URL, update:URL, delete:URL, patch:URL}
+   *
+   * URL: String with optional template-variables
+   * {crud} ==> create|read|update|delete|patch
+   * {model keys}
+   *
+   * example:
+   *
+   * urlRoot: "/api/member.json?action={crud}&id={memid}"
+   *
+   * */
+  klib.extendBackbone = function(){
+    if (window.Backbone) {
+      console.info("Found Backbone. Extending ...");
+      // override the Model prototype for CRUD specific URLs.
+      _.extend(Backbone.Model.prototype, Backbone.Events, {
+
+        activeCRUD: "",
+
+        diffAttributes: function(dOptions) {
+          return (window.jsondiffpatch)? jsondiffpatch.diff(this.previousAttributes(), this.toJSON(), dOptions) : this.changedAttributes();
+        },
+
+        sync: function() {
+          this.activeCRUD = arguments[0];
+          return Backbone.sync.apply(this, arguments);
+        },
+
+        url: function() {
+          var baseURL, ajaxURL, qryParams, kURLs, paramName;
+          var urlRoot = _.result(this, 'urlRoot') || _.result(this.collection, 'url') || urlError();
+          if (urlRoot)
+          { kURLs = (typeof urlRoot === "object")? urlRoot :  {'defaulturl':urlRoot};
+            kURLs['patch'] = kURLs['patch'] || kURLs['update'];
+
+            baseURL = _.result(kURLs, this.activeCRUD.toLowerCase()+"url") || _.result(kURLs, 'defaulturl') || urlError();
+            ajaxURL = (baseURL.replace(/{crud}/gi, this.activeCRUD.toUpperCase()).replace(/{now}/gi, klib.now()))
+              + ((this.isNew() || (baseURL.indexOf("?")>0))? '' : ((((baseURL.charAt(baseURL.length - 1) === '/')  ? '' :  '/') + encodeURIComponent(this.id))));
+            while ((qryParams = ajaxURL.match(/{([\s\S]*?)}/g)) && qryParams && qryParams[0]) {
+              paramName = qryParams[0].replace(/[{}]/g,'');
+              ajaxURL = ajaxURL.replace(new RegExp(qryParams[0], "g"),  ((paramName.indexOf(".")>=0)? klib.find(this.toJSON(),paramName) : this.get(paramName)) || "");
+            };
+          };
+
+          console.info("Backbone Sync Url: "+ajaxURL);
+          return (ajaxURL);
+        }
+      });
+    }
+    else{
+      console.warn("Backbone not found. NOT extending...");
+    };
+  };
+
+  /*Load Backbone Model Class from a remote location*/
+  klib.loadBackboneModelClass = function(bbModelClassUrl, options){
+    options || (options={});
+    var retValue = {url:bbModelClassUrl, bbclass:Backbone.Model.extend({'defaults':{}}), success:false};
+    /*$.ajaxSetup({async: false});*/ /*wait till this data loads*/
+    $.ajax({
+      url: retValue.url,
+      dataType: "text",
+      async: false,
+      success: function (result){
+        /*$.ajaxSetup({async: true});*/
+        result = result.substring(result.indexOf('{'));
+        retValue.bbclass = Backbone.Model.extend(klib.toJSON(result));
+        retValue.success = true;
+        if (options.success) options.success(result);
+      },
+      error: function(jqXHR, textStatus, errorThrown){
+        /*$.ajaxSetup({async: true});*/
+        console.error("Failed loading backbone class from ["+(retValue.url)+"]. ["+textStatus+":"+errorThrown+"]");
+        if (options.fail) options.fail(retValue.url, jqXHR, textStatus, errorThrown);
+      }
+    });
+    return (retValue);
+  };
+
+  klib.getModifiedElement = function(elSelector) {
+    var modified, modifiedEl;
+    var $elements = $(elSelector || "form:not([data-ignore-change]) :input:not(:disabled,:button,[data-ignore-change])");
+    //$elements.each(function(index, element) //jQuery each does not break the loop
+    _.every($elements, function(element) //lo-dash breaks the loop when condition not satisified
+    { if (!modified) 
+      { if ((element.tagName.match(/^(select|textarea)$/i)) && (element.value != element.defaultValue))
+        { modified = true;
+        }
+        else if (element.tagName.match(/^input$/i))
+        { if (element.type.match(/^(checkbox|radio)$/i) && element.checked != element.defaultChecked)
+          { modified = true;
+          } else if (element.type.match(/^(text|password|hidden|color|email|month|number|tel|time|url|range|date|datetime|datetime-local)$/i) && element.value != element.defaultValue)
+          { modified = true;
+          };
+        };
+        if (modified) {  modifiedEl = element; };
+      };
+      return (!modified);
+    });
+    return (modifiedEl);
+  };
+  klib.getModifiedElements = function(elSelector) {
+    var modified, modifiedEls=[];
+    var $elements = $(elSelector || "form:not([data-ignore-change]) :input:not(:disabled,:button,[data-ignore-change])");
+    $elements.each(function(index, element)
+    { modified=false;
+      if ((element.tagName.match(/^(select|textarea)$/i)) && (element.value != element.defaultValue))
+      { modified = true;
+      }
+      else if (element.tagName.match(/^input$/i))
+      { if (element.type.match(/^(checkbox|radio)$/i) && element.checked != element.defaultChecked)
+        { modified = true;
+        } else if (element.type.match(/^(text|password|hidden|color|email|month|number|tel|time|url|range|date|datetime|datetime-local)$/i) && element.value != element.defaultValue)
+        { modified = true;
+        };
+      };
+      if (modified) {  modifiedEls.push(element); };
+    });
+    return (modifiedEls);
+  };
+
+  klib.initTrackElValueChanges = klib.resetElementsDefaultValue = function(elSelector) {
+    $(elSelector || "form :input:not(:disabled)").each(function(index, element)
+    { element.defaultValue = element.value;
+      if ((element.tagName.match(/^input$/i)) && (element.type.match(/^(checkbox|radio)$/i) && element.checked != element.defaultChecked))
+      { element.defaultChecked = element.checked; 
+      };
+//      if (element.tagName.match(/^(select|textarea)$/i))
+//      { element.defaultValue = element.value;
+//      }
+//      else if(element.tagName.match(/^input$/i))
+//      { if (element.type.match(/^(checkbox|radio)$/i) && element.checked != element.defaultChecked)
+//        { element.defaultChecked = element.checked;
+//        }
+//        else //if(element.type.match(/^(text|hidden)$/i) && element.value != element.defaultValue)//anything other than (checkbox|radio)
+//        { element.defaultValue = element.value;
+//        };
+//      }
+//      else
+//      { console.log("Missed to reset defaultValue for "+element.tagName);
+//      };
+    });
+  };
+    
   klib.fillData = function(data, context, options) {
     var ready2Fill = ((typeof data) == "object");
 
@@ -1081,13 +1346,15 @@
       selectPattern   : "[name='?']",
       formatterCommon : null,
       formatterOnKeys : null,
+      resetElDefault  : true,
+      resetElDefaultInContext: true,
       keysMap: {}
     };
     $.extend(fillOptions, options);
 
     if (!ready2Fill)
     { //make Ajax call to load remote data and apply....
-      $.ajaxSetup({async: false}); /*wait till this data loads*/
+      /*$.ajaxSetup({async: false});*/ /*wait till this data loads*/
       $.ajax({
         url: data,
         data: fillOptions.dataParams,
@@ -1095,12 +1362,12 @@
         dataType: "text",
         async: false,
         success: function (result){
+          /*$.ajaxSetup({async: true});*/
           data = klib.toJSON(result);
           ready2Fill = ((typeof data) == "object");
-          $.ajaxSetup({async: true});
         },
         error: function(jqXHR, textStatus, errorThrown){
-          $.ajaxSetup({async: true});
+          /*$.ajaxSetup({async: true});*/
           console.error("Failed loading data from ["+data+"]. ["+textStatus+":"+errorThrown+"]");
         }
       });
@@ -1190,22 +1457,29 @@
                 case "time":
                 case "url":
                 case "range":
+                case "button":
+                case "submit":
+                case "reset":
                   $(el).val(dataValue);
+                  if (!fillOptions.resetElDefaultInContext && fillOptions.resetElDefault) el.defaultValue = el.value;
                   break;
 
                 case "checkbox":
                 case "radio":
                   el.checked = (el.value).equalsIgnoreCase(dataValue);
+                  if (!fillOptions.resetElDefaultInContext && fillOptions.resetElDefault) el.defaultChecked = el.checked;
                   break;
               };
               break;
 
             case "SELECT":
               klib.selectOptionForValue(el, dataValue);
+              if (!fillOptions.resetElDefaultInContext && fillOptions.resetElDefault) el.defaultValue = el.value;
               break;
 
             case "TEXTAREA":
               $(el).val(dataValue);
+              if (!fillOptions.resetElDefaultInContext && fillOptions.resetElDefault) el.defaultValue = el.value;
               break;
 
             default:
@@ -1219,6 +1493,7 @@
       });
 
       console.groupEnd("fillData");
+      if (fillOptions.resetElDefaultInContext) klib.resetElementsDefaultValue(context+" :input");
     };
 
   };
@@ -1237,9 +1512,11 @@
     data                      : {}    // Data(JSON Object) to be used in templates; for html data-attribute see dataUrl
 
    ,dataUrl                   : ""    // External Data(JSON) URL | local:dataModelVariableName
+   ,dataUrlErrorHandle        : ""    // single javascript function name to run if external data url fails; NOTE: (jqXHR, textStatus, errorThrown) are injected to the function.
    ,dataParams                : {}    // dataUrl Params (NO EQUIVALENT data-attribute)
    ,dataModel                 : ""    // External Data(JSON) "key" for DataObject; default: "data"; may use name-space x.y.z (with the cost of performance)
    ,dataModelType             : ""    // "Backbone" | "Thorax" applicable only for local data eg: data or dataUrl:"local:XXXXXX"
+                                      // "Backbone:{classpath:'path-to-backbone-model-class.js', classsuccess:jsFunctionName, classerror:jsFunctionName, defaults:{}, fetchsuccess:jsFunctionName, fetcherror:jsFunctionName}"
    ,dataCache                 : false // External Data(JSON) Cache
 
    ,dataTemplatesCollectionUrl: ""    // location of single file containing all the templates; helps to load all templates in single request. use "dataTemplate" to define primary tempate to be used for rendering
@@ -1260,6 +1537,7 @@
    ,dataViewId                : ""    // Used only for RenderEngine:Thorax, to locate in Thorax.Views collection
    ,dataRenderId              : ""    // Render Id, may be used to locate in klib.renderHistory[dataRenderId], auto-generated key if not defined
    ,dataWeldConfig            : {}    // Weld Template Configuration Optional
+   ,saveOptions               : false // Save options in render-container element
    };
    
    klib.render("#containerID", uOption);
@@ -1295,6 +1573,7 @@
     var kRVOptions = {
         data               : {}
       , dataUrl            : ""
+      , dataUrlErrorHandle : ""
       , dataParams         : {}
       , dataModel          : ""
       , dataModelType       : ""
@@ -1321,7 +1600,14 @@
 
     if (useOptions)
     { /* for each user option set/override internal kRVOptions */
-      for(var key in uOptions) { kRVOptions[key] = uOptions[key]; };
+      /* store options in container data properties if saveOptions == true */
+      var saveOptions = (uOptions.hasOwnProperty("saveOptions") && uOptions["saveOptions"]);
+      for(var key in uOptions) 
+      { kRVOptions[key] = uOptions[key];
+        if (saveOptions && (!(key==="data" || key==="saveOptions"))) {
+          $(viewContainderId).data(key[4].toLowerCase()+key.slice(5), klib.toString(uOptions[key]));
+        };
+      };
     };
 
     /*Render Id*/
@@ -1374,11 +1660,64 @@
     };
     kViewId = (kViewId.ifBlank(("kView"+(klib.now())+(klib.rand(1000,9999)))));
 
+    var kBackboneModelOption = {};
     var kViewDataModelType = (""+$(viewContainderId).data("modelType")).replace(/undefined/, "");
     if (!klib.isBlank(kRVOptions.dataModelType))
     { kViewDataModelType = kRVOptions.dataModelType;
     };
+    if (kViewDataModelType.beginsWith("backbone:", "i"))
+    { kBackboneModelOption = klib.toJSON(kViewDataModelType.substring(9));
+      kViewDataModelType = "backbone";
+      if (kRenderEngine.equalsIgnoreCase("unknown")) kRenderEngine = "backbone";
+    };
     kViewDataModelType = (kViewDataModelType.ifBlank()).toLowerCase();
+
+    /* Load Scripts Begins */
+    console.group("kLoadingViewScripts");
+    if (!(useOptions && uOptions.hasOwnProperty('dataScriptsCache'))) /* NOT provided in Render Request */
+    { /* Read from view container [data-scripts-cache='{true|false}'] */
+      var scriptsCacheInTagData = (""+$(viewContainderId).data("scriptsCache")).replace(/undefined/, "");
+      if (!klib.isBlank(scriptsCacheInTagData))
+      { kRVOptions.dataScriptsCache = scriptsCacheInTagData.toBoolean();
+        console.info("Override [data-scripts-cache] with [data-scripts-cache] option in tag-attribute: "+kRVOptions.dataScriptsCache);
+      };
+    }
+    else
+    { console.info("Override [data-scripts-cache] with user option [dataScriptsCache]: "+kRVOptions.dataScriptsCache);
+    };
+
+    var vScriptsList = (""+$(viewContainderId).data("scripts")).ifBlank("{}");
+    var vScripts = eval("("+ vScriptsList +")");
+    /* Check the option to override */
+    if (!$.isEmptyObject(kRVOptions.dataScripts))
+    { vScripts = kRVOptions.dataScripts;
+    };
+
+    if (vScripts && (!$.isEmptyObject(vScripts)))
+    { console.info("External scripts to be loaded [cache:"+(kRVOptions.dataScriptsCache)+"] along with view container ["+viewContainderId+"] => "+JSON.stringify(vScripts));
+      var vScriptsNames = _.keys(vScripts);
+
+      console.group("kLoadingScripts");
+      _.each(vScriptsNames, function(scriptId){
+        kAjaxRequestsQue = klib.loadScript(scriptId, vScripts[scriptId], kRVOptions.dataScriptsCache, kAjaxRequestsQue);
+      });
+      console.info("External Scripts Loading Status: "+JSON.stringify(kAjaxRequestsQue));
+      console.groupEnd("kLoadingScripts");
+    }
+    else
+    { console.info("No scripts defined [data-scripts] in view container ["+viewContainderId+"] to load.");
+    };
+    console.groupEnd("kLoadingViewScripts");
+    /* Load Scripts Ends */
+
+    /*Wait till scripts are loaded before proceed*/
+    $.when.apply($, kAjaxRequestsQue)
+      .then(function(){
+        console.info("External Scripts Loaded.");
+      })
+      .fail(function(){
+        console.error("External Scripts Loading Failed! Unexpected!? Check the Script Path/Network.");
+      });
 
     /* Load Data */
     console.group("kDataModel");
@@ -1429,14 +1768,45 @@
           };
           console.info("Using LOCAL Data Model: "+localDataModelName);
           if (klib.isBlank(kViewDataModelType))
-          { if (dataModelName.indexOf(".")>0)
+          { if ((!isLocalDataModel) && (dataModelName.indexOf(".")>0))
             { kTemplateModelData[viewDataModelName] = klib.hasKey(localDataModelObj, dataModelName)? klib.find(localDataModelObj,dataModelName) : localDataModelObj;
             }else
             { kTemplateModelData[viewDataModelName] = localDataModelObj.hasOwnProperty(dataModelName)? localDataModelObj[dataModelName] : localDataModelObj;
             };
           }
           else
-          { kTemplateModelData[viewDataModelName] = localDataModelObj;
+          { console.info("Local Data: "+localDataModelName+" not found.");
+            /*kViewDataModelType is Backbone with its Class.js on server */
+            if ($.isEmptyObject(localDataModelObj) && !$.isEmptyObject(kBackboneModelOption))
+            {
+              var bbClassUrl = kBackboneModelOption.classpath || "";
+              if (!klib.isBlank(bbClassUrl))
+              { if (bbClassUrl.beginsWith("local:","i"))
+                { var bbClassLocal = bbClassUrl.substring(6);
+                  eval("( localDataModelObj = new "+bbClassLocal+"() )");
+                }
+                else
+                { console.info("loading Backbone Model Class from: "+(bbClassUrl)+".");
+                  var noop = function(){};
+                  var loadBackboneModelClassResult = klib.loadBackboneModelClass(bbClassUrl, {success:kBackboneModelOption.classsuccess||noop, fail:kBackboneModelOption.classerror||noop});
+                  localDataModelObj = new loadBackboneModelClassResult.bbclass();
+                  if (loadBackboneModelClassResult.success) {
+                    if (kBackboneModelOption.defaults) {
+                      localDataModelObj.set(kBackboneModelOption.defaults);
+                    };
+                    localDataModelObj.fetch({async: false, cache:false, success:kBackboneModelOption.fetchsuccess||noop, error:kBackboneModelOption.fetcherror||noop});
+                  };
+                };
+                eval("("+localDataModelName+"=localDataModelObj)");
+                kTemplateModelData[viewDataModelName] = localDataModelObj.toJSON();
+              }
+              else
+              { console.error("Backbone 'classpath' NOT defined. Please check the 'dataModelType' option.");
+              };
+            }
+            else
+            { kTemplateModelData[viewDataModelName] = kViewDataModelType.equalsIgnoreCase("backbone")? localDataModelObj.toJSON() : localDataModelObj;
+            };
           };
         }
         else
@@ -1457,6 +1827,16 @@
                 { kTemplateModelData[viewDataModelName] = oResult.hasOwnProperty(dataModelName)? oResult[dataModelName] : oResult;
                 };
                 console.info("Loaded data model ["+dataModelName+"] from ["+dataModelUrl+"]");
+              },
+              error: function( jqXHR, textStatus, errorThrown ){
+                //Call user defined function on Data URL Error
+                var fnOnDataUrlErrorHandle = (""+$(viewContainderId).data("urlErrorHandle")).replace(/undefined/, "");
+                if (!klib.isBlank(kRVOptions.dataUrlErrorHandle))
+                { fnOnDataUrlErrorHandle = ""+kRVOptions.dataUrlErrorHandle;
+                };
+                if (!klib.isBlank(fnOnDataUrlErrorHandle))
+                { eval("("+fnOnDataUrlErrorHandle+"(jqXHR, textStatus, errorThrown))");
+                };
               }
             })
           );
@@ -1472,6 +1852,10 @@
       var vTemplatesList = (""+$(viewContainderId).data("templates")).ifBlank("{}");
       var vTemplates = eval("("+ vTemplatesList +")");
       /* Check the option to override */
+      if ((!(_.isObject(kRVOptions.dataTemplates))) && (_.isString(kRVOptions.dataTemplates)))
+      { kRVOptions.dataTemplates = klib.toJSON(kRVOptions.dataTemplates);
+      };
+
       if (!$.isEmptyObject(kRVOptions.dataTemplates))
       { vTemplates = kRVOptions.dataTemplates;
         vTemplatesList = ""+(JSON.stringify(vTemplates));
@@ -1576,43 +1960,7 @@
         console.groupEnd("kLoadingViewStyles");
         /* Load Styles Ends */
 
-        /* Load Scripts Begins */
-        console.group("kLoadingViewScripts");
-        if (!(useOptions && uOptions.hasOwnProperty('dataScriptsCache'))) /* NOT provided in Render Request */
-        { /* Read from view container [data-scripts-cache='{true|false}'] */
-          var scriptsCacheInTagData = (""+$(viewContainderId).data("scriptsCache")).replace(/undefined/, "");
-          if (!klib.isBlank(scriptsCacheInTagData))
-          { kRVOptions.dataScriptsCache = scriptsCacheInTagData.toBoolean();
-            console.info("Override [data-scripts-cache] with [data-scripts-cache] option in tag-attribute: "+kRVOptions.dataScriptsCache);
-          };
-        }
-        else
-        { console.info("Override [data-scripts-cache] with user option [dataScriptsCache]: "+kRVOptions.dataScriptsCache);
-        };
-
-        var vScriptsList = (""+$(viewContainderId).data("scripts")).ifBlank("{}");
-        var vScripts = eval("("+ vScriptsList +")");
-        /* Check the option to override */
-        if (!$.isEmptyObject(kRVOptions.dataScripts))
-        { vScripts = kRVOptions.dataScripts;
-        };
-
-        if (vScripts && (!$.isEmptyObject(vScripts)))
-        { console.info("External scripts to be loaded [cache:"+(kRVOptions.dataScriptsCache)+"] along with view container ["+viewContainderId+"] => "+JSON.stringify(vScripts));
-          var vScriptsNames = _.keys(vScripts);
-
-          console.group("kLoadingScripts");
-          _.each(vScriptsNames, function(scriptId){
-            kAjaxRequestsQue = klib.loadScript(scriptId, vScripts[scriptId], kRVOptions.dataScriptsCache, kAjaxRequestsQue);
-          });
-          console.info("External Scripts Loading Status: "+JSON.stringify(kAjaxRequestsQue));
-          console.groupEnd("kLoadingScripts");
-        }
-        else
-        { console.info("No scripts defined [data-scripts] in view container ["+viewContainderId+"] to load.");
-        };
-        console.groupEnd("kLoadingViewScripts");
-        /* Load Scripts Ends */
+/*Scripts were loaded here...*/
 
         $.when.apply($, kAjaxRequestsQue)
           .then(function() {
@@ -1866,6 +2214,8 @@
     return regex.test($(elem)[attr.method](attr.property));
   };
 
+
+
   /* Extend to jQuery as
    *
    * $("#viewContainer").kRender({})
@@ -1888,7 +2238,17 @@
     }
   });
 
+  klib.initDataValidation = function(){
+    console.log("include validate framework lib (klib-validate.js) to use this feature!");
+  };
+  klib.doDataValidation = function(){
+    console.log("include validate framework lib (klib-validate.js) to use this feature!");
+  };
+
   $(document).ready(function(){
+    /*Extending Backbone*/
+    klib.extendBackbone();
+
     /*Key Tracking*/
     klib.initKeyTracking();
 
