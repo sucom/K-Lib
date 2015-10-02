@@ -1,11 +1,8 @@
-/* =========================================================================
- * K-Lib + Validate | (c) Kumararaja <sucom.kumar@gmail.com> | License (MIT)
- * =========================================================================
- */
-
 /* ===========================================================================
  * K-Lib is the collection of javascript functions which simplifies
  * the interfaces for commonly-used methods, and makes the coding simple
+ *
+ * Author: Kumararaja <sucom.kumar@gmail.com>
  *
  * Dependency: (hard)
  * 1. jQuery: http://jquery.com/
@@ -138,7 +135,7 @@ var isKHashRouteOn=false;
   klib._initWindowOnHashChange = function(){
     if ('onhashchange' in window) {
       isKHashRouteOn = true;
-      klib.console.info("Registering HashRouting Listener");
+      //klib.console.info("Registering HashRouting Listener");
       window.onhashchange = function (ocEvent) {
         /* ocEvent
          .oldURL : "http://dev.semantic-test.com/ui/home.html#user/changePassword"
@@ -397,7 +394,7 @@ var isKHashRouteOn=false;
 
   /*Tobe Removed: replaced with toStr*/
   //klib.toString = function (obj) {
-  //  klib.console.warn("klib.toString is deprecated. use klib.toStr instead.");
+  //  //klib.console.warn("klib.toString is deprecated. use klib.toStr instead.");
   //  var retValue = "" + obj;
   //  if (_.isObject(obj)) {
   //    retValue = JSON.stringify(obj);
@@ -470,7 +467,7 @@ var isKHashRouteOn=false;
       , retValue = (( ((disableKeys.pad(1, ',', 2)).indexOf(keyCode.pad(1, ',', 2)) >= 0) && (withShiftKey ? ((e.shiftKey) ? true : false) : ((!e.shiftKey)? true : false))));
     if (retValue) {
       e.preventDefault();
-      klib.console.info("Key [" + keyCode + (withShiftKey ? "+Shift" : "") + "] has been disabled in this element.");
+      //klib.console.info("Key [" + keyCode + (withShiftKey ? "+Shift" : "") + "] has been disabled in this element.");
     }
     return retValue;
   };
@@ -493,11 +490,11 @@ var isKHashRouteOn=false;
 
   klib.initKeyTracking = function () {
     var elementsToTrackKeys = (arguments.length) ? arguments[0] : "[data-disable-keys],[data-focus-next],[data-focus-back]";
-    klib.console.info("Finding Key-Tracking for element(s): " + elementsToTrackKeys);
+    //klib.console.info("Finding Key-Tracking for element(s): " + elementsToTrackKeys);
     $(elementsToTrackKeys).each(function (index, element) {
       $(element).keydown(klib._trackAndControlKey);
-      klib.console.info("kLib is tracking keys on element:");
-      klib.console.info(element);
+      //klib.console.info("kLib is tracking keys on element:");
+      //klib.console.info(element);
     });
   };
 
@@ -1143,7 +1140,7 @@ var isKHashRouteOn=false;
       cache: true,
       url: url
     });
-    klib.console.info("$.cachedScript('" + url + "')");
+    //klib.console.info("$.cachedScript('" + url + "')");
     /* Use $.ajax() since it is more flexible than $.getScript
      * Return the jqXHR object so we can chain callbacks
      */
@@ -1160,7 +1157,7 @@ var isKHashRouteOn=false;
         $("head").append("<style id='" + (styleId) + "' type='text/css'>" + cssStyles + "<\/style>");
       }
     });
-    klib.console.info("$.cachedScript('" + url + "')");
+    //klib.console.info("$.cachedScript('" + url + "')");
     /* Use $.ajax() since it is more flexible than $.getScript
      * Return the jqXHR object so we can chain callbacks
      */
@@ -1170,37 +1167,37 @@ var isKHashRouteOn=false;
   /* Add Script Tag */
   klib.addScript = function (scriptId, scriptSrc) {
     scriptId = scriptId.replace(/#/, "");
-    klib.console.group("kAddScript");
+    //klib.console.group("kAddScript");
     if (!klib.isElementExist("#kScriptsCotainer")) {
-      klib.console.info("#kScriptsCotainer NOT Found! Creating one...");
+      //klib.console.info("#kScriptsCotainer NOT Found! Creating one...");
       $('body').append("<div id='kScriptsCotainer' style='display:none' rel='Dynamic Scripts Container'></div>");
     }
     if (klib.isElementExist("#" + scriptId)) {
-      klib.console.info("script [" + scriptId + "] already found in local.");
+      //klib.console.info("script [" + scriptId + "] already found in local.");
     }
     else {
-      klib.console.info("script [" + scriptId + "] NOT found. Added script tag with src [" + scriptSrc + "]");
+      //klib.console.info("script [" + scriptId + "] NOT found. Added script tag with src [" + scriptSrc + "]");
       $("#kScriptsCotainer").append("<script id='" + (scriptId) + "' type='text/javascript' src='" + scriptSrc + "'><\/script>");
     }
-    klib.console.groupEnd("kAddScript");
+    //klib.console.groupEnd("kAddScript");
   };
 
   /* Add Style Tag */
   klib.addStyle = function (styleId, styleSrc) {
     styleId = styleId.replace(/#/, "");
-    klib.console.group("kAddStyle");
+    //klib.console.group("kAddStyle");
     if (!klib.isElementExist("#kStylesCotainer")) {
-      klib.console.info("#kStylesCotainer NOT Found! Creating one...");
+      //klib.console.info("#kStylesCotainer NOT Found! Creating one...");
       $('body').append("<div id='kStylesCotainer' style='display:none' rel='Dynamic Styles Container'></div>");
     }
     if (klib.isElementExist("#" + styleId)) {
-      klib.console.info("style [" + styleId + "] already found in local.");
+      //klib.console.info("style [" + styleId + "] already found in local.");
     }
     else {
-      klib.console.info("style [" + styleId + "] NOT found. Added link tag with href [" + styleSrc + "]");
+      //klib.console.info("style [" + styleId + "] NOT found. Added link tag with href [" + styleSrc + "]");
       $("#kStylesCotainer").append("<link id='" + (styleId) + "' rel='stylesheet' type='text/css' href='" + styleSrc + "'\/>");
     }
-    klib.console.groupEnd("kAddStyle");
+    //klib.console.groupEnd("kAddStyle");
   };
 
   /* Loading script */
@@ -1208,9 +1205,9 @@ var isKHashRouteOn=false;
     scriptId = scriptId.replace(/#/, "");
     useScriptTag = useScriptTag || false;
     tAjaxRequests = tAjaxRequests || [];
-    klib.console.group("kScriptsLoad");
+    //klib.console.group("kScriptsLoad");
     if (klib.isBlank(scriptPath)) {
-      klib.console.error("script path [" + scriptPath + "] for [" + scriptId + "] NOT defined.");
+      //klib.console.error("script path [" + scriptPath + "] for [" + scriptId + "] NOT defined.");
     }
     else {
       if (useScriptTag) {
@@ -1219,12 +1216,12 @@ var isKHashRouteOn=false;
       else { /* load script script-URL */
         tAjaxRequests.push(
           $.cachedScript(scriptPath).done(function (script, textStatus) {
-            klib.console.info("Loaded script [" + scriptId + "] from [" + scriptPath + "]. STATUS: " + textStatus);
+            //klib.console.info("Loaded script [" + scriptId + "] from [" + scriptPath + "]. STATUS: " + textStatus);
           })
         );
       }
     }
-    klib.console.groupEnd("kScriptsLoad");
+    //klib.console.groupEnd("kScriptsLoad");
     return (tAjaxRequests);
   };
 
@@ -1233,9 +1230,9 @@ var isKHashRouteOn=false;
     styleId = styleId.replace(/#/, "");
     useStyleTag = useStyleTag || false;
     tAjaxRequests = tAjaxRequests || [];
-    klib.console.group("kStylesLoad");
+    //klib.console.group("kStylesLoad");
     if (klib.isBlank(stylePath)) {
-      klib.console.error("style path [" + stylePath + "] for [" + styleId + "] NOT defined.");
+      //klib.console.error("style path [" + stylePath + "] for [" + styleId + "] NOT defined.");
     }
     else {
       if (useStyleTag) {
@@ -1244,12 +1241,12 @@ var isKHashRouteOn=false;
       else { /* load style style-URL */
         tAjaxRequests.push(
           $.cachedStyle(styleId, stylePath).done(function (style, textStatus) {
-            klib.console.info("Loaded style [" + styleId + "] from [" + stylePath + "]. STATUS: " + textStatus);
+            //klib.console.info("Loaded style [" + styleId + "] from [" + stylePath + "]. STATUS: " + textStatus);
           })
         );
       }
     }
-    klib.console.groupEnd("kStylesLoad");
+    //klib.console.groupEnd("kStylesLoad");
     return (tAjaxRequests);
   };
 
@@ -1257,10 +1254,10 @@ var isKHashRouteOn=false;
   klib.addTemplateScript = function (tmplId, tmplBody, tmplType) {
     tmplId = tmplId.replace(/#/, "");
     if (!klib.isElementExist("#kViewTemplateCotainer")) {
-      klib.console.info("#kViewTemplateCotainer NOT Found! Creating one...");
+      //klib.console.info("#kViewTemplateCotainer NOT Found! Creating one...");
       $('body').append("<div id='kViewTemplateCotainer' style='display:none' rel='Template Container'></div>");
     }
-    klib.console.info("Adding <script id='" + (tmplId) + "' type='text/" + tmplType + "'>");
+    //klib.console.info("Adding <script id='" + (tmplId) + "' type='text/" + tmplType + "'>");
     $("#kViewTemplateCotainer").append("<script id='" + (tmplId) + "' type='text/" + tmplType + "'>" + tmplBody + "<\/script>");
   };
 
@@ -1271,13 +1268,13 @@ var isKHashRouteOn=false;
     templateType = templateType || "x-template";
     viewContainderId = viewContainderId || "#DummyInlineTemplateContainer";
     tAjaxRequests = tAjaxRequests || [];
-    klib.console.group("kTemplateAjaxQue");
+    //klib.console.group("kTemplateAjaxQue");
     if (!klib.isElementExist("#" + tmplId)) {
-      klib.console.info("Template[" + tmplId + "] of [" + templateType + "] NOT found. loading from [" + tmplPath + "]");
+      //klib.console.info("Template[" + tmplId + "] of [" + templateType + "] NOT found. loading from [" + tmplPath + "]");
       if (tmplPath.equalsIgnoreCase("inline")) {
         var inlineTemplate = $(viewContainderId).html();
         if (klib.isBlank(inlineTemplate)) {
-          klib.console.error("Template[" + tmplId + "] of [" + templateType + "] NOT defined inline.");
+          //klib.console.error("Template[" + tmplId + "] of [" + templateType + "] NOT defined inline.");
         }
         else {
           klib.addTemplateScript(tmplId, inlineTemplate, templateType);
@@ -1287,51 +1284,51 @@ var isKHashRouteOn=false;
       else if (!tmplPath.equalsIgnoreCase("script")) { /* load from templdate-URL */
         var axTemplateRequest;
         if (tmplReload) {
-          klib.console.warn(">>>>>>>>>> Making New Template Request");
+          //klib.console.warn(">>>>>>>>>> Making New Template Request");
           axTemplateRequest = $.ajax({
             url: tmplPath,
             cache: false,
             dataType: "html",
             success: function (template) {
               klib.addTemplateScript(tmplId, template, templateType);
-              klib.console.info("Loaded Template[" + tmplId + "] of [" + templateType + "] from [" + tmplPath + "]");
+              //klib.console.info("Loaded Template[" + tmplId + "] of [" + templateType + "] from [" + tmplPath + "]");
             },
             error: function (jqXHR, textStatus, errorThrown) {
-              klib.console.error("Failed Loading Template[" + tmplId + "] of [" + templateType + "] from [" + tmplPath + "]. [" + textStatus + ":" + errorThrown + "]");
+              //klib.console.error("Failed Loading Template[" + tmplId + "] of [" + templateType + "] from [" + tmplPath + "]. [" + textStatus + ":" + errorThrown + "]");
             }
           });
         } else {
           axTemplateRequest = $.get(tmplPath, function (template) {
             klib.addTemplateScript(tmplId, template, templateType);
-            klib.console.info("Loaded Template[" + tmplId + "] of [" + templateType + "] from [" + tmplPath + "]");
+            //klib.console.info("Loaded Template[" + tmplId + "] of [" + templateType + "] from [" + tmplPath + "]");
           });
         }
         tAjaxRequests.push(axTemplateRequest);
       }
       else {
-        klib.console.error("Template[" + tmplId + "] of [" + templateType + "] NOT defined in <script>.");
+        //klib.console.error("Template[" + tmplId + "] of [" + templateType + "] NOT defined in <script>.");
       }
     }
     else {
       var $tmplId = $("#"+tmplId);
       if (tmplReload) {
-        klib.console.warn("Reload Template[" + tmplId + "] of [" + templateType + "]");
+        //klib.console.warn("Reload Template[" + tmplId + "] of [" + templateType + "]");
         $tmplId.remove();
         tAjaxRequests = klib.loadTemplate(tmplId, tmplPath, templateType, viewContainderId, tAjaxRequests, tmplReload);
       } else if (klib.isBlank(($tmplId.html()))) {
-        klib.console.warn("Template[" + tmplId + "] of [" + templateType + "] script found EMPTY!");
+        //klib.console.warn("Template[" + tmplId + "] of [" + templateType + "] script found EMPTY!");
         var externalPath = "" + $tmplId.attr("path");
         if (!klib.isBlank((externalPath))) {
           templateType = ((($tmplId.attr("type")).ifBlank(templateType)).toLowerCase()).replace(/text\//gi, "");
-          klib.console.info("prepare/remove to re-load Template[" + tmplId + "]  of [" + templateType + "] from external path: [" + externalPath + "]");
+          //klib.console.info("prepare/remove to re-load Template[" + tmplId + "]  of [" + templateType + "] from external path: [" + externalPath + "]");
           $tmplId.remove();
           tAjaxRequests = klib.loadTemplate(tmplId, externalPath, templateType, viewContainderId, tAjaxRequests, tmplReload);
         }
       } else {
-        klib.console.info("Template[" + tmplId + "]  of [" + templateType + "] already found in local.");
+        //klib.console.info("Template[" + tmplId + "]  of [" + templateType + "] already found in local.");
       }
     }
-    klib.console.groupEnd("kTemplateAjaxQue");
+    //klib.console.groupEnd("kTemplateAjaxQue");
 
     return (tAjaxRequests);
   };
@@ -1340,9 +1337,9 @@ var isKHashRouteOn=false;
     templateCollectionId = (templateCollectionId.beginsWith("#") ? "" : "#") + templateCollectionId;
     var retValue = {};
     if (!klib.isElementExist(templateCollectionId)) {
-      klib.console.info(templateCollectionId + " NOT Found! Creating one...");
+      //klib.console.info(templateCollectionId + " NOT Found! Creating one...");
       if (!klib.isElementExist("#kViewTemplateCotainer")) {
-        klib.console.info("#kViewTemplateCotainer NOT Found! Creating one...");
+        //klib.console.info("#kViewTemplateCotainer NOT Found! Creating one...");
         $('body').append("<div id='kViewTemplateCotainer' style='display:none' rel='Template Container'></div>");
       }
       $("#kViewTemplateCotainer").append("<div id='" + (templateCollectionId.substring(1)) + "' style='display:none' rel='Template Collection Container'></div>");
@@ -1357,23 +1354,23 @@ var isKHashRouteOn=false;
         success: function (result) {
           /*$.ajaxSetup({async: true});*/
           $(templateCollectionId).html(result);
-          klib.console.info("Loaded Template Collection [" + templateCollectionId + "] from [" + dataTemplatesCollectionUrl + "]");
+          //klib.console.info("Loaded Template Collection [" + templateCollectionId + "] from [" + dataTemplatesCollectionUrl + "]");
 
           /* Read all script id(s) in collection */
-          klib.console.info("Found following templates in Template Collection.");
+          //klib.console.info("Found following templates in Template Collection.");
           $(templateCollectionId + " script").each(function (index, element) {
             retValue[$(element).attr("id")] = 'script';
           });
-          klib.console.info({o: retValue});
+          //klib.console.info({o: retValue});
         },
         error: function (jqXHR, textStatus, errorThrown) {
           /*$.ajaxSetup({async: true});*/
-          klib.console.error("Failed Loading Template Collection [" + templateCollectionId + "] from [" + dataTemplatesCollectionUrl + "]. [" + textStatus + ":" + errorThrown + "]");
+          //klib.console.error("Failed Loading Template Collection [" + templateCollectionId + "] from [" + dataTemplatesCollectionUrl + "]. [" + textStatus + ":" + errorThrown + "]");
         }
       });
     }
     else {
-      klib.console.info(templateCollectionId + " Found! skip template collection load from " + dataTemplatesCollectionUrl);
+      //klib.console.info(templateCollectionId + " Found! skip template collection load from " + dataTemplatesCollectionUrl);
     }
     return (retValue);
   };
@@ -1502,7 +1499,7 @@ var isKHashRouteOn=false;
           $.i18n.loaded = (typeof $.i18n.loaded == "undefined") ? (!$.isEmptyObject($.i18n.map)) : $.i18n.loaded;
           klib.i18n.loaded = klib.i18n.loaded || $.i18n.loaded;
           if ((lang.length > 1) && (!$.i18n.loaded)) {
-            klib.console.warn("Error Loading Language File [" + lang + "]. Loading default.");
+            //klib.console.warn("Error Loading Language File [" + lang + "]. Loading default.");
             klib.i18n.setLanguage("_", i18nSettings);
           }
           klib.i18n.apply();
@@ -1572,7 +1569,7 @@ var isKHashRouteOn=false;
    * */
   klib.extendBackbone = function () {
     if (window.Backbone) {
-      klib.console.info("Found Backbone. Extending ...");
+      //klib.console.info("Found Backbone. Extending ...");
       // override the Model prototype for CRUD specific URLs.
       _.extend(Backbone.Model.prototype, Backbone.Events, {
 
@@ -1602,13 +1599,13 @@ var isKHashRouteOn=false;
               ajaxURL = ajaxURL.replace(new RegExp(qryParams[0], "g"), ((paramName.indexOf(".") >= 0) ? klib.find(this.toJSON(), paramName) : this.get(paramName)) || "");
             }
           }
-          klib.console.info("Backbone Sync Url: " + ajaxURL);
+          //klib.console.info("Backbone Sync Url: " + ajaxURL);
           return (ajaxURL);
         }
       });
     }
     else {
-      klib.console.warn("Backbone not found. NOT extending...");
+      //klib.console.warn("Backbone not found. NOT extending...");
     }
   };
 
@@ -1631,7 +1628,7 @@ var isKHashRouteOn=false;
       },
       error: function (jqXHR, textStatus, errorThrown) {
         /*$.ajaxSetup({async: true});*/
-        klib.console.error("Failed loading backbone class from [" + (retValue.url) + "]. [" + textStatus + ":" + errorThrown + "]");
+        //klib.console.error("Failed loading backbone class from [" + (retValue.url) + "]. [" + textStatus + ":" + errorThrown + "]");
         if (options.fail) options.fail(retValue.url, jqXHR, textStatus, errorThrown);
       }
     });
@@ -1737,7 +1734,7 @@ var isKHashRouteOn=false;
         },
         error: function (jqXHR, textStatus, errorThrown) {
           /*$.ajaxSetup({async: true});*/
-          klib.console.error("Failed loading data from [" + data + "]. [" + textStatus + ":" + errorThrown + "]");
+          //klib.console.error("Failed loading data from [" + data + "]. [" + textStatus + ":" + errorThrown + "]");
         }
       });
     }
@@ -1748,11 +1745,11 @@ var isKHashRouteOn=false;
       keyFormat = (keyFormat.match(/^[A-Z]/) != null) ? "AbC" : keyFormat;
 
       var dataKeys = klib.keysDotted(data);
-      klib.console.group("fillData");
-      klib.console.info(dataKeys);
+      //klib.console.group("fillData");
+      //klib.console.info(dataKeys);
 
       _.each(dataKeys, function (dataKeyPath) {
-        klib.console.group(">>" + dataKeyPath);
+        //klib.console.group(">>" + dataKeyPath);
         var dataKey = ""+(dataKeyPath.replace(/[\[\]]/g, "_") || "");
         var dataKeyForFormatterFnSpec = dataKeyPath.replace(/\[[0-9]+\]/g, "");
         var isArrayKey = (/\[[0-9]+\]/).test(dataKeyPath);
@@ -1778,7 +1775,7 @@ var isKHashRouteOn=false;
           "isArrayChild": isArrayKey
         };
         klib.trash.push(debugInfo);
-        klib.console.info(debugInfo);
+        //klib.console.info(debugInfo);
         klib.trash.empty();
 
         var elSelector = (fillOptions.selectPattern).replace(/\?/g, dataKey);
@@ -1794,7 +1791,7 @@ var isKHashRouteOn=false;
             fillOptions.formatterOnKeys[dataKeyForFormatterFnSpec] = fillOptions.keysMap[dataKeyForFormatterFnSpec].formatter;
           }
         }
-        klib.console.info(">> " + elSelector + " found: " + $(elSelector, context).length);
+        //klib.console.info(">> " + elSelector + " found: " + $(elSelector, context).length);
         var dataValue = null;
         if ($(elSelector, context).length > 0) {
           dataValue = klib.find(data, dataKeyPath);
@@ -1808,10 +1805,10 @@ var isKHashRouteOn=false;
               dataValue = fillOptions.formatterCommon(dataValue, dataKeyPath, data);
             }
           }
-          klib.console.info({value: dataValue});
+          //klib.console.info({value: dataValue});
         }
         $(elSelector, context).each(function (index, el) {
-          klib.console.info(el);
+          //klib.console.info(el);
           switch ((el.tagName).toUpperCase()) {
             case "INPUT":
               switch ((el.type).toLowerCase()) {
@@ -1861,10 +1858,10 @@ var isKHashRouteOn=false;
           }
         });
 
-        klib.console.groupEnd(">>" + dataKeyPath);
+        //klib.console.groupEnd(">>" + dataKeyPath);
       });
 
-      klib.console.groupEnd("fillData");
+      //klib.console.groupEnd("fillData");
       if (fillOptions.resetElDefaultInContext) klib.resetElementsDefaultValue(context + " :input");
     }
   };
@@ -2141,17 +2138,17 @@ var isKHashRouteOn=false;
     kViewDataModelType = (kViewDataModelType.ifBlank()).toLowerCase();
 
     /* Load Scripts Begins */
-    klib.console.group("kLoadingViewScripts");
+    //klib.console.group("kLoadingViewScripts");
     if (!(useOptions && uOptions.hasOwnProperty('dataScriptsCache'))) /* NOT provided in Render Request */
     { /* Read from view container [data-scripts-cache='{true|false}'] */
       var scriptsCacheInTagData = ("" + $(viewContainderId).data("scriptsCache")).replace(/undefined/, "");
       if (!klib.isBlank(scriptsCacheInTagData)) {
         kRVOptions.dataScriptsCache = scriptsCacheInTagData.toBoolean();
-        klib.console.info("Override [data-scripts-cache] with [data-scripts-cache] option in tag-attribute: " + kRVOptions.dataScriptsCache);
+        //klib.console.info("Override [data-scripts-cache] with [data-scripts-cache] option in tag-attribute: " + kRVOptions.dataScriptsCache);
       }
     }
     else {
-      klib.console.info("Override [data-scripts-cache] with user option [dataScriptsCache]: " + kRVOptions.dataScriptsCache);
+      //klib.console.info("Override [data-scripts-cache] with user option [dataScriptsCache]: " + kRVOptions.dataScriptsCache);
     }
     var vScriptsList = ("" + $(viewContainderId).data("scripts")).ifBlank("{}");
     var vScripts = eval("(" + vScriptsList + ")");
@@ -2160,33 +2157,33 @@ var isKHashRouteOn=false;
       vScripts = kRVOptions.dataScripts;
     }
     if (vScripts && (!$.isEmptyObject(vScripts))) {
-      klib.console.info("External scripts to be loaded [cache:" + (kRVOptions.dataScriptsCache) + "] along with view container [" + viewContainderId + "] => " + JSON.stringify(vScripts));
+      //klib.console.info("External scripts to be loaded [cache:" + (kRVOptions.dataScriptsCache) + "] along with view container [" + viewContainderId + "] => " + JSON.stringify(vScripts));
       var vScriptsNames = _.keys(vScripts);
 
-      klib.console.group("kLoadingScripts");
+      //klib.console.group("kLoadingScripts");
       _.each(vScriptsNames, function (scriptId) {
         kAjaxRequestsQue = klib.loadScript(scriptId, vScripts[scriptId], kRVOptions.dataScriptsCache, kAjaxRequestsQue);
       });
-      klib.console.info("External Scripts Loading Status: " + JSON.stringify(kAjaxRequestsQue));
-      klib.console.groupEnd("kLoadingScripts");
+      //klib.console.info("External Scripts Loading Status: " + JSON.stringify(kAjaxRequestsQue));
+      //klib.console.groupEnd("kLoadingScripts");
     }
     else {
-      klib.console.info("No scripts defined [data-scripts] in view container [" + viewContainderId + "] to load.");
+      //klib.console.info("No scripts defined [data-scripts] in view container [" + viewContainderId + "] to load.");
     }
-    klib.console.groupEnd("kLoadingViewScripts");
+    //klib.console.groupEnd("kLoadingViewScripts");
     /* Load Scripts Ends */
 
     /*Wait till scripts are loaded before proceed*/
     $.when.apply($, kAjaxRequestsQue)
       .then(function () {
-        klib.console.info("External Scripts Loaded.");
+        //klib.console.info("External Scripts Loaded.");
       })
       .fail(function () {
-        klib.console.error("External Scripts Loading Failed! Unexpected!? Check the Script Path/Network.");
+        //klib.console.error("External Scripts Loading Failed! Unexpected!? Check the Script Path/Network.");
       });
 
     /* Load Data */
-    klib.console.group("kDataModel");
+    //klib.console.group("kDataModel");
     var dataModelName = ("" + $(viewContainderId).data("model")).replace(/undefined/, ""), viewDataModelName;
     if (!klib.isBlank(kRVOptions.dataModel)) {
       dataModelName = kRVOptions.dataModel;
@@ -2203,7 +2200,7 @@ var isKHashRouteOn=false;
     var kTemplateModelData = {};
     if (useParamData) {
       kTemplateModelData[viewDataModelName] = kRVOptions.data;
-      klib.console.info("Loaded data model [" + dataModelName + "] from argument");
+      //klib.console.info("Loaded data model [" + dataModelName + "] from argument");
     }
     else {
       if (!(useOptions && uOptions.hasOwnProperty('dataCache'))) /* NOT provided in Render Request */
@@ -2211,11 +2208,11 @@ var isKHashRouteOn=false;
         var dataCacheInTagData = ("" + $(viewContainderId).data("cache")).replace(/undefined/, "");
         if (!klib.isBlank(dataCacheInTagData)) {
           kRVOptions.dataCache = dataCacheInTagData.toBoolean();
-          klib.console.info("Override [data-cache] with [data-cache] option in tag-attribute: " + kRVOptions.dataCache);
+          //klib.console.info("Override [data-cache] with [data-cache] option in tag-attribute: " + kRVOptions.dataCache);
         }
       }
       else {
-        klib.console.info("Override [data-cache] with user option [dataCache]: " + kRVOptions.dataCache);
+        //klib.console.info("Override [data-cache] with user option [dataCache]: " + kRVOptions.dataCache);
       }
       if (klib.isBlank(dataModelUrl)) { /*dataFound = false;*/
         kTemplateModelData[viewDataModelName] = {};
@@ -2232,16 +2229,16 @@ var isKHashRouteOn=false;
         var dataModelUrls = dataModelCollection['urls'];
 
         if (klib.isBlank(dataModelUrls)) {
-          klib.console.warn("Model Data [" + dataModelName + "] or [data-url] or [data-collection] NOT found! Check the arguments or html markup. Rendering with empty data {}.");
+          //klib.console.warn("Model Data [" + dataModelName + "] or [data-url] or [data-collection] NOT found! Check the arguments or html markup. Rendering with empty data {}.");
         }
         else { //Processing data-collection
 
 
           if (!_.isArray(dataModelUrls)) {
-            klib.console.warn("Invalid [data-urls].Check the arguments or html markup. Rendering with empty data {}.");
+            //klib.console.warn("Invalid [data-urls].Check the arguments or html markup. Rendering with empty data {}.");
           }
           else {
-            klib.console.info("Processing data-URLs");
+            //klib.console.info("Processing data-URLs");
             var dataIndexApi = 0, defaultAutoDataNamePrefix = dataModelCollection['nameprefix'] || "data";
             _.each(dataModelUrls, function (dataApi) {
               var defaultApiDataModelName = (defaultAutoDataNamePrefix + dataIndexApi)
@@ -2252,8 +2249,8 @@ var isKHashRouteOn=false;
                 apiDataModelName = _.last(apiDataModelName.split("."), 1);
               }
               apiDataModelName = apiDataModelName.ifBlank(defaultApiDataModelName);
-              klib.console.info('processing data-api for: ' + apiDataModelName);
-              klib.console.log(dataApi);
+              //klib.console.info('processing data-api for: ' + apiDataModelName);
+              //klib.console.log(dataApi);
 
               if (apiDataUrl) {
                 kAjaxRequestsQue.push(
@@ -2280,7 +2277,7 @@ var isKHashRouteOn=false;
                       else {
                         kTemplateModelData[viewDataModelName][apiDataModelName] = targetApiData;
                       }
-                      klib.console.info("Loaded data model [" + apiDataModelName + "] from [" + apiDataUrl + "]");
+                      //klib.console.info("Loaded data model [" + apiDataModelName + "] from [" + apiDataUrl + "]");
 
                       //Call user defined function on api-data success
                       var fnApiDataSuccess = dataApi['success'] || dataApi['onsuccess'] || dataApi['onSuccess'];
@@ -2297,7 +2294,7 @@ var isKHashRouteOn=false;
                       }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
-                      klib.console.warn("Error processing data-api [" + apiDataUrl + "]");
+                      //klib.console.warn("Error processing data-api [" + apiDataUrl + "]");
                       //Call user defined function on api-data URL Error
                       var fnOnApiDataUrlErrorHandle = dataApi['error'] || dataApi['onerror'] || dataApi['onError'];
                       if (!fnOnApiDataUrlErrorHandle) {
@@ -2319,7 +2316,7 @@ var isKHashRouteOn=false;
                 );//End of Ajax Que push
               }
               else {
-                klib.console.error("data-api-url not found. Please check the arguments or html markup. Skipped this data-api request");
+                //klib.console.error("data-api-url not found. Please check the arguments or html markup. Skipped this data-api request");
               }
               dataIndexApi++;
             });
@@ -2333,7 +2330,7 @@ var isKHashRouteOn=false;
           if (typeof eval("(" + localDataModelName + ")") != "undefined") { /*localDataModelObj = eval("("+localDataModelName+")");*/
             eval("(localDataModelObj=" + localDataModelName + ")");
           }
-          klib.console.info("Using LOCAL Data Model: " + localDataModelName);
+          //klib.console.info("Using LOCAL Data Model: " + localDataModelName);
           if (klib.isBlank(kViewDataModelType)) {
             if ((!isLocalDataModel) && (dataModelName.indexOf(".") > 0)) {
               kTemplateModelData[viewDataModelName] = klib.hasKey(localDataModelObj, dataModelName) ? klib.find(localDataModelObj, dataModelName) : localDataModelObj;
@@ -2342,7 +2339,7 @@ var isKHashRouteOn=false;
             }
           }
           else {
-            klib.console.info("Local Data: " + localDataModelName + " not found.");
+            //klib.console.info("Local Data: " + localDataModelName + " not found.");
             /*kViewDataModelType is Backbone with its Class.js on server */
             if ($.isEmptyObject(localDataModelObj) && !$.isEmptyObject(kBackboneModelOption)) {
               var bbClassUrl = kBackboneModelOption['classpath'] || "";
@@ -2352,7 +2349,7 @@ var isKHashRouteOn=false;
                   eval("( localDataModelObj = new " + bbClassLocal + "() )");
                 }
                 else {
-                  klib.console.info("loading Backbone Model Class from: " + (bbClassUrl) + ".");
+                  //klib.console.info("loading Backbone Model Class from: " + (bbClassUrl) + ".");
                   var noop = function () {
                   };
                   var loadBackboneModelClassResult = klib.loadBackboneModelClass(bbClassUrl, {
@@ -2376,7 +2373,7 @@ var isKHashRouteOn=false;
                 kTemplateModelData[viewDataModelName] = localDataModelObj.toJSON();
               }
               else {
-                klib.console.error("Backbone 'classpath' NOT defined. Please check the 'dataModelType' option.");
+                //klib.console.error("Backbone 'classpath' NOT defined. Please check the 'dataModelType' option.");
               }
             }
             else {
@@ -2385,7 +2382,7 @@ var isKHashRouteOn=false;
           }
         }
         else { /*External Data Source*/
-          klib.console.info("Request Data [" + dataModelName + "] [cache:" + (kRVOptions.dataCache) + "] from URL =>" + dataModelUrl);
+          //klib.console.info("Request Data [" + dataModelName + "] [cache:" + (kRVOptions.dataCache) + "] from URL =>" + dataModelUrl);
           kAjaxRequestsQue.push(
             $.ajax({
               url: dataModelUrl,
@@ -2400,7 +2397,7 @@ var isKHashRouteOn=false;
                 else {
                   kTemplateModelData[viewDataModelName] = oResult.hasOwnProperty(dataModelName) ? oResult[dataModelName] : oResult;
                 }
-                klib.console.info("Loaded data model [" + dataModelName + "] from [" + dataModelUrl + "]");
+                //klib.console.info("Loaded data model [" + dataModelName + "] from [" + dataModelUrl + "]");
               },
               error: function (jqXHR, textStatus, errorThrown) {
                 //Call user defined function on Data URL Error
@@ -2417,9 +2414,9 @@ var isKHashRouteOn=false;
         }
       }
     }
-    klib.console.info("End of Data Processing");
-    klib.console.log({o: kTemplateModelData});
-    klib.console.groupEnd("kDataModel");
+    //klib.console.info("End of Data Processing");
+    //klib.console.log({o: kTemplateModelData});
+    //klib.console.groupEnd("kDataModel");
 
     if (dataFound) { /* Load Templates */
       var vTemplate2RenderInTag = ("" + $(viewContainderId).data("template")).replace(/undefined/, "");
@@ -2452,7 +2449,7 @@ var isKHashRouteOn=false;
         }
         vTemplates = eval("(" + xTemplatesList + ")");
       }
-      klib.console.group("kView");
+      //klib.console.group("kView");
 
       var dataTemplatesCollectionUrl = ("" + $(viewContainderId).data("templatesCollectionUrl")).replace(/undefined/, "");
       if (!klib.isBlank(kRVOptions.dataTemplatesCollectionUrl)) {
@@ -2463,25 +2460,25 @@ var isKHashRouteOn=false;
         klib.loadTemplatesCollection(templateCollectionId, dataTemplatesCollectionUrl);
       }
       if (vTemplates && (!$.isEmptyObject(vTemplates))) {
-        klib.console.info("Templates of [" + kTemplateType + "] to be used in view container [" + viewContainderId + "] => " + JSON.stringify(vTemplates));
+        //klib.console.info("Templates of [" + kTemplateType + "] to be used in view container [" + viewContainderId + "] => " + JSON.stringify(vTemplates));
         var vTemplateNames = _.keys(vTemplates);
 
-        klib.console.group("kLoadingTemplates");
+        //klib.console.group("kLoadingTemplates");
 
         /* Template Cache Begins: if false remove old templates */
-        klib.console.group("kLoadingTemplatesCache");
+        //klib.console.group("kLoadingTemplatesCache");
         if (!(useOptions && uOptions.hasOwnProperty('dataTemplatesCache'))) /* NOT provided in Render Request */
         { /* Read from view container [data-templates-cache='{true|false}'] */
           var templatesCacheInTagData = ("" + $(viewContainderId).data("templatesCache")).replace(/undefined/, "");
           if (!klib.isBlank(templatesCacheInTagData)) {
             kRVOptions.dataTemplatesCache = templatesCacheInTagData.toBoolean();
-            klib.console.info("Override [data-templates-cache] with [data-templates-cache] option in tag-attribute: " + kRVOptions.dataTemplatesCache);
+            //klib.console.info("Override [data-templates-cache] with [data-templates-cache] option in tag-attribute: " + kRVOptions.dataTemplatesCache);
           }
         }
         else {
-          klib.console.info("Override [data-templates-cache] with user option [dataTemplatesCache]: " + kRVOptions.dataTemplatesCache);
+          //klib.console.info("Override [data-templates-cache] with user option [dataTemplatesCache]: " + kRVOptions.dataTemplatesCache);
         }
-        klib.console.groupEnd("kLoadingTemplatesCache");
+        //klib.console.groupEnd("kLoadingTemplatesCache");
 
         _.each(vTemplateNames, function (tmplId) {
           kAjaxRequestsQue = klib.loadTemplate(tmplId, vTemplates[tmplId], kTemplateType, viewContainderId, kAjaxRequestsQue, !kRVOptions.dataTemplatesCache);
@@ -2501,21 +2498,21 @@ var isKHashRouteOn=false;
         if (vTemplatesList.indexOf(vTemplate2RenderName) < 0) {
           kAjaxRequestsQue = klib.loadTemplate(vTemplate2RenderName, '', kTemplateType, viewContainderId, kAjaxRequestsQue, !kRVOptions.dataTemplatesCache);
         }
-        klib.console.info("External Data/Templates Loading Status: " + JSON.stringify(kAjaxRequestsQue));
-        klib.console.groupEnd("kLoadingTemplates");
+        //klib.console.info("External Data/Templates Loading Status: " + JSON.stringify(kAjaxRequestsQue));
+        //klib.console.groupEnd("kLoadingTemplates");
 
         /* Load Styles Begins */
-        klib.console.group("kLoadingViewStyles");
+        //klib.console.group("kLoadingViewStyles");
         if (!(useOptions && uOptions.hasOwnProperty('dataStylesCache'))) /* NOT provided in Render Request */
         { /* Read from view container [data-styles-cache='{true|false}'] */
           var stylesCacheInTagData = ("" + $(viewContainderId).data("stylesCache")).replace(/undefined/, "");
           if (!klib.isBlank(stylesCacheInTagData)) {
             kRVOptions.dataStylesCache = stylesCacheInTagData.toBoolean();
-            klib.console.info("Override [data-styles-cache] with [data-styles-cache] option in tag-attribute: " + kRVOptions.dataStylesCache);
+            //klib.console.info("Override [data-styles-cache] with [data-styles-cache] option in tag-attribute: " + kRVOptions.dataStylesCache);
           }
         }
         else {
-          klib.console.info("Override [data-styles-cache] with user option [dataStylesCache]: " + kRVOptions.dataStylesCache);
+          //klib.console.info("Override [data-styles-cache] with user option [dataStylesCache]: " + kRVOptions.dataStylesCache);
         }
         var vStylesList = ("" + $(viewContainderId).data("styles")).ifBlank("{}");
         var vStyles = eval("(" + vStylesList + ")");
@@ -2524,20 +2521,20 @@ var isKHashRouteOn=false;
           vStyles = kRVOptions.dataStyles;
         }
         if (vStyles && (!$.isEmptyObject(vStyles))) {
-          klib.console.info("External styles to be loaded [cache:" + (kRVOptions.dataStylesCache) + "] along with view container [" + viewContainderId + "] => " + JSON.stringify(vStyles));
+          //klib.console.info("External styles to be loaded [cache:" + (kRVOptions.dataStylesCache) + "] along with view container [" + viewContainderId + "] => " + JSON.stringify(vStyles));
           var vStylesNames = _.keys(vStyles);
 
-          klib.console.group("kLoadingStyles");
+          //klib.console.group("kLoadingStyles");
           _.each(vStylesNames, function (styleId) {
             kAjaxRequestsQue = klib.loadStyle(styleId, vStyles[styleId], kRVOptions.dataStylesCache, kAjaxRequestsQue);
           });
-          klib.console.info("External Styles Loading Status: " + JSON.stringify(kAjaxRequestsQue));
-          klib.console.groupEnd("kLoadingStyles");
+          //klib.console.info("External Styles Loading Status: " + JSON.stringify(kAjaxRequestsQue));
+          //klib.console.groupEnd("kLoadingStyles");
         }
         else {
-          klib.console.info("No styles defined [data-styles] in view container [" + viewContainderId + "] to load.");
+          //klib.console.info("No styles defined [data-styles] in view container [" + viewContainderId + "] to load.");
         }
-        klib.console.groupEnd("kLoadingViewStyles");
+        //klib.console.groupEnd("kLoadingViewStyles");
         /* Load Styles Ends */
 
         /*Scripts were loaded here...*/
@@ -2545,8 +2542,8 @@ var isKHashRouteOn=false;
         $.when.apply($, kAjaxRequestsQue)
           .then(function () {
 
-            klib.console.group("kRender[" + kRenderEngine + "*" + kTemplateEngine + "] - klib.renderHistory[" + retValue.id + "]");
-            klib.console.info("Rendering " + viewContainderId + " using master template: " + vTemplate2Render);
+            //klib.console.group("kRender[" + kRenderEngine + "*" + kTemplateEngine + "] - klib.renderHistory[" + retValue.id + "]");
+            //klib.console.info("Rendering " + viewContainderId + " using master template: " + vTemplate2Render);
             $(viewContainderId).html("");
             try {
               retValue.model = kTemplateModelData[viewDataModelName];
@@ -2622,7 +2619,7 @@ var isKHashRouteOn=false;
                 }
                   break;
               }
-              klib.console.info("Render: SUCCESS");
+              //klib.console.info("Render: SUCCESS");
               var rhKeys = _.keys(klib.renderHistory);
               var rhLen = rhKeys.length;
               if (rhLen > klib.renderHistoryMax) {
@@ -2650,7 +2647,7 @@ var isKHashRouteOn=false;
               if (kRVOptions.dataRenderCallback) {
                 _fnCallbackAfterRender = kRVOptions.dataRenderCallback;
               }
-              klib.console.info("Processing callback: " + _fnCallbackAfterRender);
+              //klib.console.info("Processing callback: " + _fnCallbackAfterRender);
               if (_fnCallbackAfterRender) {
                 var fnCallbackAfterRender = _fnCallbackAfterRender;
                 if (_.isString(fnCallbackAfterRender)) {
@@ -2661,13 +2658,13 @@ var isKHashRouteOn=false;
                     fnCallbackAfterRender.call(undefined, retValue);
                     //eval("("+fnCallbackAfterRender+"(retValue))");
                   } else {
-                    klib.console.error("CallbackFunction <" + _fnCallbackAfterRender + " = " + fnCallbackAfterRender + "> is NOT a valid FUNCTION.");
+                    //klib.console.error("CallbackFunction <" + _fnCallbackAfterRender + " = " + fnCallbackAfterRender + "> is NOT a valid FUNCTION.");
                   }
                 } else {
                   if (("" + _fnCallbackAfterRender).beginsWith("klib") && (("" + _fnCallbackAfterRender).endsWith("_renderCallback"))) {
-                    klib.console.warn("Default Route renderCallback function <" + _fnCallbackAfterRender + "> is NOT defined.");
+                    //klib.console.warn("Default Route renderCallback function <" + _fnCallbackAfterRender + "> is NOT defined.");
                   } else {
-                    klib.console.error("CallbackFunction <" + _fnCallbackAfterRender + "> is NOT defined.");
+                    //klib.console.error("CallbackFunction <" + _fnCallbackAfterRender + "> is NOT defined.");
                   }
                 }
               }
@@ -2675,18 +2672,18 @@ var isKHashRouteOn=false;
               $("[rel='kRender'],[data-render],[data-krender]", viewContainderId).kRender();
             }
             catch (e) {
-              klib.console.error("Error Rendering: " + e.message);
+              //klib.console.error("Error Rendering: " + e.message);
             }
-            klib.console.groupEnd("kRender[" + kRenderEngine + "*" + kTemplateEngine + "] - klib.renderHistory[" + retValue.id + "]");
+            //klib.console.groupEnd("kRender[" + kRenderEngine + "*" + kTemplateEngine + "] - klib.renderHistory[" + retValue.id + "]");
           })
           .fail(function () {
-            klib.console.error("External Data/Templates/Styles/Scripts Loading failed! Unexpected!! Check the template Path / Network. Rendering aborted.");
+            //klib.console.error("External Data/Templates/Styles/Scripts Loading failed! Unexpected!! Check the template Path / Network. Rendering aborted.");
           }).done(klib.runOnceOnRender);
       }
       else {
-        klib.console.error("No templates defined [data-templates] in view container [" + viewContainderId + "] to render. Check HTML markup.");
+        //klib.console.error("No templates defined [data-templates] in view container [" + viewContainderId + "] to render. Check HTML markup.");
       }
-      klib.console.groupEnd("kView");
+      //klib.console.groupEnd("kView");
     }
     return (retValue);
   };
@@ -2698,7 +2695,7 @@ var isKHashRouteOn=false;
   klib.routeCurLocHash = function(){
     var curLocHash = klib.getLocHash();
     if (isKHashRouteOn && curLocHash && (!curLocHash.equals(klib.routesOptions.defaultPageRoute)) && !klib.hasAutoRoutes(curLocHash)) {
-      klib.console.log("Route current hash.");
+      //klib.console.log("Route current hash.");
       klib.route(curLocHash);
     }
   };
@@ -2706,7 +2703,7 @@ var isKHashRouteOn=false;
   klib.finallyOnRender = [];
   klib.runOnceOnRenderFunctions = [klib.routeCurLocHash];
   klib.runOnceOnRender = function(){
-    klib.console.info("Render Complete.");
+    //klib.console.info("Render Complete.");
     if ((klib.runOnceOnRenderFunctions && !_.isEmpty(klib.runOnceOnRenderFunctions)) || (klib.finallyOnRender && !_.isEmpty(klib.finallyOnRender)) ) {
       if (!klib.runOnceOnRenderFunctions) klib.runOnceOnRenderFunctions = [];
       if (!_.isArray(klib.runOnceOnRenderFunctions)) {
@@ -2732,7 +2729,7 @@ var isKHashRouteOn=false;
     if (klib.isBlank(viewContainderId)) {
       viewContainderId = "kViewContainer-" + (klib.now()) + "-" + klib.rand(1000, 9999);
       $(obj).attr("id", viewContainderId);
-      klib.console.info("Render NewViewContainerID: " + viewContainderId);
+      //klib.console.info("Render NewViewContainerID: " + viewContainderId);
     }
     if ((opt) && (!$.isEmptyObject(opt))) {
       retValue = klib.render("#" + viewContainderId, opt);
@@ -2785,10 +2782,10 @@ var isKHashRouteOn=false;
   });
 
   klib.initDataValidation = function () {
-    klib.console.log("include validate framework lib (klib-validate.js) to use this feature!");
+    //klib.console.log("include validate framework lib (klib-validate.js) to use this feature!");
   };
   klib.doDataValidation = function () {
-    klib.console.log("include validate framework lib (klib-validate.js) to use this feature!");
+    //klib.console.log("include validate framework lib (klib-validate.js) to use this feature!");
   };
 
   klib.properties = {
@@ -2848,10 +2845,10 @@ var isKHashRouteOn=false;
       } else if (_.isObject(rPatternOptions)) {
         pushRoutePattern(rPatternOptions, overwrite);
       } else {
-        klib.console.error("Invalid RoutePattern Options. Provide Array/Object of RouteOptions");
+        //klib.console.error("Invalid RoutePattern Options. Provide Array/Object of RouteOptions");
       }
     } else {
-      klib.console.error("Empty RoutePattern Options.");
+      //klib.console.error("Empty RoutePattern Options.");
     }
   };
 
@@ -2865,7 +2862,7 @@ var isKHashRouteOn=false;
           if (indexOfNameOrPattern>=0) {
             _.pullAt(klib.routePatterns.routes, indexOfNameOrPattern);
           } else {
-            klib.console.error("Route Pattern Not Found for <"+rNameOrPattern+">");
+            //klib.console.error("Route Pattern Not Found for <"+rNameOrPattern+">");
           }
         }
       };
@@ -2877,7 +2874,7 @@ var isKHashRouteOn=false;
       } else if (_.isString(rNamesOrPatterns)) {
         removeRoutePattern(rNamesOrPatterns);
       } else {
-        klib.console.error("Invalid RoutePattern Name/Pattern. Provide Array/Name of RouteNames/Patterns");
+        //klib.console.error("Invalid RoutePattern Name/Pattern. Provide Array/Name of RouteNames/Patterns");
       }
     }
   };
@@ -2944,7 +2941,7 @@ var isKHashRouteOn=false;
     if (klib.routes[routeName]) {
       klib.routes[routeName]($elRouteBase, routeParams, oTagRouteOptions);
     } else {
-      klib.console.info("Route method <klib.routes."+routeName+"> NOT FOUND. Attempting to route using [data-kroute] options.");
+      //klib.console.info("Route method <klib.routes."+routeName+"> NOT FOUND. Attempting to route using [data-kroute] options.");
 
       var foundRouteTmplExt = (oTagRouteOptions.hasOwnProperty('ext')
       || oTagRouteOptions.hasOwnProperty('tmplext')
@@ -2964,7 +2961,7 @@ var isKHashRouteOn=false;
           dataRenderCallback : defaultRenderCallback
         };
 
-      klib.console.log(renderTarget);
+      //klib.console.log(renderTarget);
       /*Cache Settings*/
       if (oTagRouteOptions.hasOwnProperty("dataCache")) {
         kRenderOptions['dataCache'] = oTagRouteOptions['dataCache'];
@@ -3020,11 +3017,11 @@ var isKHashRouteOn=false;
             if (klib.routesOptions.loadDefaultScript) {
               kRenderOptions.dataScripts['js_routeScript_' + routeDomId + '_0'] = defaultScriptPath;
             } else {
-              klib.console.warn("Script(s) not included. Use <klib.routesOptions.loadDefaultScript = true> to load default script <"+defaultScriptPath+">.");
+              //klib.console.warn("Script(s) not included. Use <klib.routesOptions.loadDefaultScript = true> to load default script <"+defaultScriptPath+">.");
             }
             break;
         }
-        klib.console.log(kRenderOptions['dataScripts']);
+        //klib.console.log(kRenderOptions['dataScripts']);
       }
       /*Data and Params*/
       if (oTagRouteOptions['dataUrl'] || oTagRouteOptions['dataurl']) {
@@ -3063,11 +3060,11 @@ var isKHashRouteOn=false;
       }
       /*before Render function to modify options*/
 
-      klib.console.info("Route Render Options Before preRenderProcess:");
-      klib.console.info(kRenderOptions);
+      //klib.console.info("Route Render Options Before preRenderProcess:");
+      //klib.console.info(kRenderOptions);
       var beforeRenderOptions = {};
       var fnToRunBefore = oTagRouteOptions['before'] || oTagRouteOptions['beforeroute'] || oTagRouteOptions['beforeRoute'] || klib.routesOptions["beforeRoute"];
-      klib.console.info("callBeforeRoute: "+fnToRunBefore);
+      //klib.console.info("callBeforeRoute: "+fnToRunBefore);
       if (fnToRunBefore) {
         if (!_.isFunction(fnToRunBefore) && _.isString(fnToRunBefore)) {
           if (fnToRunBefore.equals(defaultCallBeforeRoute)) { //TODO: why?
@@ -3080,7 +3077,7 @@ var isKHashRouteOn=false;
           beforeRenderOptions = fnToRunBefore.call(undefined, {el:$elRouteBase, target:renderTarget, renderOptions:kRenderOptions, routeOptions:oTagRouteOptions});
           if (_.isObject(beforeRenderOptions)) _.merge(kRenderOptions, beforeRenderOptions);
         } else {
-          klib.console.error("CallBeforeRouteFunction <"+oTagRouteOptions['before']+"> NOT FOUND.");
+          //klib.console.error("CallBeforeRouteFunction <"+oTagRouteOptions['before']+"> NOT FOUND.");
         }
       }
       if (defaultCallBeforeRoute) {
@@ -3091,8 +3088,8 @@ var isKHashRouteOn=false;
         }
       }
 
-      klib.console.info("Route Render Options After preRenderProcess:");
-      klib.console.info(kRenderOptions);
+      //klib.console.info("Route Render Options After preRenderProcess:");
+      //klib.console.info(kRenderOptions);
       /*Ready to kRender*/
       if ((!kRenderOptions.hasOwnProperty("render") || (kRenderOptions['render'])) &&
         (!oTagRouteOptions.hasOwnProperty("render") || (oTagRouteOptions['render']))) {
@@ -3132,9 +3129,9 @@ var isKHashRouteOn=false;
       var elWithRoute = $("[data-kroute][href='"+elRouteBase+"']");
       foundRouteElBase = !_.isEmpty(elWithRoute);
       if (!foundRouteElBase) {
-        klib.console.warn("Route source element NOT FOUND for route <"+elRouteBase+">");
+        //klib.console.warn("Route source element NOT FOUND for route <"+elRouteBase+">");
         if (klib.routesOptions.usePatterns) {
-          klib.console.warn("Searching RoutePattern.");
+          //klib.console.warn("Searching RoutePattern.");
           var rPatternRouteOptions;
           var indexOfNameOrPattern = _.findIndex(klib.routePatterns.routes, function(opt){
             var matchFound=false;
@@ -3148,14 +3145,14 @@ var isKHashRouteOn=false;
           });
 
           if (indexOfNameOrPattern<0) {
-            klib.console.warn("Pattern not found.");
-            klib.console.info(klib.routePatterns.routes);
+            //klib.console.warn("Pattern not found.");
+            //klib.console.info(klib.routePatterns.routes);
           } else {
-            klib.console.info(rPatternRouteOptions);
+            //klib.console.info(rPatternRouteOptions);
             klib.routeRender(undefined, rPatternRouteOptions);
           }
         } else {
-          klib.console.warn("Pattern match Disabled.");
+          //klib.console.warn("Pattern match Disabled.");
         }
       } else {
         elRouteBase = elWithRoute.get(0);
@@ -3164,11 +3161,11 @@ var isKHashRouteOn=false;
 
     if (!foundRouteElBase) {
       if (routeOptions['forceroute'] || routeOptions['forceRoute']) {
-        klib.console.warn("Attempt dynamic route.");
+        //klib.console.warn("Attempt dynamic route.");
         foundRouteElBase = true;
         elRouteBase = $("<a href='"+elRouteBase+"'></a>").get(0);
       } else {
-        klib.console.warn("Exit Route.");
+        //klib.console.warn("Exit Route.");
         return; //exit;
       }
     }
@@ -3184,7 +3181,7 @@ var isKHashRouteOn=false;
       routeInitScope = routeInitOptions["context"] || routeInitOptions["scope"] || "";
     }
     if (routeInitOptions) {
-      klib.console.info("Init routesOptions");
+      //klib.console.info("Init routesOptions");
       _.merge(klib.routesOptions, routeInitOptions);
 
       if (!isKHashRouteOn && klib.routesOptions.useHashRoute) klib._initWindowOnHashChange();
@@ -3196,7 +3193,7 @@ var isKHashRouteOn=false;
       }
     }
 
-    klib.console.info("Init kRoutes. Scan for [data-kroute] in context: <"+(routeInitScope||"body")+">");
+    //klib.console.info("Init kRoutes. Scan for [data-kroute] in context: <"+(routeInitScope||"body")+">");
     $(routeInitScope||"body").find("[data-kroute]").each(function(index, el){
 
       if (!klib.isBlank((($(el).attr("href") || "")+"#").split("#")[1])) {
@@ -3237,10 +3234,10 @@ var isKHashRouteOn=false;
     klib.initKeyTracking();
 
     /*Auto Render*/
-    klib.console.info("Find and Render [rel='kRender'] or [data-render] or ,[data-krender]");
+    //klib.console.info("Find and Render [rel='kRender'] or [data-render] or ,[data-krender]");
     $("[rel='kRender'],[data-render],[data-krender]").kRender();
   });
 
 })(this);
 
-klib.console.info("klib loaded.");
+//klib.console.info("klib loaded.");

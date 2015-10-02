@@ -346,7 +346,7 @@ klib.initDataValidation = function(context){
   var $context = $(context);
   var elSelector = $context.data("validateElFilter") || "";
   var commonValidateRules = splitValidateEvents(klib.toJSON($context.data("validateCommon")||"{}"));
-  klib.console.log(_.keys(commonValidateRules));
+  //klib.console.log(_.keys(commonValidateRules));
 
   var addRule2El, addRule2ElDir, overrideOfflineRule2El, elOfflineRule, commonRule2El;
   var offlineValidationKey = $context.data("offlineValidationStoreKey")||"";
@@ -367,7 +367,7 @@ klib.initDataValidation = function(context){
       //$(el).data("validate", elValidateRuleSpec);
     }
     elValidateRules = splitValidateEvents(klib.toJSON(elValidateRuleSpec));
-    klib.console.log(elValidateRuleSpec);
+    //klib.console.log(elValidateRuleSpec);
 
     /* Apply common events' rule to each element */
     _.each( _.keys(commonValidateRules), function(commonValidateOnEvent){
@@ -403,7 +403,7 @@ klib.initDataValidation = function(context){
 
     _.each(_.keys(elValidateRules), function(validateOnEvent){
       var jqEventName = ((validateOnEvent.substring(2,3)).toLowerCase())+(validateOnEvent.substring(3));
-      klib.console.log("settingup event on["+jqEventName+"]...");
+      //klib.console.log("settingup event on["+jqEventName+"]...");
 
       //Convert element rules to array
       if (!_.isArray(elValidateRules[validateOnEvent])){

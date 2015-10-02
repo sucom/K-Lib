@@ -6,7 +6,7 @@ K-Lib is a javascript library to speed up the web application development.
 K-Lib's "render" uses declarative paradigm that makes it easier to structure your application.
 
 ##Flexible
-K-Lib is built on libraries you already know and love like jQuery and underscore.
+K-Lib is built on libraries you already know and love like jQuery and lodash.
 
 ##Simplicity
 K-Lib's "render" method takes few input data and renders what to display by doing all the magic behind the scene. You don't have to worry about different Template's rendering code or even ajax calls.
