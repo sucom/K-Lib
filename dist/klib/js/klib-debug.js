@@ -1,8 +1,7 @@
+/** @license K-Lib Validate | (c) Kumararaja <sucom.kumar@gmail.com> | License (MIT) */
 /* ===========================================================================
  * K-Lib is the collection of javascript functions which simplifies
  * the interfaces for commonly-used methods, and makes the coding simple
- *
- * Author: Kumararaja <sucom.kumar@gmail.com>
  *
  * Dependency: (hard)
  * 1. jQuery: http://jquery.com/
@@ -11,8 +10,6 @@
  * Optional
  * {backbone}     : http://backbonejs.org/
  * {handlebars}   : http://handlebarsjs.com/ || https://github.com/wycats/handlebars.js/
- * {mustache}     : http://mustache.github.io/ || https://github.com/janl/mustache.js
- * {hogan}        : http://twitter.github.io/hogan.js/ || https://github.com/twitter/hogan.js
  *
  * {i18n}         : https://code.google.com/p/jquery-i18n-properties/
  *
@@ -1264,22 +1261,27 @@ var isKHashRouteOn=false;
   /* Load external jquery-tmpl content as jquery-tmpl script */
   klib.loadTemplate = function (tmplId, tmplPath, templateType, viewContainderId, tAjaxRequests, tmplReload) {
     tmplId = tmplId.replace(/#/, "");
-    tmplPath = tmplPath.ifBlank("inline");
+    tmplPath = (tmplPath.ifBlank("inline")).trim();
     templateType = templateType || "x-template";
     viewContainderId = viewContainderId || "#DummyInlineTemplateContainer";
     tAjaxRequests = tAjaxRequests || [];
     //klib.console.group("kTemplateAjaxQue");
-    if (!klib.isElementExist("#" + tmplId)) {
-      //klib.console.info("Template[" + tmplId + "] of [" + templateType + "] NOT found. loading from [" + tmplPath + "]");
-      if (tmplPath.equalsIgnoreCase("inline")) {
-        var inlineTemplate = $(viewContainderId).html();
-        if (klib.isBlank(inlineTemplate)) {
-          //klib.console.error("Template[" + tmplId + "] of [" + templateType + "] NOT defined inline.");
+    if (!klib.isElementExist("#"+tmplId)) {
+      //klib.console.info("Template[" + tmplId + "] of [" + templateType + "] NOT found. Source [" + tmplPath + "]");
+      if ((tmplPath.equalsIgnoreCase("inline") || tmplPath.beginsWith("#"))) { /* load from viewTargetContainer or local container ID given in tmplPath */
+        var localTemplateSrcContainerId = tmplPath.equalsIgnoreCase("inline")? viewContainderId : tmplPath;
+        var $localTemplateSrcContainer = $(localTemplateSrcContainerId);
+        var inlineTemplateHTML = $localTemplateSrcContainer.html();
+        if (klib.isBlank(inlineTemplateHTML)) {
+          //klib.console.error("Template[" + tmplId + "] of [" + templateType + "] NOT defined inline in ["+localTemplateSrcContainerId+"].");
         }
         else {
-          klib.addTemplateScript(tmplId, inlineTemplate, templateType);
-          $(viewContainderId).html("");
+          klib.addTemplateScript(tmplId, inlineTemplateHTML, templateType);
+          if (tmplPath.equalsIgnoreCase("inline")) $localTemplateSrcContainer.html("");
         }
+      }
+      else if (tmplPath.equalsIgnoreCase("none")) {
+        //klib.console.warn("Template[" + tmplId + "] of [" + templateType + "] defined as NONE. Ignoring template.");
       }
       else if (!tmplPath.equalsIgnoreCase("script")) { /* load from templdate-URL */
         var axTemplateRequest;
@@ -1304,8 +1306,7 @@ var isKHashRouteOn=false;
           });
         }
         tAjaxRequests.push(axTemplateRequest);
-      }
-      else {
+      } else {
         //klib.console.error("Template[" + tmplId + "] of [" + templateType + "] NOT defined in <script>.");
       }
     }
@@ -2692,11 +2693,21 @@ var isKHashRouteOn=false;
     var elSelector = "[data-kroute-default]"+(routeHash? "[href"+(operator?operator:"")+"='"+routeHash+"']" : "");
     return ($(elSelector).length > 0);
   };
+  klib.routeCurLocHashAttemptDelaySec = 3;
+  klib.routeCurLocHashAttempt=0;
   klib.routeCurLocHash = function(){
     var curLocHash = klib.getLocHash();
     if (isKHashRouteOn && curLocHash && (!curLocHash.equals(klib.routesOptions.defaultPageRoute)) && !klib.hasAutoRoutes(curLocHash)) {
-      //klib.console.log("Route current hash.");
-      klib.route(curLocHash);
+      //klib.console.info("Route current url-hash.");
+      if (!klib.route(curLocHash)) {
+        //klib.console.warn("Current url-hash-route <"+curLocHash+"> FAILED and will try after "+klib.routeCurLocHashAttemptDelaySec+"sec.");
+        if (klib.routeCurLocHashAttempt < 5) {
+          klib.routeCurLocHashAttempt++;
+          setTimeout(klib.routeCurLocHash, (klib.routeCurLocHashAttemptDelaySec*1000));
+        } else {
+          //klib.console.error("5 attempts to route current url-hash failed. Aborting further attempts.");
+        }
+      }
     }
   };
 
@@ -2793,8 +2804,6 @@ var isKHashRouteOn=false;
   };
 
   /* kRoute
-   * klib.routesOptions.loadDefaultScript
-   * klib.routesOptions.defaultRouteTargetContainerPrefix
    * */
   klib.routes = {};
   klib.routesOptions = {
@@ -2804,7 +2813,8 @@ var isKHashRouteOn=false;
     , beforeRoute : ""
     , defaultTemplateExt : ".html"
     , loadDefaultScript:true
-    , defaultRouteTargetContainerPrefix: "#routeContainer_"
+    , defaultRouteTargetContainerIdPrefix  : "routeContainer_"
+    , defaultRouteTemplateContainerIdPrefix: "template_"
   };
 
   klib.routePatterns = {
@@ -2888,7 +2898,13 @@ var isKHashRouteOn=false;
   };
 
   klib.routeContainerId = function(hashRoute){
-    return (klib.routesOptions.defaultRouteTargetContainerPrefix+klib.routeName(hashRoute));
+    var routeTargetContainerPrefix = ((klib.routesOptions.defaultRouteTargetContainerIdPrefix).trimLeft("#"));
+    return (routeTargetContainerPrefix+klib.routeName(hashRoute));
+  };
+
+  klib.routeTemplateId = function(hashRoute){
+    var routeTargetContainerPrefix = ((klib.routesOptions.defaultRouteTemplateContainerIdPrefix).trimLeft("#"));
+    return (routeTargetContainerPrefix+klib.routeName(hashRoute));
   };
 
   /*
@@ -2947,10 +2963,8 @@ var isKHashRouteOn=false;
       || oTagRouteOptions.hasOwnProperty('tmplext')
       || oTagRouteOptions.hasOwnProperty('tmplExt'));
 
-      var routeDomId        = routeNameWithPath.replace(/[^a-z0-9_]/gi,'')
-        , defaultRouteTarget= klib.routeContainerId(routeNameWithPath)
-        , foundRenderTarget = oTagRouteOptions['target'] && klib.isElementExist(oTagRouteOptions['target'])
-        , renderTarget      = oTagRouteOptions['target'] || defaultRouteTarget
+      var foundRenderTarget = oTagRouteOptions['target'] && klib.isElementExist(oTagRouteOptions['target'])
+        , renderTarget      = oTagRouteOptions['target'] || ("#"+klib.routeContainerId(routeName))
         , tmplExt           = (foundRouteTmplExt)? (oTagRouteOptions['ext'] || oTagRouteOptions['tmplext'] || oTagRouteOptions['tmplExt']) : (klib.routesOptions["defaultTemplateExt"]||"")
         , tmplEngine        = oTagRouteOptions['tmplengine'] || oTagRouteOptions['tmplEngine'] || ""
         , defaultTmplPath   = (routeNameWithPath+tmplExt+"?"+routeParams).trimRight("\\?")
@@ -2974,25 +2988,41 @@ var isKHashRouteOn=false;
       }
 
       /*Templates*/
+      kRenderOptions['dataTemplates'] = {};
+      var tmplID= "__kRouteTemplate_" + routeName;
       if (!oTagRouteOptions.hasOwnProperty("templates") || (oTagRouteOptions['templates'])) {
-        kRenderOptions['dataTemplates'] = {};
+        var oTagRouteOptionsTemplates = oTagRouteOptions['templates'];
+        var routeTemplateContainerID = "#"+klib.routeTemplateId(routeName);
         switch(true) {
-          case (_.isString(oTagRouteOptions['templates'])) :
-            kRenderOptions.dataTemplates['htm_tmpl_' + routeDomId + '_0'] = (_.indexOf(oTagRouteOptions['templates'], '.')>=0)? defaultTmplPath : oTagRouteOptions['templates'];
-            break;
-          case (_.isArray(oTagRouteOptions['templates'])) :
-            if (_.indexOf(oTagRouteOptions['templates'], '.')>=0) { //Include default template
-              kRenderOptions.dataTemplates['htm_tmpl_' + routeDomId + '_0'] = defaultTmplPath;
-              _.pull(oTagRouteOptions['templates'], '.');
+          case (_.isString(oTagRouteOptionsTemplates)) :
+            var tmplPath = oTagRouteOptionsTemplates.trim();
+            if ((tmplPath).equalsIgnoreCase('.')) {
+              tmplPath = defaultTmplPath;
+            } else if ((tmplPath).equalsIgnoreCase('#')) {
+              tmplPath = routeTemplateContainerID;
             }
-            _.each(oTagRouteOptions['templates'], function(scriptUrl, sIndex){
-              kRenderOptions.dataTemplates['htm_tmpl_' + routeDomId + '_'+(sIndex+1)] = scriptUrl;
+            kRenderOptions.dataTemplates[tmplID] = tmplPath.ifBlank("none");
+            break;
+          case (_.isArray(oTagRouteOptionsTemplates)) :
+            if (_.indexOf(oTagRouteOptionsTemplates, '.')>=0) { //Include default path-template (external)
+              kRenderOptions.dataTemplates[tmplID+"_dot"] = defaultTmplPath;
+              _.pull(oTagRouteOptionsTemplates, '.');
+            }
+            if (_.indexOf(oTagRouteOptionsTemplates, '#')>=0) { //Include route hash-template (internal)
+              kRenderOptions.dataTemplates[tmplID+"_hash"] = routeTemplateContainerID;
+              _.pull(oTagRouteOptionsTemplates, '#');
+            }
+            _.each(oTagRouteOptionsTemplates, function(templateUrl, sIndex){
+              kRenderOptions.dataTemplates[tmplID + '_'+(sIndex+1)] = templateUrl.ifBlank("none");
             });
             break;
           default:
-            kRenderOptions.dataTemplates['htm_tmpl_' + routeDomId + '_0'] = defaultTmplPath;
+            kRenderOptions.dataTemplates[tmplID] = defaultTmplPath;
             break;
         }
+      } else {
+        //klib.console.warn("Route without template");
+        kRenderOptions.dataTemplates[tmplID] = "none";
       }
       if (tmplEngine) {
         kRenderOptions['dataTemplateEngine'] = tmplEngine;
@@ -3000,22 +3030,23 @@ var isKHashRouteOn=false;
       /*Scripts*/
       if (!oTagRouteOptions.hasOwnProperty("scripts") || (oTagRouteOptions['scripts'])) {
         kRenderOptions['dataScripts'] = {};
+        var scriptID = "__kRouteScript_" + routeName;
         switch(true) {
           case (_.isString(oTagRouteOptions['scripts'])) :
-            kRenderOptions.dataScripts['js_routeScript_' + routeDomId + '_0'] = (_.indexOf(oTagRouteOptions['scripts'], '.')>=0)? defaultScriptPath : oTagRouteOptions['scripts'];
+            kRenderOptions.dataScripts[scriptID] = (_.indexOf(oTagRouteOptions['scripts'], '.')>=0)? defaultScriptPath : oTagRouteOptions['scripts'];
             break;
           case (_.isArray(oTagRouteOptions['scripts'])) :
             if (_.indexOf(oTagRouteOptions['scripts'], '.')>=0) { //Include default script
-              kRenderOptions.dataScripts['js_routeScript_' + routeDomId + '_0'] = defaultScriptPath;
+              kRenderOptions.dataScripts[scriptID] = defaultScriptPath;
               _.pull(oTagRouteOptions['scripts'], '.');
             }
             _.each(oTagRouteOptions['scripts'], function(scriptUrl, sIndex){
-              kRenderOptions.dataScripts['js_routeScript_' + routeDomId + '_'+(sIndex+1)] = scriptUrl;
+              kRenderOptions.dataScripts[scriptID + '_'+(sIndex+1)] = scriptUrl;
             });
             break;
           default:
             if (klib.routesOptions.loadDefaultScript) {
-              kRenderOptions.dataScripts['js_routeScript_' + routeDomId + '_0'] = defaultScriptPath;
+              kRenderOptions.dataScripts[scriptID] = defaultScriptPath;
             } else {
               //klib.console.warn("Script(s) not included. Use <klib.routesOptions.loadDefaultScript = true> to load default script <"+defaultScriptPath+">.");
             }
@@ -3096,6 +3127,8 @@ var isKHashRouteOn=false;
         klib.render(renderTarget, kRenderOptions);
       }
     }//End of Route
+
+    return true;
   };
 
   /*
@@ -3119,7 +3152,7 @@ var isKHashRouteOn=false;
   klib.route = function(elRouteBase, routeOptions){
     //klib.debugger.on();
     if (_.isString(elRouteBase) && klib.isBlank((""+elRouteBase).trim("#")) ) {
-      return; //BlankHash
+      return false; //BlankHash
     }
 
     var foundRouteElBase = !_.isString(elRouteBase);
@@ -3131,7 +3164,7 @@ var isKHashRouteOn=false;
       if (!foundRouteElBase) {
         //klib.console.warn("Route source element NOT FOUND for route <"+elRouteBase+">");
         if (klib.routesOptions.usePatterns) {
-          //klib.console.warn("Searching RoutePattern.");
+          //klib.console.info("Searching RoutePattern.");
           var rPatternRouteOptions;
           var indexOfNameOrPattern = _.findIndex(klib.routePatterns.routes, function(opt){
             var matchFound=false;
@@ -3166,12 +3199,12 @@ var isKHashRouteOn=false;
         elRouteBase = $("<a href='"+elRouteBase+"'></a>").get(0);
       } else {
         //klib.console.warn("Exit Route.");
-        return; //exit;
+        return false; //exit;
       }
     }
     //klib.debugger.off();
     if (foundRouteElBase){
-      klib.routeRender(elRouteBase, routeOptions);
+      return klib.routeRender(elRouteBase, routeOptions);
     }// if foundRouteElBase
   };
 
