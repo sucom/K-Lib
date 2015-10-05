@@ -2084,15 +2084,13 @@ var isKHashRouteOn=false;
    klib.render("#containerID", uOption);
    */
   klib.render = function (viewContainderId, uOptions) {
+
     var retValue = {id: "", view: {}, model: {}, cron: "", elDataAttr:{}, iOptions:uOptions};
     var kAjaxRequestsQue = [];
     var foundViewContainer = klib.isElementExist(viewContainderId);
-    var $viewContainderId;
-
     if (foundViewContainer){
-      $viewContainderId = $(viewContainderId);
-      retValue.elDataAttr = $viewContainderId.data();
-    };
+      retValue.elDataAttr = $(viewContainderId).data();
+    }
 
     //key: RenderEngine
     var kDefaultTemplateConfig = {
@@ -2149,19 +2147,21 @@ var isKHashRouteOn=false;
       for (var key in uOptions) {
         kRVOptions[key] = uOptions[key];
         if (saveOptions && (!(key === "data" || key === "saveOptions"))) {
-          $viewContainderId.data((""+( ("" + (_.at(""+key,4)||"") ).toLowerCase() )+key.slice(5)), klib.toStr(uOptions[key]));
+          $(viewContainderId).data((""+( ("" + (_.at(""+key,4)||"") ).toLowerCase() )+key.slice(5)), klib.toStr(uOptions[key]));
         }
       }
     }
+
+
     /*Render Id*/
-    var kRenderId = ("" + $viewContainderId.data("renderId")).replace(/undefined/, "");
+    var kRenderId = ("" + $(viewContainderId).data("renderId")).replace(/undefined/, "");
     if (!klib.isBlank(kRVOptions.dataRenderId)) {
       kRenderId = kRVOptions.dataRenderId;
     }
     retValue.id = (kRenderId.ifBlank(("kRender" + (klib.now()) + (klib.rand(1000, 9999)))));
 
     /* Render Engine */
-    var kRenderEngine = ("" + $viewContainderId.data("renderEngine")).replace(/undefined/, "");
+    var kRenderEngine = ("" + $(viewContainderId).data("renderEngine")).replace(/undefined/, "");
     if (!klib.isBlank(kRVOptions.dataRenderEngine)) {
       kRenderEngine = kRVOptions.dataRenderEngine;
     }
@@ -2173,7 +2173,7 @@ var isKHashRouteOn=false;
     }
     var kTemplateType = kDefaultTemplateConfig[kRenderEngineKey].template;
 
-    var kTemplateEngine = ("" + $viewContainderId.data("templateEngine")).replace(/undefined/, "");
+    var kTemplateEngine = ("" + $(viewContainderId).data("templateEngine")).replace(/undefined/, "");
     if (!klib.isBlank(kRVOptions.dataTemplateEngine)) {
       kTemplateEngine = kRVOptions.dataTemplateEngine;
     }
@@ -2197,7 +2197,7 @@ var isKHashRouteOn=false;
         break;
     }
     var kBackboneModelOption = {};
-    var kViewDataModelType = ("" + $viewContainderId.data("modelType")).replace(/undefined/, "");
+    var kViewDataModelType = ("" + $(viewContainderId).data("modelType")).replace(/undefined/, "");
     if (!klib.isBlank(kRVOptions.dataModelType)) {
       kViewDataModelType = kRVOptions.dataModelType;
     }
@@ -2213,7 +2213,7 @@ var isKHashRouteOn=false;
     klib.console.group("kLoadingViewScripts");
     if (!(useOptions && uOptions.hasOwnProperty('dataScriptsCache'))) /* NOT provided in Render Request */
     { /* Read from view container [data-scripts-cache='{true|false}'] */
-      var scriptsCacheInTagData = ("" + $viewContainderId.data("scriptsCache")).replace(/undefined/, "");
+      var scriptsCacheInTagData = ("" + $(viewContainderId).data("scriptsCache")).replace(/undefined/, "");
       if (!klib.isBlank(scriptsCacheInTagData)) {
         kRVOptions.dataScriptsCache = scriptsCacheInTagData.toBoolean();
         klib.console.info("Override [data-scripts-cache] with [data-scripts-cache] option in tag-attribute: " + kRVOptions.dataScriptsCache);
@@ -2223,7 +2223,7 @@ var isKHashRouteOn=false;
       klib.console.info("Override [data-scripts-cache] with user option [dataScriptsCache]: " + kRVOptions.dataScriptsCache);
     }
 
-    var vScriptsList = (""+ $viewContainderId.data("scripts")).replace(/undefined/, "");
+    var vScriptsList = (""+ $(viewContainderId).data("scripts")).replace(/undefined/, "");
     if (vScriptsList && klib.isBlank((vScriptsList || "").replace(/[^:'\"]/g,''))){
       vScriptsList = "'"+ ((vScriptsList).split(",").join("','")) + "'"
     }
@@ -2281,11 +2281,11 @@ var isKHashRouteOn=false;
 
     /* Load Data */
     klib.console.group("kDataModel");
-    var dataModelName = ("" + $viewContainderId.data("model")).replace(/undefined/, ""), viewDataModelName;
+    var dataModelName = ("" + $(viewContainderId).data("model")).replace(/undefined/, ""), viewDataModelName;
     if (!klib.isBlank(kRVOptions.dataModel)) {
       dataModelName = kRVOptions.dataModel;
     }
-    var dataModelUrl = ("" + $viewContainderId.data("url")).replace(/undefined/, ""); //from HTML
+    var dataModelUrl = ("" + $(viewContainderId).data("url")).replace(/undefined/, ""); //from HTML
     if (!klib.isBlank(kRVOptions.dataUrl)) {
       dataModelUrl = kRVOptions.dataUrl;
     }
@@ -2302,7 +2302,7 @@ var isKHashRouteOn=false;
     else {
       if (!(useOptions && uOptions.hasOwnProperty('dataCache'))) /* NOT provided in Render Request */
       { /* Read from view container [data-cache='{true|false}'] */
-        var dataCacheInTagData = ("" + $viewContainderId.data("cache")).replace(/undefined/, "");
+        var dataCacheInTagData = ("" + $(viewContainderId).data("cache")).replace(/undefined/, "");
         if (!klib.isBlank(dataCacheInTagData)) {
           kRVOptions.dataCache = dataCacheInTagData.toBoolean();
           klib.console.info("Override [data-cache] with [data-cache] option in tag-attribute: " + kRVOptions.dataCache);
@@ -2315,7 +2315,7 @@ var isKHashRouteOn=false;
         kTemplateModelData[viewDataModelName] = {};
 
         //Check dataCollection
-        var dataModelCollection = ("" + $viewContainderId.data("collection")).replace(/undefined/, ""); //from HTML
+        var dataModelCollection = ("" + $(viewContainderId).data("collection")).replace(/undefined/, ""); //from HTML
         if (dataModelCollection) dataModelCollection = klib.toJSON(dataModelCollection); //convert to json if found
         if (!klib.isBlank(kRVOptions.dataCollection)) //override with javascript
         {
@@ -2498,7 +2498,7 @@ var isKHashRouteOn=false;
               },
               error: function (jqXHR, textStatus, errorThrown) {
                 //Call user defined function on Data URL Error
-                var fnOnDataUrlErrorHandle = ("" + $viewContainderId.data("urlErrorHandle")).replace(/undefined/, "");
+                var fnOnDataUrlErrorHandle = ("" + $(viewContainderId).data("urlErrorHandle")).replace(/undefined/, "");
                 if (!klib.isBlank(kRVOptions.dataUrlErrorHandle)) {
                   fnOnDataUrlErrorHandle = "" + kRVOptions.dataUrlErrorHandle;
                 }
@@ -2517,8 +2517,8 @@ var isKHashRouteOn=false;
 
     if (dataFound) { /* Load Templates */
 
-      var vTemplate2RenderInTag = ("" + $viewContainderId.data("template")).replace(/undefined/, "");
-      var vTemplatesList = (""+ $viewContainderId.data("templates")).replace(/undefined/, "");
+      var vTemplate2RenderInTag = ("" + $(viewContainderId).data("template")).replace(/undefined/, "");
+      var vTemplatesList = (""+ $(viewContainderId).data("templates")).replace(/undefined/, "");
       if (vTemplatesList && klib.isBlank((vTemplatesList || "").replace(/[^:'\"]/g,''))){
         vTemplatesList = "'"+ ((vTemplatesList).split(",").join("','")) + "'"
       }
@@ -2606,7 +2606,7 @@ var isKHashRouteOn=false;
 
       klib.console.group("kView");
 
-      var dataTemplatesCollectionUrl = ("" + $viewContainderId.data("templatesCollectionUrl")).replace(/undefined/, "");
+      var dataTemplatesCollectionUrl = ("" + $(viewContainderId).data("templatesCollectionUrl")).replace(/undefined/, "");
       if (!klib.isBlank(kRVOptions.dataTemplatesCollectionUrl)) {
         dataTemplatesCollectionUrl = kRVOptions.dataTemplatesCollectionUrl;
       }
@@ -2624,7 +2624,7 @@ var isKHashRouteOn=false;
         klib.console.group("kLoadingTemplatesCache");
         if (!(useOptions && uOptions.hasOwnProperty('dataTemplatesCache'))) /* NOT provided in Render Request */
         { /* Read from view container [data-templates-cache='{true|false}'] */
-          var templatesCacheInTagData = ("" + $viewContainderId.data("templatesCache")).replace(/undefined/, "");
+          var templatesCacheInTagData = ("" + $(viewContainderId).data("templatesCache")).replace(/undefined/, "");
           if (!klib.isBlank(templatesCacheInTagData)) {
             kRVOptions.dataTemplatesCache = templatesCacheInTagData.toBoolean();
             klib.console.info("Override [data-templates-cache] with [data-templates-cache] option in tag-attribute: " + kRVOptions.dataTemplatesCache);
@@ -2680,7 +2680,7 @@ var isKHashRouteOn=false;
         klib.console.group("kLoadingViewStyles");
         if (!(useOptions && uOptions.hasOwnProperty('dataStylesCache'))) /* NOT provided in Render Request */
         { /* Read from view container [data-styles-cache='{true|false}'] */
-          var stylesCacheInTagData = ("" + $viewContainderId.data("stylesCache")).replace(/undefined/, "");
+          var stylesCacheInTagData = ("" + $(viewContainderId).data("stylesCache")).replace(/undefined/, "");
           if (!klib.isBlank(stylesCacheInTagData)) {
             kRVOptions.dataStylesCache = stylesCacheInTagData.toBoolean();
             klib.console.info("Override [data-styles-cache] with [data-styles-cache] option in tag-attribute: " + kRVOptions.dataStylesCache);
@@ -2690,7 +2690,7 @@ var isKHashRouteOn=false;
           klib.console.info("Override [data-styles-cache] with user option [dataStylesCache]: " + kRVOptions.dataStylesCache);
         }
 
-        var vStylesList = (""+ $viewContainderId.data("styles")).replace(/undefined/, "");
+        var vStylesList = (""+ $(viewContainderId).data("styles")).replace(/undefined/, "");
         if (vStylesList && klib.isBlank((vStylesList || "").replace(/[^:'\"]/g,''))){
           vStylesList = "'"+ ((vStylesList).split(",").join("','")) + "'"
         }
@@ -2740,7 +2740,7 @@ var isKHashRouteOn=false;
 
             klib.console.group("kRender[" + kRenderEngine + "*" + kTemplateEngine + "] - klib.renderHistory[" + retValue.id + "]");
             klib.console.info("Rendering " + viewContainderId + " using master template: " + vTemplate2RenderID);
-            $viewContainderId.html("");
+            $(viewContainderId).html("");
             try {
               retValue.model = kTemplateModelData[viewDataModelName];
               var kViewModel = kTemplateModelData[viewDataModelName], compiledTemplate;
@@ -2811,7 +2811,7 @@ var isKHashRouteOn=false;
 
                 default : /*others*/
                 { retValue.view = compiledTemplate;
-                  $viewContainderId.html(retValue.view);
+                  $(viewContainderId).html(retValue.view);
                 }
                   break;
               }
@@ -2841,7 +2841,7 @@ var isKHashRouteOn=false;
               klib.initRoutes(viewContainderId);
 
               /*run callback if any*/
-              var _fnCallbackAfterRender = ("" + $viewContainderId.data("renderCallback")).replace(/undefined/, "");
+              var _fnCallbackAfterRender = ("" + $(viewContainderId).data("renderCallback")).replace(/undefined/, "");
               if (kRVOptions.dataRenderCallback) {
                 _fnCallbackAfterRender = kRVOptions.dataRenderCallback;
               }
