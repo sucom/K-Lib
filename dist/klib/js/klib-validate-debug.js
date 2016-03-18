@@ -1,3 +1,4 @@
+/** @license K-Lib Validation Extension | (c) Kumararaja <sucom.kumar@gmail.com> | License (MIT) */
 /*
 * KLib Validation Extension
 * version: 2.0.0
