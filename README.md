@@ -16,15 +16,15 @@ K-Lib's "render" approach takes care of all of your resource loading. You don't 
 
 
 ##API Documentation
-All the documentation is located on the [Official site](http://k-lib.info/ "K-Lib Official Site"). K-Lib is just not for rendering, it has few additional methods, which are very useful in your front-end DOM manipulation. So have a look there for help on how to get started, API documentation, example and peruse the reference doc.
+All the documentation is located on the [Official site](https://k-lib.info/ "K-Lib Official Site"). K-Lib is just not for rendering, it has few additional methods, which are very useful in your front-end DOM manipulation. So have a look there for help on how to get started, API documentation, example and peruse the reference doc.
  
 ##Dependencies
-K-Lib is built on top of jQuery and lodash. visit [Official site](http://k-lib.info/ "K-Lib Official Site") to get started.
+K-Lib is built on top of jQuery and lodash. visit [Official site](https://k-lib.info/ "K-Lib Official Site") to get started.
 
 ##License
 The MIT License
 
-Copyright (c) 2000-2016 Kumar
+Copyright (c) 2000-2022 Kumar
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
