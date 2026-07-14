@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Meta, title, CSS, favicons, etc. -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="K-Lib API documentation">
+  <meta name="author" content="Kumararaja <sucom.kumar@gmail.com>">
+
+  <!-- Favicons -->
+  <link rel="shortcut icon" href="img/ico/favicon.png">
+
+  <title>
+    API Doc &middot; K-Lib
+  </title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="xlib/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Documentation extras -->
+  <link href="xlib/bootstrap/3.0.0/assets/css/docs.css" rel="stylesheet">
+  <link href="xlib/bootstrap/3.0.0/assets/css/docs-jumbotrons-old.css" rel="stylesheet">
+  <link href="xlib/bootstrap/3.0.0/assets/css/docs-large-sidebar.css" rel="stylesheet">
+
+  <link href="xlib/bootstrap/3.0.0/assets/css/pygments-manni.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="xlib/html5shiv/dist/html5shiv.js"></script>
+  <script src="xlib/bootstrap/3.0.0/assets/js/respond.min.js"></script>
+  <![endif]-->
+
+  <script src="xlib/jquery/jquery-2.1.4.min.js"           ></script>
+  <script src="xlib/lodash/lodash.min.js"                 ></script>
+
+  <script src="xlib/handlebars/handlebars.min.js"         ></script>
+
+  <script src="js/klib.js"></script>
+
+</head>
+<body>
+<a class="sr-only" href="#content">Skip navigation</a>
+
+<!-- Docs master nav -->
+<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="../" class="navbar-brand">K-Lib</a>
+    </div>
+    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+      <ul class="nav navbar-nav">
+        <li class="">
+          <a href="./index.html">Home</a>
+        </li>
+        <li class="">
+          <a href="./get-started.html">Get started</a>
+        </li>
+        <li class="active">
+          <a href="./doc.html">Documentation</a>
+        </li>
+        <li class="">
+          <a href="./demo1/">Examples</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- Docs page heading -->
+<div class="jumbotron subhead" id="content">
+  <div class="container">
+    <h1>API Documentation</h1>
+    <p>Handful of reusable functions built to ease coding to perform actions on String, Form Elements, Front-End Templates, Scripts, and much more.</p>
+  </div>
+</div>
+
+<div class="container bs-docs-container">
+<div class="row">
+<div class="col-md-4">
+  <div class="bs-sidebar hidden-print" role="complementary">
+    <ul class="nav bs-sidenav">
+
+      <li>
+        <a href="#render">Render</a>
+        <ul class="nav">
+          <li><a href="#klib-render">klib.render()</a></li>
+          <li><a href="#klib-viewModels">klib.viewModels</a></li>
+          <li><a href="#klib-renderHistory">klib.renderHistory</a></li>
+          <li><a href="#klib-renderHistoryMax">klib.renderHistoryMax</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#template">Templates</a>
+        <ul class="nav">
+          <li><a href="#klib-addTemplateScript">klib.addTemplateScript()</a></li>
+          <li><a href="#klib-loadTemplate">klib.loadTemplate()</a></li>
+          <li><a href="#klib-loadTemplatesCollection">klib.loadTemplatesCollection()</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#json">JSON</a>
+        <ul class="nav">
+          <li><a href="#klib-setObjProperty">klib.setObjProperty()</a></li>
+          <li><a href="#klib-serializeFormToJSON">klib.serializeFormToJSON()</a></li>
+          <li><a href="#klib-serializeFormToObject">klib.serializeFormToObject()</a></li>
+          <li><a href="#klib-fillData">klib.fillData()</a></li>
+          <li><a href="#klib-has">klib.has()</a></li>
+          <li><a href="#klib-hasKey">klib.hasKey()</a></li>
+          <li><a href="#klib-find">klib.find()</a></li>
+          <li><a href="#klib-locate">klib.locate()</a></li>
+          <li><a href="#klib-keysDotted">klib.keysDotted()</a></li>
+          <li><a href="#klib-keysCamelCase">klib.keysCamelCase()</a></li>
+          <li><a href="#klib-keysTitleCase">klib.keysTitleCase()</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#form-select-index-selected">Form:Select (Get Selected Value/Text/Index)</a>
+        <ul class="nav">
+          <li><a href="#klib-optionsSelectedValues">klib.optionsSelectedValues()</a></li>
+          <li><a href="#klib-optionsSelectedTexts">klib.optionsSelectedTexts()</a></li>
+          <li><a href="#klib-optionSelectedIndex">klib.optionSelectedIndex()</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#form-select-get">Form:Select (Get Value/Text of Index)</a>
+        <ul class="nav">
+          <li><a href="#klib-optionValueOfIndex">klib.optionValueOfIndex()</a></li>
+          <li><a href="#klib-optionTextOfIndex">klib.optionTextOfIndex()</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#form-select-index-ValueText">Form:Select (Get Index of Value/Text)</a>
+        <ul class="nav">
+          <li><a href="#klib-optionIndexOfValue">klib.optionIndexOfValue()</a></li>
+          <li><a href="#klib-optionIndexOfText">klib.optionIndexOfText()</a></li>
+          <li><a href="#klib-optionIndexOfValueBeginsWith">klib.optionIndexOfValueBeginsWith()</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#form-select-set">Form:Select (Set Selection)</a>
+        <ul class="nav">
+          <li><a href="#klib-selectOptionForValue">klib.selectOptionForValue()</a></li>
+          <li><a href="#klib-selectOptionForValueBeginsWith">klib.selectOptionForValueBeginsWith()</a></li>
+          <li><a href="#klib-selectOptionsForValues">klib.selectOptionsForValues()</a></li>
+          <li><a href="#klib-selectOptionForText">klib.selectOptionForText()</a></li>
+          <li><a href="#klib-selectOptionsAll">klib.selectOptionsAll()</a></li>
+          <li><a href="#klib-selectOptionsNone">klib.selectOptionsNone()</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#form-select-add">Form:Select (Add Options)</a>
+        <ul class="nav">
+          <li><a href="#klib-optionsLoad">klib.optionsLoad()</a></li>
+          <li><a href="#klib-optionAppend">klib.optionAppend()</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#form-select-remove">Form:Select (Remove Options)</a>
+        <ul class="nav">
+          <li><a href="#klib-optionsRemoveAll">klib.optionsRemoveAll()</a></li>
+          <li><a href="#klib-optionsReduceToLength">klib.optionsReduceToLength()</a></li>
+          <li><a href="#klib-optionRemoveForIndex">klib.optionRemoveForIndex()</a></li>
+          <li><a href="#klib-optionRemoveForValue">klib.optionRemoveForValue()</a></li>
+          <li><a href="#klib-optionRemoveForText">klib.optionRemoveForText()</a></li>
+          <li><a href="#klib-optionRemoveForValueBeginsWith">klib.optionRemoveForValueBeginsWith()</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#form-rad-chk">Form:(Checkbox | Radio)</a>
+        <ul class="nav">
+          <li><a href="#klib-checkedState">klib.checkedState()</a></li>
+          <li><a href="#klib-isChecked">klib.isChecked()</a></li>
+          <li><a href="#klib-checkboxCheckedValues">klib.checkboxCheckedValues()</a></li>
+          <li><a href="#klib-radioSelectedValue">klib.radioSelectedValue()</a></li>
+          <li><a href="#klib-radioSelectForValue">klib.radioSelectForValue()</a></li>
+          <li><a href="#klib-radioClearSelection">klib.radioClearSelection()</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#doc-el">Document Element(s)</a>
+        <ul class="nav">
+          <li><a href="#klib-getDocObj">klib.getDocObj()</a></li>
+          <li><a href="#klib-getDocObjs">klib.getDocObjs()</a></li>
+          <li><a href="#klib-isElementExist">klib.isElementExist()</a></li>
+          <li><a href="#klib-setFocus">klib.setFocus()</a></li>
+          <li><a href="#klib-swapObjClass">klib.swapObjClass()</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#form-el-value">Form:Element (Get/Set Value)</a>
+        <ul class="nav">
+          <li><a href="#klib-docObjValue">klib.docObjValue()</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#string">String</a>
+        <ul class="nav">
+          <li><a href="#string-trim">String.trim()</a></li>
+          <li><a href="#string-normalize">String.normalize()</a></li>
+          <li><a href="#string-toProperCase">String.toProperCase()</a></li>
+          <li><a href="#string-isBlank">String.isBlank()</a></li>
+          <li><a href="#string-ifBlank">String.ifBlank()</a></li>
+          <li><a href="#string-isNumber">String.isNumber()</a></li>
+          <li><a href="#string-beginsWith">String.beginsWith()</a></li>
+          <li><a href="#string-endsWith">String.endsWith()</a></li>
+          <li><a href="#string-equals">String.equals()</a></li>
+          <li><a href="#string-equalsIgnoreCase">String.equalsIgnoreCase()</a></li>
+          <li><a href="#string-toJSON">String.toJSON()</a></li>
+          <li><a href="#string-toBoolean">String.toBoolean()</a></li>
+          <li><a href="#string-pad">String.pad()</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#string-klib">K-Lib wrapper for String Ops</a>
+        <ul class="nav">
+          <li><a href="#string-klib-isBlank">klib.isBlank()</a></li>
+          <li><a href="#string-klib-isNumber">klib.isNumber()</a></li>
+          <li><a href="#string-klib-toBoolean">klib.toBoolean()</a></li>
+          <li><a href="#string-klib-toJSON">klib.toJSON()</a></li>
+          <li><a href="#string-klib-toInt">klib.toInt()</a></li>
+          <li><a href="#string-klib-toFloat">klib.toFloat()</a></li>
+          <li><a href="#string-klib-range">klib.range()</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#other">Other</a>
+        <ul class="nav">
+          <li><a href="#klib-urlParams">klib.urlParams()</a></li>
+          <li><a href="#klib-urlParam">klib.urlParam()</a></li>
+          <li><a href="#klib-urlHash">klib.urlHash()</a></li>
+          <li><a href="#klib-addScript">klib.addScript()</a></li>
+          <li><a href="#klib-loadScript">klib.loadScript()</a></li>
+          <li><a href="#klib-addStyle">klib.addStyle()</a></li>
+          <li><a href="#klib-loadStyle">klib.loadStyle()</a></li>
+          <li><a href="#klib-now">klib.now()</a></li>
+          <li><a href="#klib-year">klib.year()</a></li>
+          <li><a href="#klib-randomPassword">klib.randomPassword()</a></li>
+          <li><a href="#klib-rand">klib.rand()</a></li>
+          <li><a href="#klib-range">klib.range()</a></li>
+          <li><a href="#klib-htmlEncode">klib.htmlEncode()</a></li>
+          <li><a href="#klib-htmlDecode">klib.htmlDecode()</a></li>
+          <li><a href="#klib-sleep">klib.sleep()</a></li>
+          <li><a href="#klib-isIE">klib.isIE</a></li>
+          <li><a href="#klib-isNonIE">klib.isNonIE</a></li>
+          <li><a href="#klib-initKeyTracking">klib.initKeyTracking()</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#jquery">jQuery Extensions</a>
+        <ul class="nav">
+          <li><a href="#jquery-serializeFormToJSON">jQuery.serializeFormToJSON()</a></li>
+          <li><a href="#jquery-serializeFormToObject">jQuery.serializeFormToObject()</a></li>
+          <li><a href="#jquery-kRender">jQuery.kRender()</a></li>
+        </ul>
+      </li>
+
+    </ul>
+  </div>
+</div>
+
+<div class="col-md-8" role="main">
+
+<!-- Render
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="render">Render</h1>
+  </div>
+
+  <h3 id="klib-render">klib.render(viewContainderId, options) : returnData</h3>
+  <p>viewContainderId: String; (jQuery Selector String with #)</p>
+  <p>options: String; JSON Object
+     <pre><code class="javascript"><blockquote>{
+data: {}
+// Data(JSON Object) to be used in templates;
+// for HTML inline data-attribute see dataUrl
+
+,dataUrl: ""
+// External Data(JSON) URL or local:dataModelVariableName
+
+,dataUrlErrorHandle: ""
+// Single javascript function name to run if external data url fails; NOTE: (jqXHR, textStatus, errorThrown) are injected to the function.
+
+,dataParams: {}
+// dataUrl Params (NO EQUIVALENT data-attribute)
+
+,dataModel: ""
+// External Data(JSON) "key" for DataObject;
+// default: "data"; may use name-space x.y.z (with the cost of performance)
+
+,dataModelType: ""
+// "Backbone" | "Thorax" applicable only for local data
+// ex: data or dataUrl:"local:XXXXXX"
+// dataModelType:"Backbone:BackboneOptions"
+// BackboneOptions (String)
+   var backboneOptions = "{ classpath:'path-to-backbone-model-class.js'"
+                        +", classsuccess:jsFn4ClassSuccess"
+                        +", classerror:jsFn4ClassError"
+                        +", defaults:{}"
+                        +", fetchsuccess:jsFn4FetchSuccess"
+                        +", fetcherror:jsFn4FetchError"
+                        +"}";
+
+   function jsFn4ClassSuccess(classUrlResponse){}
+   function jsFn4ClassError(classUrl, jqXHR, textStatus, errorThrown){}
+   function jsFn4FetchSuccess(model, response, options){}
+   function jsFn4FetchError(model, response, options){}
+
+,dataCache: false
+// External Data(JSON) Cache
+
+,dataTemplatesCollectionUrl: ""
+// location of single file containing all the templates;
+// helps to load all templates in single request.
+// use "dataTemplate" to define primary tempate to be used for rendering
+
+,dataTemplates: {}
+// Templates to be used for rendering
+// ex: {tmplID:'inline', tmplID:'script', tmplID:'URL'}
+
+,dataTemplateEngine: ""
+// handlebars | underscore | underscore-as-mustache | mustache | jqtmpl | jsrender | dust | hogan | transparency | weld | doT | tjs
+
+,dataTemplate: ""
+// Primary Template ID ==> content may be inline or &lt;script&gt;
+// dataTemplate = dataTemplates[0]; if dataTemplate is not defined
+
+,dataScripts: {}
+// scripts (js) to be loaded along with templates
+,dataScriptsCache: true
+// cache of dataScripts
+
+,dataStyles: {}
+// styles (css) to be loaded along with templates
+,dataStylesCache: true
+// cache of dataStyles
+
+,dataRenderEngine: ""
+// jqTmpl | Backbone | Thorax | jsRender | dust (| dustRender) | dustStream
+,dataRenderCallback: ""
+// single javascript function name to run after render
+
+,dataViewId: ""
+// Used only for RenderEngine:Thorax, to locate in Thorax.Views collection
+,dataRenderId: ""
+// Render Id, may be used to locate in klib.renderHistory[dataRenderId],
+// auto-generated key if not defined
+,dataWeldConfig: {}
+// Weld Template Configuration Optional
+
+}</blockquote></code></pre></p>
+  <p>returnData: JSON Object
+<pre><code class="javascript"><blockquote>{
+  id: String
+  //value of input:dataRenderId or auto-generated-unique id
+  //may be used to locate in klib.renderHistory[id]
+, view: {}
+  //view object used in render;
+  //useful if renderEngine: {backbone | thorax}
+, model: {}
+  //model object used in render;
+  //useful if renderEngine: {backbone | thorax}
+, cron: String
+  //Timestamp
+}</blockquote></code></pre>
+  </p>
+  <div class="highlight">
+    <pre><code class="javascript"><blockquote>&lt;div id="memberList"
+      data-url="/api/member/list.json"
+      data-templates="{tmplMemberList:'/templates/member/list.html'}"
+      data-template-engine="handlebars"
+      &gt;&lt;/div&gt;</blockquote>
+      klib.<span class="nf">render</span>(<span class="s">"#memberList"</span>);
+    </code></pre>
+  </div>
+
+  <h3 id="klib-viewModels">klib.viewModels : { }</h3>
+  <p>This is a local storage data collection object, which stores all rendered data models with "dataRenderId" key.</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">viewModels</span>[<span class="s">"123456789"</span>];
+      <span class="c">//==> dataModel of render call with dataRenderId="123456789"</span>
+    </code></pre>
+  </div>
+
+  <h3 id="klib-renderHistory">klib.renderHistory : { }</h3>
+  <p>This is a local storage render collection object, which stores all rendered views and models with "dataRenderId" key</p>
+  <p>NOTE:  The return value of each klib.render() call being stored in this collection object. This storage is limited by "klib.renderHistoryMax" variable. The old rendered values (views and models) will be removed when history reaches Max limit.</p>
+  <div class="highlight">
+<pre><code class="javascript">
+  klib.<span class="nf">renderHistory</span>[<span class="s">"123456789"</span>];
+  <strong>Returns</strong>:<blockquote>{
+  id: "123456789"
+  , view: {}
+  , model: {}
+  , cron: "1378275471876"
+  }</blockquote></code></pre>
+  </div>
+
+  <h3 id="klib-renderHistoryMax">klib.renderHistoryMax : Integer</h3>
+  <p>The maximum limit for storing render history. Default: 100</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">renderHistoryMax</span> = <span class="s">"50"</span>;
+      <span class="c">//==> Changes the render history max length to 50</span>
+    </code></pre>
+  </div>
+
+</div>
+
+<!-- Templates
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="template">Templates</h1>
+  </div>
+
+  <h3 id="klib-addTemplateScript">klib.addTemplateScript(templateId, templateBody, templateType)</h3>
+  <p>templateId: String; Unique Template Id (without #)</p>
+  <p>templateBody: String; HTML Content</p>
+  <p>templateType: String;
+  <blockquote>{
+    x-handlebars-template
+    | x-mustache-template
+    | x-underscore-template
+    | x-underscore-as-mustache-template
+    | x-jquery-tmpl
+    | x-jsrender-template
+    | x-dust-template
+    | x-hogan-template
+    | x-transparency-template
+    | x-weld-template
+    | x-dot-template
+    | x-tjs-template
+    }</blockquote></p>
+  <div class="highlight">
+    <pre><code class="javascript">klib.<span class="nf">addTemplateScript</span>(<span class="s">"memberViewTemplate", "Hello {{ name }}!", "x-handlebars-template"</span>);<span class="c"><blockquote>
+      &lt;script id="memberViewTemplate" type="text/x-handlebars-template"&gt;
+      Hello {{ name }}!
+      &lt;/script&gt;</blockquote></span></code></pre>
+  </div>
+
+  <h3 id="klib-loadTemplate">klib.loadTemplate(tmplId, tmplPath, templateType, inlineTmplContainerId, tAjaxQue)</h3>
+  <p>tmplId: String; Unique Template Id (without #)</p>
+  <p>tmplPath: String; {URL | inline | script }</p>
+  <p>[templateType: String] Default: x-template</p>
+  <p>[inlineTmplContainerId: String] if (tmplPath==inline) "jQuery Selector" of an element which contains inline template</p>
+  <p>[tAjaxQue: Array]; default: []; Ajax Que</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">loadTemplate</span>(<span class="s">"tmplMemberView", "/templates/memberView.html", "x-handlebars-template"</span>);
+<span class="c"><blockquote>reads template content from "/templates/memberView.html" and appends "script" tag to document with id="tmplMemberView" and type="text/x-handlebars-template"
+
+  &lt;script id="tmplMemberView" type="text/x-handlebars-template"&gt;
+  content of "/templates/memberView.html" comes here...
+  &lt;/script&gt;
+</blockquote></span>
+      <hr/>
+      &lt;div id="divMemberDetails"&gt;
+      Hello {{ name }}!
+      &lt;/div&gt;
+
+      klib.<span class="nf">loadTemplate</span>(<span class="s">"tmplMemberDetails", "inline", "x-handlebars-template", "#divMemberDetails"</span>);
+<span class="c"><blockquote>moves the html content from "#divMemberDetails" to "script" tag with id="tmplMemberDetails" &amp; type="text/x-handlebars-template" and appends to document
+
+  &lt;div id="divMemberDetails"&gt;
+  &lt;/div&gt;
+
+  &lt;script id="tmplMemberDetails" type="text/x-handlebars-template"&gt;
+  Hello {{ name }}!
+  &lt;/script&gt;
+</blockquote></span>
+      <hr/>
+      &lt;script id="tmplMemberProfile" path="/templates/memberProfileForm.html" type="text/x-handlebars-template"&gt;&lt;/script&gt;
+
+      klib.<span class="nf">loadTemplate</span>(<span class="s">"tmplMemberProfile", "script"</span>);
+<span class="c"><blockquote>reads the template content from "/templates/memberProfileForm.html" and replaces the "script" tag with id="tmplMemberDetails" &amp; type="text/x-handlebars-template" as below.
+
+  &lt;script id="tmplMemberProfile" type="text/x-handlebars-template"&gt;
+  content of "/templates/memberProfileForm.html" comes here...
+  &lt;/script&gt;
+</blockquote></span></code></pre>
+  </div>
+
+  <h3 id="klib-loadTemplatesCollection">klib.loadTemplatesCollection(tmplCollectionId, Url)</h3>
+  <p>tmplCollectionId: String; (without #)</p>
+  <p>Url: String;</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+      <strong>content of "/templates/memberModuleTemplates.html"</strong><blockquote>
+      &lt;script id="tmplMemberProfileView" type="text/x-handlebars-template"&gt;
+      HTML Template Content ...
+      &lt;/script&gt;
+
+      &lt;script id="tmplMemberProfileEdit" type="text/x-dust-template"&gt;
+      HTML Template Content ...
+      &lt;/script&gt;
+
+      &lt;script id="tmplMemberProfileEdit" type="text/x-hogan-template"&gt;
+      HTML Template Content ...
+      &lt;/script&gt;
+    </blockquote>
+      klib.<span class="nf">loadTemplatesCollection</span>(<span class="s">"tmplCollectionMember", "/templates/memberModuleTemplates.html"</span>);
+  <span class="c">//==> Loads content of "/templates/memberModuleTemplates.html" into document
+<blockquote>
+  &lt;div id="tmplCollectionMember" style="display:none"&gt;
+  the entire content of "/templates/memberModuleTemplates.html" comes here...
+  &lt;/div&gt;</blockquote></span></code></pre>
+  </div>
+
+</div>
+
+<!-- JSON
+================================================== -->
+<div class="bs-docs-section">
+<div class="page-header">
+  <h1 id="json">JSON</h1>
+</div>
+
+<h3 id="klib-setObjProperty">klib.setObjProperty(obj, keyName, value, keyNameToLowerCase)</h3>
+<p>obj: JSON Object</p>
+<p>keyName: String; { camelCase(keyName) | TitleCase(KeyName) | withCharDelimiter(Key_Name | key.name | key-name)}</p>
+<p>value: {String | Integer | Float | Boolean | Array | Object}</p>
+<p>[keyNameToLowerCase: Boolean]; default: false </p>
+<div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">setObjProperty</span>(<span class="s">{}, "name", "Jack Black"</span>);
+      <span class="c">//==> { name: "Jack Black" }</span>
+
+      klib.<span class="nf">setObjProperty</span>(<span class="s">{}, "Address_Shipping_State", "New York"</span>);
+      <span class="c">//==> { Address: {Shipping: {State: "New York" } } }</span>
+
+      klib.<span class="nf">setObjProperty</span>(<span class="s">{}, "address-shipping-state", "New York"</span>);
+      <span class="c">//==> { address: {shipping: {state: "New York" } } }</span>
+
+      klib.<span class="nf">setObjProperty</span>(<span class="s">{}, "address.shipping.state", "New York"</span>);
+      <span class="c">//==> { address: {shipping: {state: "New York" } } }</span>
+
+      klib.<span class="nf">setObjProperty</span>(<span class="s">{}, "address>shipping>state", "New York"</span>);
+      <span class="c">//==> { address: {shipping: {state: "New York" } } }</span>
+
+      klib.<span class="nf">setObjProperty</span>(<span class="s">{name: "Jack Black"}, "AddressShippingState", "New York"</span>);
+      <span class="c">//==> {name: "Jack Black", Address: {Shipping: {State: "New York" } } }</span>
+
+      klib.<span class="nf">setObjProperty</span>(<span class="s">{name: "Jack Black"}, "addressBillingState", "CA", true</span>);
+      <span class="c">//==> {name: "Jack Black", address: {billing: {state: "CA" } } }</span>
+    </code></pre>
+</div>
+
+<h3 id="klib-serializeFormToJSON">klib.serializeFormToJSON(formSelector, obj, keyNameToLowerCase, strPrefixToIgnore) : jsonObject</h3>
+<p>formSelector: String; jQuery Selector for Form</p>
+<p>obj: String; JSON Object; (existing object to be updated)</p>
+<p>keyNameToLowerCase: Boolean; (default: false)</p>
+<p>strPrefixToIgnore: String; (String to be ignored from keyString) DataTagAttribute: "data-serialize-ignore-prefix"</p>
+<p>NOTE: disabled fields are ignored</p>
+<div class="highlight"><pre><code class="javascript">
+  <blockquote>&lt;form id="testForm"&gt;
+    &lt;input type="hidden" name="timestamp" value="125468795554585" /&gt;
+
+    &lt;input type="text" name="Name"  value="Someone"/&gt; Name
+
+    &lt;br/&gt;
+    &lt;input type="text" name="_eMail"  value="eMail@domain.com" disabled="disabled" /&gt; eMail
+
+    &lt;br/&gt;
+    Gender:
+    &lt;label&gt;&lt;input type="radio" name="gender" value="Male" /&gt; Male&lt;/label&gt;
+    &lt;label&gt;&lt;input type="radio" name="gender" value="Female" checked="checked" /&gt; Female&lt;/label&gt;
+
+    &lt;br/&gt;
+    &lt;label&gt;&lt;input type="checkbox" name="_isActive" value="true" /&gt; Active&lt;/label&gt;
+
+    &lt;h2&gt;Billing Address&lt;/h2&gt;
+    &lt;input type="text" name="AddressBillingStreet"    value="Nowhere"/&gt; Street&lt;br/&gt;
+    &lt;input type="text" name="Address_Billing_City"    value="Los Angles"/&gt; City&lt;br/&gt;
+    &lt;input type="text" name="Address.Billing.State"   value="CA"/&gt; State&lt;br/&gt;
+    &lt;select name="Address-Billing-Country"&gt;
+    &lt;option value=""&gt;- select -&lt;/option&gt;
+    &lt;option value="IN"&gt;India&lt;/option&gt;
+    &lt;option value="US"&gt;United States&lt;/option&gt;
+    &lt;/select&gt; Country
+
+    &lt;h2&gt;Contact Address&lt;/h2&gt;
+    &lt;input type="text" name="AddressContactStreet"  value="Somewhere"/&gt; Street&lt;br/&gt;
+    &lt;input type="text" name="Address_Contact_City"    value="Bangalore"/&gt; City&lt;br/&gt;
+    &lt;input type="text" name="Address.Contact.State"   value="KA"/&gt; State&lt;br/&gt;
+    &lt;select name="Address-Contact-Country"&gt;
+    &lt;option value=""&gt;- select -&lt;/option&gt;
+    &lt;option value="IN"&gt;India&lt;/option&gt;
+    &lt;option value="US"&gt;United States&lt;/option&gt;
+    &lt;/select&gt; Country
+
+    &lt;br/&gt;
+    &lt;input type="button" id="btnSubmit" value="Submit" /&gt;
+    &lt;/form&gt;</blockquote>
+  <div style="display: none"><form id="testForm">
+    <input type="hidden" name="timestamp" value="125468795554585" />
+    <input type="text" name="Name"  value="Someone"/> Name
+    <br/>
+    <input type="text" name="_eMail"  value="eMail@domain.com" disabled="disabled" /> eMail
+    <br/>
+    Gender:
+    <label><input type="radio" name="gender" value="Male" /> Male</label>
+    <label><input type="radio" name="gender" value="Female" checked="checked" /> Female</label>
+    <br/>
+    <label><input type="checkbox" name="_isActive" value="true" /> Active</label>
+    <h2>Billing Address</h2>
+    <input type="text" name="AddressBillingStreet"    value="Nowhere"/> Street<br/>
+    <input type="text" name="Address_Billing_City"    value="Los Angles"/> City<br/>
+    <input type="text" name="Address.Billing.State"   value="CA"/> State<br/>
+    <select name="Address-Billing-Country">
+      <option value="">- select -</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select> Country
+    <h2>Contact Address</h2>
+    <input type="text" name="AddressContactStreet"  value="Somewhere"/> Street<br/>
+    <input type="text" name="Address_Contact_City"    value="Bangalore"/> City<br/>
+    <input type="text" name="Address.Contact.State"   value="KA"/> State<br/>
+    <select name="Address-Contact-Country">
+      <option value="">- select -</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select> Country
+    <br/>
+    <input type="button" id="btnSubmit" value="Submit" />
+  </form></div>
+
+  klib.<span class="nf">serializeFormToJSON</span>(<span class="s">"#testForm"</span>);
+  <span class="c"><blockquote>{"timestamp":"125468795554585","Name":"Someone","gender":"Female","Address":{"Billing":{"Street":"Nowhere","City":"Los Angles","State":"CA","Country":""},"Contact":{"Street":"Somewhere","City":"Bangalore","State":"KA","Country":""}}}</blockquote></span>
+
+  klib.<span class="nf">serializeFormToJSON</span>(<span class="s">"#testForm", true</span>);
+  <span class="c"><blockquote>{"timestamp":"125468795554585","name":"Someone","gender":"Female","address":{"billing":{"street":"Nowhere","city":"Los Angles","state":"CA","country":""},"contact":{"street":"Somewhere","city":"Bangalore","state":"KA","country":""}}}</blockquote></span>
+
+  klib.<span class="nf">serializeFormToJSON</span>(<span class="s">"#testForm", {libName: "K-Lib", name:"Jack Black"}, true</span>);
+  <span class="c"><blockquote>{"libName":"K-Lib","name":"Someone","timestamp":"125468795554585","gender":"Female","address":{"billing":{"street":"Nowhere","city":"Los Angles","state":"CA","country":""},"contact":{"street":"Somewhere","city":"Bangalore","state":"KA","country":""}}}</blockquote></span>
+</code></pre>
+</div>
+
+<h3 id="klib-serializeFormToObject">klib.serializeFormToObject()  : jsonObject</h3>
+<p>same as <a href="#klib-serializeFormToJSON">klib.serializeFormToJSON()</a></p>
+<div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">serializeFormToObject</span>(<span class="s">"#testForm"</span>);
+      <span class="c"><blockquote>{"timestamp":"125468795554585","Name":"Someone","gender":"Female","Address":{"Billing":{"Street":"Nowhere","City":"Los Angles","State":"CA","Country":""},"Contact":{"Street":"Somewhere","City":"Bangalore","State":"KA","Country":""}}}</blockquote></span>
+
+      klib.<span class="nf">serializeFormToObject</span>(<span class="s">"#testForm", true</span>);
+      <span class="c"><blockquote>{"timestamp":"125468795554585","name":"Someone","gender":"Female","address":{"billing":{"street":"Nowhere","city":"Los Angles","state":"CA","country":""},"contact":{"street":"Somewhere","city":"Bangalore","state":"KA","country":""}}}</blockquote></span>
+
+      klib.<span class="nf">serializeFormToObject</span>(<span class="s">"#testForm", {libName: "K-Lib", name:"Jack Black"}, true</span>);
+      <span class="c"><blockquote>{"libName":"K-Lib","name":"Someone","timestamp":"125468795554585","gender":"Female","address":{"billing":{"street":"Nowhere","city":"Los Angles","state":"CA","country":""},"contact":{"street":"Somewhere","city":"Bangalore","state":"KA","country":""}}}</blockquote></span></code></pre>
+</div>
+
+<h3 id="klib-fillData">klib.fillData(data, context, options)</h3>
+<p>data: JSON Object or URL</p>
+<p>context: String; (HTML Scope Element Selector. Form/Div ID)</p>
+<p><pre><code class="javascript">options: {
+  dataParams      : {},
+  dataCache       : false,        //true | false
+  keyFormat       : "aBc",        //aBc (default camelCase) | AbC (TitleCase) | _ (underscore)
+  selectPattern   : "[name='?']", //Element Selector
+  formatterCommon : null,         //
+  formatterOnKeys : null,         //Key specific formatter
+  keysMap: {}                     //Key specific selector & formatter
+  }</code></pre></p>
+
+<div class="highlight">
+    <pre><code class="javascript">var myObj =
+      {"name"   : "Someone"
+      ,"gender" : "Female"
+      ,"address": {
+      "billing" : {"street":"Nowhere",  "city":"Los Angles", "state":"CA","country":""}
+      ,"contact" : {"street":"Somewhere","city":"Bangalore",  "state":"KA","country":""}
+      }
+      };
+      <script>
+        var myObj = {"name":"Someone","gender":"Female","address":{"billing":{"street":"Nowhere","city":"Los Angles","state":"CA","country":""},"contact":{"street":"Somewhere","city":"Bangalore","state":"KA","country":""}}};
+      </script>
+
+      TODO: Example
+    </code></pre>
+</div>
+
+<h3 id="klib-has">klib.has(obj, path) : Boolean</h3>
+<p>obj: JSON Object</p>
+<p>path: String; (keyName or keyPath)</p>
+<div class="highlight">
+    <pre><code class="javascript">var myObj =
+      {"name"   : "Someone"
+      ,"gender" : "Female"
+      ,"address": {
+      "billing" : {"street":"Nowhere",  "city":"Los Angles", "state":"CA","country":""}
+      ,"contact" : {"street":"Somewhere","city":"Bangalore",  "state":"KA","country":""}
+      }
+      };
+      <script>
+        var myObj = {"name":"Someone","gender":"Female","address":{"billing":{"street":"Nowhere","city":"Los Angles","state":"CA","country":""},"contact":{"street":"Somewhere","city":"Bangalore","state":"KA","country":""}}};
+      </script>
+      klib.<span class="nf">has</span>(<span class="s">myObj, "name"</span>); <span class="c">//==> true</span>
+      klib.<span class="nf">has</span>(<span class="s">myObj, "Name"</span>); <span class="c">//==> false</span>
+      klib.<span class="nf">has</span>(<span class="s">myObj, "address.billing.city"</span>); <span class="c">//==> true</span>
+    </code></pre>
+</div>
+
+<h3 id="klib-hasKey">klib.hasKey(obj, path) : Boolean</h3>
+<p>same as <a href="#klib-has">klib.has()</a></p>
+<div class="highlight">
+    <pre><code class="javascript">var myObj =
+      {"name"   : "Someone"
+      ,"gender" : "Female"
+      ,"address": {
+      "billing" : {"street":"Nowhere",  "city":"Los Angles", "state":"CA","country":""}
+      ,"contact" : {"street":"Somewhere","city":"Bangalore",  "state":"KA","country":""}
+      }
+      };
+      <script>
+        var myObj = {"name":"Someone","gender":"Female","address":{"billing":{"street":"Nowhere","city":"Los Angles","state":"CA","country":""},"contact":{"street":"Somewhere","city":"Bangalore","state":"KA","country":""}}};
+      </script>
+      klib.<span class="nf">hasKey</span>(<span class="s">myObj, "name"</span>); <span class="c">//==> true</span>
+      klib.<span class="nf">hasKey</span>(<span class="s">myObj, "Name"</span>); <span class="c">//==> false</span>
+      klib.<span class="nf">hasKey</span>(<span class="s">myObj, "address.billing.city"</span>); <span class="c">//==> true</span>
+    </code></pre>
+</div>
+
+<h3 id="klib-find">klib.find(obj, path) : returnValue</h3>
+<p>obj: JSON Object</p>
+<p>path: String; (keyName or keyPath)</p>
+<p>Returns: Value { String | Boolean | Integer | Float | Object }</p>
+<div class="highlight">
+    <pre><code class="javascript">var myObj =
+      {"name"   : "Someone"
+      ,"gender" : "Female"
+      ,"address": {
+      "billing" : {"street":"Nowhere",  "city":"Los Angles", "state":"CA","country":""}
+      ,"contact" : {"street":"Somewhere","city":"Bangalore",  "state":"KA","country":""}
+      }
+      };
+      <script>
+        var myObj = {"name":"Someone","gender":"Female","address":{"billing":{"street":"Nowhere","city":"Los Angles","state":"CA","country":""},"contact":{"street":"Somewhere","city":"Bangalore","state":"KA","country":""}}};
+      </script>
+      klib.<span class="nf">find</span>(<span class="s">myObj, "name"</span>); <span class="c">//==> "Someone"</span>
+      klib.<span class="nf">find</span>(<span class="s">myObj, "Name"</span>); <span class="c">//==> undefined</span>
+      klib.<span class="nf">find</span>(<span class="s">myObj, "address.contact"</span>);
+      <span class="c">//==> {"street":"Somewhere","city":"Bangalore",  "state":"KA","country":""}</span>
+    </code></pre>
+</div>
+
+<h3 id="klib-locate">klib.locate(obj, path) : returnValue</h3>
+<p>same as <a href="#klib-find">klib.find()</a></p>
+<div class="highlight">
+    <pre><code class="javascript">var myObj =
+      {"name"   : "Someone"
+      ,"gender" : "Female"
+      ,"address": {
+      "billing" : {"street":"Nowhere",  "city":"Los Angles", "state":"CA","country":""}
+      ,"contact" : {"street":"Somewhere","city":"Bangalore",  "state":"KA","country":""}
+      }
+      };
+      <script>
+        var myObj = {"name":"Someone","gender":"Female","address":{"billing":{"street":"Nowhere","city":"Los Angles","state":"CA","country":""},"contact":{"street":"Somewhere","city":"Bangalore","state":"KA","country":""}}};
+      </script>
+      klib.<span class="nf">locate</span>(<span class="s">myObj, "name"</span>); <span class="c">//==> "Someone"</span>
+      klib.<span class="nf">locate</span>(<span class="s">myObj, "Name"</span>); <span class="c">//==> undefined</span>
+      klib.<span class="nf">locate</span>(<span class="s">myObj, "address.contact"</span>);
+      <span class="c">//==> {"street":"Somewhere","city":"Bangalore",  "state":"KA","country":""}</span>
+    </code></pre>
+</div>
+
+<h3 id="klib-keysDotted">klib.keysDotted(obj) : Array</h3>
+<p>obj: JSON Object</p>
+<div class="highlight">
+    <pre><code class="javascript">var myObj =
+      {"name"   : "Someone"
+      ,"gender" : "Female"
+      ,"address": {
+      "billing" : {"street":"Nowhere",  "city":"Los Angles", "state":"CA","country":""}
+      ,"contact" : {"street":"Somewhere","city":"Bangalore",  "state":"KA","country":""}
+      }
+      };
+      <script>
+        var myObj = {"name":"Someone","gender":"Female","address":{"billing":{"street":"Nowhere","city":"Los Angles","state":"CA","country":""},"contact":{"street":"Somewhere","city":"Bangalore","state":"KA","country":""}}};
+      </script>
+      klib.<span class="nf">keysDotted</span>(<span class="s">myObj</span>);
+      <span class="c"><blockquote>[ "name", "gender", "address.billing.street", "address.billing.city", "address.billing.state", "address.billing.country", "address.contact.street", "address.contact.city", "address.contact.state", "address.contact.country" ]</blockquote></span></code></pre>
+</div>
+
+<h3 id="klib-keysCamelCase">klib.keysCamelCase(obj) : Array</h3>
+<p>obj: JSON Object</p>
+<div class="highlight">
+    <pre><code class="javascript">var myObj =
+      {"name"   : "Someone"
+      ,"gender" : "Female"
+      ,"address": {
+      "billing" : {"street":"Nowhere",  "city":"Los Angles", "state":"CA","country":""}
+      ,"contact" : {"street":"Somewhere","city":"Bangalore",  "state":"KA","country":""}
+      }
+      };
+      <script>
+        var myObj = {"name":"Someone","gender":"Female","address":{"billing":{"street":"Nowhere","city":"Los Angles","state":"CA","country":""},"contact":{"street":"Somewhere","city":"Bangalore","state":"KA","country":""}}};
+      </script>
+      klib.<span class="nf">keysCamelCase</span>(<span class="s">myObj</span>);
+      <span class="c"><blockquote>[ "name", "gender", "addressBillingStreet", "addressBillingCity", "addressBillingState", "addressBillingCountry", "addressContactStreet", "addressContactCity", "addressContactState", "addressContactCountry" ]</blockquote></span></code></pre>
+</div>
+
+<h3 id="klib-keysTitleCase">klib.keysTitleCase(obj) : Array</h3>
+<p>obj: JSON Object</p>
+<div class="highlight">
+    <pre><code class="javascript">var myObj =
+      {"name"   : "Someone"
+      ,"gender" : "Female"
+      ,"address": {
+      "billing" : {"street":"Nowhere",  "city":"Los Angles", "state":"CA","country":""}
+      ,"contact" : {"street":"Somewhere","city":"Bangalore",  "state":"KA","country":""}
+      }
+      };
+      <script>
+        var myObj = {"name":"Someone","gender":"Female","address":{"billing":{"street":"Nowhere","city":"Los Angles","state":"CA","country":""},"contact":{"street":"Somewhere","city":"Bangalore","state":"KA","country":""}}};
+      </script>
+      klib.<span class="nf">keysTitleCase</span>(<span class="s">myObj</span>);
+      <span class="c"><blockquote>[ "Name", "Gender", "AddressBillingStreet", "AddressBillingCity", "AddressBillingState", "AddressBillingCountry", "AddressContactStreet", "AddressContactCity", "AddressContactState", "AddressContactCountry" ]</blockquote></span></code></pre>
+</div>
+
+</div>
+
+<!-- Form:Select (Get Selected Value/Text/Index)
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="form-select-index-selected">Form:Select (Get Selected Value/Text/Index)</h1>
+  </div>
+
+  <h3 id="klib-optionsSelectedValues">klib.optionsSelectedValues(objectId, delimiter) : String</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>[delimiter: String; default: "," (comma)]</p>
+  <p>NOTE: returns all selected values separated by comma/delimiter</p>
+  <div class="highlight">
+  <pre><code class="javascript">
+&lt;option value="AU"&gt;Australia&lt;/option&gt;
+&lt;option value="CN"&gt;China&lt;/option&gt;
+&lt;option value="IN"&gt;India&lt;/option&gt;
+&lt;option value="US"&gt;United States&lt;/option&gt;
+
+klib.<span class="nf">optionsSelectedValues</span>(<span class="s">"#countryList"</span>);      <span class="c">//==> selected values separated by comma</span>
+klib.<span class="nf">optionsSelectedValues</span>(<span class="s">"#countryList", "~"</span>); <span class="c">//==> selected values separated by ~</span>
+  </code></pre>
+
+  <p><select id="testEl4optionsSelectedValues" multiple>
+    <option value="AU">Australia</option>
+    <option value="CN">China</option>
+    <option value="IN">India</option>
+    <option value="US">United States</option>
+  </select></p>
+  <p><a href="javascript:$('#testEl4optionsSelectedValuesResult').html(klib.optionsSelectedValues('#testEl4optionsSelectedValues'));">get with comma</a>
+     | <a href="javascript:$('#testEl4optionsSelectedValuesResult').html(klib.optionsSelectedValues('#testEl4optionsSelectedValues', '~'));">get with ~</a>
+     ==&gt; <span id="testEl4optionsSelectedValuesResult"></span>
+  </p>
+  </div>
+
+  <h3 id="klib-optionsSelectedTexts">klib.optionsSelectedTexts(objectId, delimiter) : String</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>[delimiter: String; default: "," (comma)]</p>
+  <p>NOTE: returns all selected texts separated by comma/delimiter</p>
+  <div class="highlight">
+  <pre><code class="javascript">
+&lt;option value="AU"&gt;Australia&lt;/option&gt;
+&lt;option value="CN"&gt;China&lt;/option&gt;
+&lt;option value="IN"&gt;India&lt;/option&gt;
+&lt;option value="US"&gt;United States&lt;/option&gt;
+
+klib.<span class="nf">optionsSelectedTexts</span>(<span class="s">"#countryList"</span>);      <span class="c">//==> selected texts separated by comma</span>
+klib.<span class="nf">optionsSelectedTexts</span>(<span class="s">"#countryList", "~"</span>); <span class="c">//==> selected texts separated by ~</span>
+  </code></pre>
+
+    <p><select id="testEl4optionsSelectedTexts" multiple>
+      <option value="AU">Australia</option>
+      <option value="CN">China</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select></p>
+    <p><a href="javascript:$('#testEl4optionsSelectedTextsResult').html(klib.optionsSelectedTexts('#testEl4optionsSelectedTexts'));">get with comma</a>
+      | <a href="javascript:$('#testEl4optionsSelectedTextsResult').html(klib.optionsSelectedTexts('#testEl4optionsSelectedTexts', '~'));">get with ~</a>
+      ==&gt; <span id="testEl4optionsSelectedTextsResult"></span>
+    </p>
+
+  </div>
+
+  <h3 id="klib-optionSelectedIndex">klib.optionSelectedIndex(objectId, newSelectedIndex) : Integer</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>[newSelectedIndex: Integer]</p>
+  <p>NOTE: returns old/current selectedIndex and sets to newSelectedIndex if given</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;option value=""  &gt;-select-&lt;/option&gt;
+&lt;option value="AU"&gt;Australia&lt;/option&gt;
+&lt;option value="CN"&gt;China&lt;/option&gt;
+&lt;option value="IN"&gt;India&lt;/option&gt;
+&lt;option value="US"&gt;United States&lt;/option&gt;
+
+klib.<span class="nf">optionSelectedIndex</span>(<span class="s">"#countryList"</span>); <span class="c">//==> currently selected index</span>
+klib.<span class="nf">optionSelectedIndex</span>(<span class="s">"#countryList", 0</span>); <span class="c">//==> currently selected index and sets index to 0</span>
+    </code></pre>
+    <p><select id="testEl6optionSelectedIndex">
+      <option value=""  >-select-</option>
+      <option value="AU">Australia</option>
+      <option value="CN">China</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select></p>
+    <p><a href="javascript:$('#testEl7optionSelectedIndex').html(klib.optionSelectedIndex('testEl6optionSelectedIndex'));">get</a>
+      | <a href="javascript:$('#testEl7optionSelectedIndex').html(klib.optionSelectedIndex('testEl6optionSelectedIndex', 0));">set-to-0</a>
+      ==&gt; <span id="testEl7optionSelectedIndex"></span>
+    </p>
+  </div>
+
+</div>
+
+<!-- Form:Select (Get Value/Text of Index)
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="form-select-get">Form:Select (Get Value/Text of Index)</h1>
+  </div>
+
+  <h3 id="klib-optionValueOfIndex">klib.optionValueOfIndex(objectId, optionIndex) : String</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>optionIndex: Integer >= 0 </p>
+  <p>NOTE: returns value of given optionIndex</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+      &lt;option value="AU"&gt;Australia&lt;/option&gt;
+      &lt;option value="CN"&gt;China&lt;/option&gt;
+      &lt;option value="IN"&gt;India&lt;/option&gt;
+      &lt;option value="US"&gt;United States&lt;/option&gt;
+
+      klib.<span class="nf">optionValueOfIndex</span>(<span class="s">"#countryList", 0</span>); <span class="c">//==> "AU"</span>
+      klib.<span class="nf">optionValueOfIndex</span>(<span class="s">"#countryList", 2</span>); <span class="c">//==> "IN"</span>
+      klib.<span class="nf">optionValueOfIndex</span>(<span class="s">"#countryList", 5</span>); <span class="c">//==> ""</span>
+    </code></pre>
+
+    <p><select id="testEl4optionValueOfIndex" multiple>
+      <option value="AU">Australia</option>
+      <option value="CN">China</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select></p>
+    <p><a href="javascript:$('#testEl4optionValueOfIndexResult').html(klib.optionValueOfIndex('#testEl4optionValueOfIndex', 0));">Index-0</a>
+      | <a href="javascript:$('#testEl4optionValueOfIndexResult').html(klib.optionValueOfIndex('#testEl4optionValueOfIndex', 2));">Index-2</a>
+      | <a href="javascript:$('#testEl4optionValueOfIndexResult').html(klib.optionValueOfIndex('#testEl4optionValueOfIndex', 5));">Index-5</a>
+      ==&gt; <span id="testEl4optionValueOfIndexResult"></span>
+    </p>
+
+  </div>
+
+  <h3 id="klib-optionTextOfIndex">klib.optionTextOfIndex(objectId, optionIndex) : String</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>optionIndex: Integer >= 0 </p>
+  <p>NOTE: returns text of given optionIndex</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+      &lt;option value="AU"&gt;Australia&lt;/option&gt;
+      &lt;option value="CN"&gt;China&lt;/option&gt;
+      &lt;option value="IN"&gt;India&lt;/option&gt;
+      &lt;option value="US"&gt;United States&lt;/option&gt;
+
+      klib.<span class="nf">optionTextOfIndex</span>(<span class="s">"#countryList", 0</span>); <span class="c">//==> "Australia"</span>
+      klib.<span class="nf">optionTextOfIndex</span>(<span class="s">"#countryList", 2</span>); <span class="c">//==> "India"</span>
+      klib.<span class="nf">optionTextOfIndex</span>(<span class="s">"#countryList", 5</span>); <span class="c">//==> ""</span>
+
+    </code></pre>
+
+    <p><select id="testEl4optionTextOfIndex" multiple>
+      <option value="AU">Australia</option>
+      <option value="CN">China</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select></p>
+    <p><a href="javascript:$('#testEl4optionTextOfIndexResult').html(klib.optionTextOfIndex('#testEl4optionTextOfIndex', 0));">Index-0</a>
+      | <a href="javascript:$('#testEl4optionTextOfIndexResult').html(klib.optionTextOfIndex('#testEl4optionTextOfIndex', 2));">Index-2</a>
+      | <a href="javascript:$('#testEl4optionTextOfIndexResult').html(klib.optionTextOfIndex('#testEl4optionTextOfIndex', 5));">Index-5</a>
+      ==&gt; <span id="testEl4optionTextOfIndexResult"></span>
+    </p>
+
+  </div>
+</div>
+
+<!-- Form:Select (Get Index of Value/Text)
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="form-select-index-ValueText">Form:Select (Get Index of Value/Text)</h1>
+  </div>
+
+  <h3 id="klib-optionIndexOfValue">klib.optionIndexOfValue(objectId, optValue) : Integer</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>optValue: String</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;option value=""  &gt;-select-&lt;/option&gt;
+&lt;option value="AU"&gt;Australia&lt;/option&gt;
+&lt;option value="CN"&gt;China&lt;/option&gt;
+&lt;option value="IN"&gt;India&lt;/option&gt;
+&lt;option value="US"&gt;United States&lt;/option&gt;
+
+klib.<span class="nf">optionIndexOfValue</span>(<span class="s">"#countryList", ""</span>); <span class="c">//==> 0</span>
+klib.<span class="nf">optionIndexOfValue</span>(<span class="s">"#countryList", "IN"</span>); <span class="c">//==> 3</span>
+    </code></pre>
+    <p><select id="testEl8optionIndexOfValue">
+      <option value=""  >-select-</option>
+      <option value="AU">Australia</option>
+      <option value="CN">China</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select></p>
+    <p><a href="javascript:$('#testEl9optionIndexOfValue').html(klib.optionIndexOfValue('testEl8optionIndexOfValue', 'AU'));">AU</a>
+      | <a href="javascript:$('#testEl9optionIndexOfValue').html(klib.optionIndexOfValue('testEl8optionIndexOfValue', 'CN'));">CN</a>
+      | <a href="javascript:$('#testEl9optionIndexOfValue').html(klib.optionIndexOfValue('testEl8optionIndexOfValue', 'IN'));">IN</a>
+      | <a href="javascript:$('#testEl9optionIndexOfValue').html(klib.optionIndexOfValue('testEl8optionIndexOfValue', 'US'));">US</a>
+      ==&gt; <span id="testEl9optionIndexOfValue"></span>
+    </p>
+  </div>
+
+  <h3 id="klib-optionIndexOfText">klib.optionIndexOfText(objectId, optText) : Integer</h3>
+   <p>objectId: String (with/without #)</p>
+   <p>optText: String</p>
+   <div class="highlight">
+    <pre><code class="javascript">
+&lt;option value=""  &gt;-select-&lt;/option&gt;
+&lt;option value="AU"&gt;Australia&lt;/option&gt;
+&lt;option value="CN"&gt;China&lt;/option&gt;
+&lt;option value="IN"&gt;India&lt;/option&gt;
+&lt;option value="US"&gt;United States&lt;/option&gt;
+
+klib.<span class="nf">optionIndexOfText</span>(<span class="s">"#countryList", "India"</span>); <span class="c">//==> 3</span>
+    </code></pre>
+     <p><select id="testEloptionIndexOfText">
+       <option value=""  >-select-</option>
+       <option value="AU">Australia</option>
+       <option value="CN">China</option>
+       <option value="IN">India</option>
+       <option value="US">United States</option>
+     </select></p>
+     <p><a href="javascript:$('#testEl10optionIndexOfValue').html(klib.optionIndexOfText('testEloptionIndexOfText', 'Australia'));">Australia</a>
+       | <a href="javascript:$('#testEl10optionIndexOfValue').html(klib.optionIndexOfText('testEloptionIndexOfText', 'China'));">China</a>
+       | <a href="javascript:$('#testEl10optionIndexOfValue').html(klib.optionIndexOfText('testEloptionIndexOfText', 'India'));">India</a>
+       | <a href="javascript:$('#testEl10optionIndexOfValue').html(klib.optionIndexOfText('testEloptionIndexOfText', 'United States'));">United States</a>
+       ==&gt; <span id="testEl10optionIndexOfValue"></span>
+     </p>
+   </div>
+
+  <h3 id="klib-optionIndexOfValueBeginsWith">klib.optionIndexOfValueBeginsWith(objectId, optValueBeginsWith) : Integer</h3>
+   <p>objectId: String (with/without #)</p>
+   <p>optValueBeginsWith: String</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;option value=""                 &gt;-select-&lt;/option&gt;
+&lt;option value="AU-Australia"     &gt;Australia&lt;/option&gt;
+&lt;option value="CN-China"         &gt;China&lt;/option&gt;
+&lt;option value="IN-India"         &gt;India&lt;/option&gt;
+&lt;option value="US-United States" &gt;United States&lt;/option&gt;
+
+klib.<span class="nf">optionIndexOfValueBeginsWith</span>(<span class="s">"#countryList", "in-"</span>); <span class="c">//==> 3</span>
+klib.<span class="nf">optionIndexOfValueBeginsWith</span>(<span class="s">"#countryList", "US"</span>); <span class="c">//==> 4</span>
+    </code></pre>
+    <p><select id="testEloptionIndexOfValueBeginsWith">
+      <option value=""                 >-select-</option>
+      <option value="AU-Australia"     >Australia</option>
+      <option value="CN-China"         >China</option>
+      <option value="IN-India"         >India</option>
+      <option value="US-United States" >United States</option>
+    </select></p>
+    <p><a href="javascript:$('#testEloptionIndexOfValueBeginsWithResult').html(klib.optionIndexOfValueBeginsWith('testEloptionIndexOfValueBeginsWith', 'in-'));">in-</a>
+      | <a href="javascript:$('#testEloptionIndexOfValueBeginsWithResult').html(klib.optionIndexOfValueBeginsWith('testEloptionIndexOfValueBeginsWith', 'US'));">US</a>
+      ==&gt; <span id="testEloptionIndexOfValueBeginsWithResult"></span>
+    </p>
+
+  </div>
+ </div>
+
+<!-- Form:Select (Set Selection)
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="form-select-set">Form:Select (Set Selection)</h1>
+  </div>
+
+  <h3 id="klib-selectOptionForValue">klib.selectOptionForValue(objectId, optValue) : Integer</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>optValue: String</p>
+  <p>Returns: Selected Index</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;option value=""  &gt;-select-&lt;/option&gt;
+&lt;option value="AU"&gt;Australia&lt;/option&gt;
+&lt;option value="CN"&gt;China&lt;/option&gt;
+&lt;option value="IN"&gt;India&lt;/option&gt;
+&lt;option value="US"&gt;United States&lt;/option&gt;
+
+klib.<span class="nf">selectOptionForValue</span>(<span class="s">"#countryList", ""</span>); <span class="c">//==> Set Selection to "-select-" and returns 0</span>
+klib.<span class="nf">selectOptionForValue</span>(<span class="s">"#countryList", "IN"</span>); <span class="c">//==> Set Selection to "India" and returns 3</span>
+klib.<span class="nf">selectOptionForValue</span>(<span class="s">"#countryList", "UK"</span>); <span class="c">//==> Set Selection to "" and returns -1</span>
+    </code></pre>
+
+    <p><select id="testEl4selectOptionForValue">
+      <option value=""  >-select-</option>
+      <option value="AU">Australia</option>
+      <option value="CN">China</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select></p>
+    <p><a href="javascript:$('#testEl4selectOptionForValueResult').html(klib.selectOptionForValue('testEl4selectOptionForValue', 'IN'));">IN</a>
+      | <a href="javascript:$('#testEl4selectOptionForValueResult').html(klib.selectOptionForValue('testEl4selectOptionForValue', 'CN'));">CN</a>
+      | <a href="javascript:$('#testEl4selectOptionForValueResult').html(klib.selectOptionForValue('testEl4selectOptionForValue', 'UK'));">UK</a>
+      ==&gt; <span id="testEl4selectOptionForValueResult"></span>
+    </p>
+
+  </div>
+
+  <h3 id="klib-selectOptionForValueBeginsWith">klib.selectOptionForValueBeginsWith(objectId, optValueBeginsWith) : Integer</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>optValueBeginsWith: String</p>
+  <p>Returns: Selected Index</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;option value=""  &gt;-select-&lt;/option&gt;
+&lt;option value="AU-Australia"     &gt;Australia&lt;/option&gt;
+&lt;option value="CN-China"         &gt;China&lt;/option&gt;
+&lt;option value="IN-India"         &gt;India&lt;/option&gt;
+&lt;option value="US-United States" &gt;United States&lt;/option&gt;
+
+klib.<span class="nf">selectOptionForValueBeginsWith</span>(<span class="s">"#countryList", "in-"</span>); <span class="c">//==> Set Selection to "India" and returns 3</span>
+klib.<span class="nf">selectOptionForValueBeginsWith</span>(<span class="s">"#countryList", "CN"</span>); <span class="c">//==> Set Selection to "China" and returns 2</span>
+klib.<span class="nf">selectOptionForValueBeginsWith</span>(<span class="s">"#countryList", "UK-"</span>); <span class="c">//==> Set Selection to "" and returns -1</span>
+    </code></pre>
+
+    <p><select id="testEl4selectOptionForValueBeginsWith">
+      <option value=""  >-select-</option>
+      <option value="AU-Australia"     >Australia</option>
+      <option value="CN-China"         >China</option>
+      <option value="IN-India"         >India</option>
+      <option value="US-United States" >United States</option>
+    </select></p>
+    <p><a href="javascript:$('#testEl4selectOptionForValueBeginsWithResult').html(klib.selectOptionForValueBeginsWith('testEl4selectOptionForValueBeginsWith', 'in-'));">in-</a>
+      | <a href="javascript:$('#testEl4selectOptionForValueBeginsWithResult').html(klib.selectOptionForValueBeginsWith('testEl4selectOptionForValueBeginsWith', 'CN'));">CN</a>
+      | <a href="javascript:$('#testEl4selectOptionForValueBeginsWithResult').html(klib.selectOptionForValueBeginsWith('testEl4selectOptionForValueBeginsWith', 'UK-'));">UK</a>
+      ==&gt; <span id="testEl4selectOptionForValueBeginsWithResult"></span>
+    </p>
+  </div>
+
+  <h3 id="klib-selectOptionsForValues">klib.selectOptionsForValues(objectId, optValues, valueDelimiter)</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>optValues: String separated by valueDelimiter</p>
+  <p>[valueDelimiter: String] default: ","  (comma)</p>
+  <p>Returns: NONE</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;option value="AU"&gt;Australia&lt;/option&gt;
+&lt;option value="CN"&gt;China&lt;/option&gt;
+&lt;option value="IN"&gt;India&lt;/option&gt;
+&lt;option value="US"&gt;United States&lt;/option&gt;
+
+klib.<span class="nf">selectOptionsForValues</span>(<span class="s">"#countryList", "in,AU"</span>);      <span class="c">//==> Set Selection to "India" and "Australia"</span>
+klib.<span class="nf">selectOptionsForValues</span>(<span class="s">"#countryList", "CN~us", "~"</span>); <span class="c">//==> Set Selection to "China" and "United States"</span>
+    </code></pre>
+    <p><select id="testEl4selectOptionsForValues" multiple>
+      <option value="AU">Australia</option>
+      <option value="CN">China</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select></p>
+    <p><a href="javascript:klib.selectOptionsForValues('testEl4selectOptionsForValues', 'in,AU');">"in,AU"</a>
+      | <a href="javascript:klib.selectOptionsForValues('testEl4selectOptionsForValues', 'CN~us', '~');">"CN~us"</a>
+    </p>
+
+  </div>
+
+
+  <h3 id="klib-selectOptionForText">klib.selectOptionForText(objectId, optText) : Integer</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>optText: String</p>
+  <p>Returns: Selected Index</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;option value=""  &gt;-select-&lt;/option&gt;
+&lt;option value="AU"&gt;Australia&lt;/option&gt;
+&lt;option value="CN"&gt;China&lt;/option&gt;
+&lt;option value="IN"&gt;India&lt;/option&gt;
+&lt;option value="US"&gt;United States&lt;/option&gt;
+
+klib.<span class="nf">selectOptionForText</span>(<span class="s">"#countryList", "India"</span>);  <span class="c">//==> Set Selection to "India" and returns 3</span>
+klib.<span class="nf">selectOptionForText</span>(<span class="s">"#countryList", "France"</span>); <span class="c">//==> Set Selection to "" and returns -1</span>
+klib.<span class="nf">selectOptionForText</span>(<span class="s">"#countryList", ""</span>);       <span class="c">//==> Set Selection to "" and returns -1</span>
+    </code></pre>
+
+    <p><select id="testEl4selectOptionForText">
+      <option value=""  >-select-</option>
+      <option value="AU">Australia</option>
+      <option value="CN">China</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select></p>
+    <p><a href="javascript:$('#testEl4selectOptionForTextResult').html(klib.selectOptionForText('testEl4selectOptionForText', 'India'));">India</a>
+      | <a href="javascript:$('#testEl4selectOptionForTextResult').html(klib.selectOptionForText('testEl4selectOptionForText', 'United States'));">United States</a>
+      | <a href="javascript:$('#testEl4selectOptionForTextResult').html(klib.selectOptionForText('testEl4selectOptionForText', 'France'));">France</a>
+      ==&gt; <span id="testEl4selectOptionForTextResult"></span>
+    </p>
+
+  </div>
+
+  <h3 id="klib-selectOptionsAll">klib.selectOptionsAll(objectId)</h3>
+  <p>objectId: String (with/without #)</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">selectOptionsAll</span>(<span class="s">"#countryList"</span>);  <span class="c">//==> Selects all options</span>
+    </code></pre>
+
+    <p><select id="testEl4selectOptionsAll" multiple>
+      <option value="AU">Australia</option>
+      <option value="CN">China</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select></p>
+    <p><a href="javascript:klib.selectOptionsAll('testEl4selectOptionsAll');">Select All</a>
+    </p>
+
+  </div>
+
+  <h3 id="klib-selectOptionsNone">klib.selectOptionsNone(objectId)</h3>
+  <p>objectId: String (with/without #)</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">selectOptionsNone</span>(<span class="s">"#countryList"</span>);  <span class="c">//==> Clear all selections</span>
+    </code></pre>
+
+    <p><select id="testEl4selectOptionsNone" multiple>
+      <option value="AU" selected>Australia</option>
+      <option value="CN">China</option>
+      <option value="IN" selected>India</option>
+      <option value="US">United States</option>
+    </select></p>
+    <p><a href="javascript:klib.selectOptionsNone('testEl4selectOptionsNone');">Clear</a>
+    </p>
+
+  </div>
+
+
+</div>
+
+<!-- Form:Select (Add Options)
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="form-select-add">Form:Select (Add Options)</h1>
+  </div>
+
+  <h3 id="klib-optionsLoad">klib.optionsLoad(objectId, optionsList, beginsAt, sortBy)</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>* optionsList = "N1..N2[:StepBy]"; //String with N1&amp;N2: Number(+/-); StepBy: +ve Number (default:1)</p>
+  <p>* optionsList = "Y-N1..Y+N2[:StepBy]"; //String with (Y/y)=>CurrentYear; N1&amp;N2: Number(+/-); StepBy: +ve Number (default:1)</p>
+  <p>* optionsList = [ 0, 1, ... ]; //Number Array</p>
+  <p>* optionsList = ["optValue0", "optValue1", ... ]; //String Array</p>
+  <p>* optionsList = {"optValue0":"optText0", "optValue1":"optText1", "optValue2":"optText2", ... }; //Object with Key Value Pair</p>
+  <p>beginsAt:Integer (default:0); -1 => Add to existing list; 0 => reset to 0; n => reset to n; before Load</p>
+  <p>sortBy:Integer; 0=> NO Sort; 1=> SortBy Value; 2=> SortBy Text;</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;option value=""  &gt;-select-&lt;/option&gt;
+&lt;option value="AU"&gt;Australia&lt;/option&gt;
+&lt;option value="CN"&gt;China&lt;/option&gt;
+&lt;option value="IN"&gt;India&lt;/option&gt;
+&lt;option value="US"&gt;United States&lt;/option&gt;
+
+klib.<span class="nf">optionsLoad</span>(<span class="s">"#countryList", {"FR":"France", "CA":"Canada"}, -1, 0</span>);
+      <span class="c">//==> Adds to existing country list (No Sort)</span>
+klib.<span class="nf">optionsLoad</span>(<span class="s">"#countryList", {"FR":"France", "CA":"Canada"}, 0, 2</span>);
+      <span class="c">//==> Replaces the country list with sort on Name</span>
+klib.<span class="nf">optionsLoad</span>(<span class="s">"#countryList", {"FR":"France", "CA":"Canada"}, 1, 2</span>);
+      <span class="c">//==> Replaces the country list except first option (sort on Name)</span>
+
+klib.<span class="nf">optionsLoad</span>(<span class="s">"#numberList", [1, 2, 3, 4, 5, 6]</span>);
+      <span class="c">//==> Replaces the number list with 1..6</span>
+klib.<span class="nf">optionsLoad</span>(<span class="s">"#numberList", "0..10:2"</span>);
+      <span class="c">//==> Replaces the number list with 0..10 (of step 2)</span>
+klib.<span class="nf">optionsLoad</span>(<span class="s">"#numberList", "10..0:2"</span>);
+      <span class="c">//==> Replaces the number list with 10..0 (of step 2)</span>
+klib.<span class="nf">optionsLoad</span>(<span class="s">"#dayList", ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']</span>);
+      <span class="c">//==> Replaces the day list with Mon..Sun</span>
+    </code></pre>
+
+    <p>Try in Console: klib.optionsLoad("#testEl4optionsLoad", "y-10..Y+10");<br/>
+      <select id="testEl4optionsLoad" size=10 style="min-width:200px" multiple>
+      <option value=""  >-select-</option>
+      <option value="AU">Australia</option>
+      <option value="CN">China</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select></p>
+    <p><a href="javascript:(klib.optionsLoad('testEl4optionsLoad', {'FR':'France', 'CA':'Canada'}, -1, 0));">Append FR & CA</a>
+     | <a href="javascript:(klib.optionsLoad('testEl4optionsLoad', {'FR':'France', 'CA':'Canada'}, 1, 2));">Replace with FR & CA + beginsAt:1 + Sort:Name</a>
+     | <a href="javascript:(klib.optionsLoad('testEl4optionsLoad', {'IN':'India', 'AU':'Australia', 'CN':'China', 'US':'United States'}, 1, 2));">Reset</a>
+     | <a href="javascript:(klib.optionsLoad('testEl4optionsLoad', [1, 2, 3, 4, 5, 6], 1));">1..6</a>
+     | <a href="javascript:(klib.optionsLoad('testEl4optionsLoad', ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], 1));">Mon..Sun</a>
+    </p>
+
+  </div>
+
+  <h3 id="klib-optionAppend">klib.optionAppend(objectId, optionValue, optionText, appendAtIndex) : Integer</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>optionValue: String</p>
+  <p>optionText: String</p>
+  <p>[appendAtIndex: Integer; default at the end; Index begins at 0]</p>
+  <p>Returns: Integer (new option index)</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;option value="AU"&gt;Australia&lt;/option&gt;
+&lt;option value="CN"&gt;China&lt;/option&gt;
+&lt;option value="IN"&gt;India&lt;/option&gt;
+&lt;option value="US"&gt;United States&lt;/option&gt;
+
+klib.<span class="nf">optionAppend</span>(<span class="s">"#countryList", "FR", "France"</span>);
+      <span class="c">//==> adds new option with value="FR" and text="France" and returns 4</span>
+    </code></pre>
+
+    <p><select id="testEl4optionAppend" size=5>
+      <option value="AU">Australia</option>
+      <option value="CN">China</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select></p>
+    <p><a href="javascript:$('#testEl4optionAppendResult').html(klib.optionAppend('testEl4optionAppend', 'FR', 'France'));">France [FR]</a>
+      ==&gt; <span id="testEl4optionAppendResult"></span>
+    </p>
+
+  </div>
+
+</div>
+
+<!-- Form:Select (Remove Options)
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="form-select-remove">Form:Select (Remove Options)</h1>
+  </div>
+
+  <h3 id="klib-optionsRemoveAll">klib.optionsRemoveAll(objectId)</h3>
+  <p>objectId: String (with/without #)</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">optionsRemoveAll</span>(<span class="s">"#countryList"</span>);  <span class="c">//==> removes all options</span>
+    </code></pre>
+
+    <p><select id="testEl4optionsRemoveAll" size=5 style="min-width:200px;">
+      <option value="AU">Australia</option>
+      <option value="CN">China</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select></p>
+    <p><a href="javascript:(klib.optionsRemoveAll('testEl4optionsRemoveAll'));">Remove All</a>
+    </p>
+
+  </div>
+
+  <h3 id="klib-optionsReduceToLength">klib.optionsReduceToLength(objectId)</h3>
+  <p>objectId: String (with/without #)</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">optionsReduceToLength</span>(<span class="s">"#countryList", 1</span>);  <span class="c">//==> reduces options to 1</span>
+    </code></pre>
+
+    <p><select id="testEl4optionsReduceToLength">
+      <option value=""  >-select-</option>
+      <option value="AU">Australia</option>
+      <option value="CN">China</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select></p>
+    <p><a href="javascript:(klib.optionsReduceToLength('testEl4optionsReduceToLength', 1));">Reduce To 1</a>
+    </p>
+
+  </div>
+
+  <h3 id="klib-optionRemoveForIndex">klib.optionRemoveForIndex(objectId, optionIndex)</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>optionIndex: Integer/String ('last' to remove last option; optionIndex starts at 0)</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;option value=""  &gt;-select-&lt;/option&gt;
+&lt;option value="AU"&gt;Australia&lt;/option&gt;
+&lt;option value="CN"&gt;China&lt;/option&gt;
+&lt;option value="IN"&gt;India&lt;/option&gt;
+&lt;option value="US"&gt;United States&lt;/option&gt;
+
+klib.<span class="nf">optionRemoveForIndex</span>(<span class="s">"#countryList", 2</span>);
+      <span class="c">//==> removes option "China"</span>
+klib.<span class="nf">optionRemoveForIndex</span>(<span class="s">"#countryList", 'last'</span>);
+      <span class="c">//==> removes option "United States"</span>
+    </code></pre>
+
+    <p><select id="testEl4optionRemoveForIndex" size=6>
+      <option value=""  >-select-</option>
+      <option value="AU">Australia</option>
+      <option value="CN">China</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select></p>
+    <p><a href="javascript:(klib.optionRemoveForIndex('testEl4optionRemoveForIndex', 2));">Remove Index:2</a>
+      | <a href="javascript:(klib.optionRemoveForIndex('testEl4optionRemoveForIndex', 'last'));">Remove Last</a>
+    </p>
+
+  </div>
+
+  <h3 id="klib-optionRemoveForValue">klib.optionRemoveForValue(objectId, optionValue)</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>optionValue: String</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;option value=""  &gt;-select-&lt;/option&gt;
+&lt;option value="AU"&gt;Australia&lt;/option&gt;
+&lt;option value="CN"&gt;China&lt;/option&gt;
+&lt;option value="IN"&gt;India&lt;/option&gt;
+&lt;option value="US"&gt;United States&lt;/option&gt;
+
+klib.<span class="nf">optionRemoveForValue</span>(<span class="s">"#countryList", 'CN'</span>);
+      <span class="c">//==> removes option "China"</span>
+klib.<span class="nf">optionRemoveForValue</span>(<span class="s">"#countryList", 'us'</span>);
+      <span class="c">//==> removes option "United States"</span>
+    </code></pre>
+
+    <p><select id="testEl4optionRemoveForValue" size=6>
+      <option value=""  >-select-</option>
+      <option value="AU">Australia</option>
+      <option value="CN">China</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select></p>
+    <p><a href="javascript:(klib.optionRemoveForValue('testEl4optionRemoveForValue', 'CN'));">Remove 'CN'</a>
+      | <a href="javascript:(klib.optionRemoveForValue('testEl4optionRemoveForValue', 'us'));">Remove 'us'</a>
+    </p>
+
+  </div>
+
+  <h3 id="klib-optionRemoveForText">klib.optionRemoveForText(objectId, optionText)</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>optionText: String</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;option value=""  &gt;-select-&lt;/option&gt;
+&lt;option value="AU"&gt;Australia&lt;/option&gt;
+&lt;option value="CN"&gt;China&lt;/option&gt;
+&lt;option value="IN"&gt;India&lt;/option&gt;
+&lt;option value="US"&gt;United States&lt;/option&gt;
+
+klib.<span class="nf">optionRemoveForText</span>(<span class="s">"#countryList", 'China'</span>);
+      <span class="c">//==> removes option "China"</span>
+klib.<span class="nf">optionRemoveForText</span>(<span class="s">"#countryList", 'india'</span>);
+      <span class="c">//==> removes option "India"</span>
+    </code></pre>
+
+    <p><select id="testEl4optionRemoveForText" size=6>
+      <option value=""  >-select-</option>
+      <option value="AU">Australia</option>
+      <option value="CN">China</option>
+      <option value="IN">India</option>
+      <option value="US">United States</option>
+    </select></p>
+    <p><a href="javascript:(klib.optionRemoveForText('testEl4optionRemoveForText', 'China'));">Remove 'China'</a>
+      | <a href="javascript:(klib.optionRemoveForText('testEl4optionRemoveForText', 'india'));">Remove 'india'</a>
+    </p>
+
+  </div>
+
+  <h3 id="klib-optionRemoveForValueBeginsWith">klib.optionRemoveForValueBeginsWith(objectId, optionValueBeginsWith)</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>optionValueBeginsWith: String</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;option value=""  &gt;-select-&lt;/option&gt;
+&lt;option value="AU-Australia"&gt;Australia&lt;/option&gt;
+&lt;option value="CN-China"&gt;China&lt;/option&gt;
+&lt;option value="IN-India"&gt;India&lt;/option&gt;
+&lt;option value="US-United States"&gt;United States&lt;/option&gt;
+
+klib.<span class="nf">optionRemoveForValueBeginsWith</span>(<span class="s">"#countryList", 'CN'</span>);
+      <span class="c">//==> removes option "China"</span>
+klib.<span class="nf">optionRemoveForValueBeginsWith</span>(<span class="s">"#countryList", 'in-'</span>);
+      <span class="c">//==> removes option "India"</span>
+    </code></pre>
+
+    <p><select id="testEl4optionRemoveForValueBeginsWith" size=6>
+      <option value=""  >-select-</option>
+      <option value="AU-Australia">Australia</option>
+      <option value="CN-China">China</option>
+      <option value="IN-India">India</option>
+      <option value="US-United States">United States</option>
+    </select></p>
+    <p><a href="javascript:(klib.optionRemoveForValueBeginsWith('testEl4optionRemoveForValueBeginsWith', 'CN'));">Remove 'CN'</a>
+      | <a href="javascript:(klib.optionRemoveForValueBeginsWith('testEl4optionRemoveForValueBeginsWith', 'in-'));">Remove 'in-'</a>
+    </p>
+
+  </div>
+
+</div>
+
+<!-- Form:(Checkbox | Radio)
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="form-rad-chk">Forms:(Checkbox | Radio)</h1>
+  </div>
+
+  <h3 id="klib-checkedState">klib.checkedState(objectId, newCheckState) : Boolean</h3>
+  <p>objectId: String (with/without #); Radio or Checkbox</p>
+  <p>[newCheckState: Boolean] without "newCheckState" getter, with "newCheckState" setter</p>
+  <p>Returns: Boolean; previous checked state</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">checkedState</span>(<span class="s">"#isActive"</span>);
+      <span class="c">//==> Returns checked status of "#isActive"</span>
+
+klib.<span class="nf">checkedState</span>(<span class="s">"#isActive", true</span>);
+      <span class="c">//==>Set checked = true on "#isActive" and returns previous checked state</span>
+    </code></pre>
+  </div>
+
+  <h3 id="klib-isChecked">klib.isChecked(formId, elName) : Boolean</h3>
+  <p>formId: String (with #);</p>
+  <p>elName: String (without #); *Name* of the element (Radio or Checkbox); *NOT ID*</p>
+  <p>Returns: Boolean; checked state</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;form id="memberForm"&gt;
+  &lt;input type="radio" name="gender" value="male"  &gt; Male
+  &lt;input type="radio" name="gender" value="female"&gt; Female
+&lt;/form&gt;
+
+klib.<span class="nf">isChecked</span>(<span class="s">"#memberForm", "gender"</span>);
+      <span class="c">//==> Returns true if any one radio selected; false if none selected</span>
+
+    </code></pre>
+
+    <form id="memberForm">
+      <label><input type="radio" name="gender" value="male"  /> Male</label>
+      <label><input type="radio" name="gender" value="female"/> Female</label>
+
+      | <a href="javascript:$('#testEl4isCheckedResult').html('');klib.radioClearSelection('#memberForm', 'gender');">Clear</a>
+    </form>
+    <p><a href="javascript:$('#testEl4isCheckedResult').html(''+klib.isChecked('#memberForm', 'gender'));">isChecked?</a>
+      ==&gt; <span id="testEl4isCheckedResult"></span>
+    </p>
+
+  </div>
+
+  <h3 id="klib-checkboxCheckedValues">klib.checkboxCheckedValues(formId, checkboxElementName, delimiter) : String</h3>
+  <p>formId: String (with #);</p>
+  <p>checkboxElementName: String (without #); *Name* of the Checkbox element; *NOT ID*</p>
+  <p>[delimiter: String]; default: "," comma</p>
+  <p>Returns: String; all checked box element's values separated by delimiter</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;form id="technologyForm"&gt;
+  &lt;input type="checkbox" name="technology" value="Javascript"  &gt; Javascript
+  &lt;input type="checkbox" name="technology" value="Java"        &gt; Java
+  &lt;input type="checkbox" name="technology" value="PHP"         &gt; PHP
+  &lt;input type="checkbox" name="technology" value="Ruby"        &gt; Ruby
+&lt;/form&gt;
+
+klib.<span class="nf">checkboxCheckedValues</span>(<span class="s">"#technologyForm", "technology"</span>);
+      <span class="c">//==> selected values separated by "," (comma)</span>
+
+klib.<span class="nf">checkboxCheckedValues</span>(<span class="s">"#technologyForm", "technology", "~"</span>);
+      <span class="c">//==> selected values separated by "~"</span>
+    </code></pre>
+
+    <form id="technologyForm">
+      <label><input type="checkbox" name="technology" value="Javascript"  /> Javascript</label>
+      <label><input type="checkbox" name="technology" value="Java"        /> Java</label>
+      <label><input type="checkbox" name="technology" value="PHP"         /> PHP</label>
+      <label><input type="checkbox" name="technology" value="Ruby"        /> Ruby</label>
+    </form>
+
+    <p><a href="javascript:$('#testEl4checkboxCheckedValuesResult').html(klib.checkboxCheckedValues('#technologyForm', 'technology'));">Get with comma</a>
+     | <a href="javascript:$('#testEl4checkboxCheckedValuesResult').html(klib.checkboxCheckedValues('#technologyForm', 'technology', '~'));">Get with ~ </a>
+      ==&gt; <span id="testEl4checkboxCheckedValuesResult"></span>
+    </p>
+
+  </div>
+
+  <h3 id="klib-radioSelectedValue">klib.radioSelectedValue(formId, elName) : String</h3>
+  <p>formId: String (with #);</p>
+  <p>elName: String (without #); *Name* of the element (Radio or Checkbox); *NOT ID*</p>
+  <p>Returns: String; checked radio element's value</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;form id="memberEditForm"&gt;
+  &lt;input type="radio" name="gender" value="male"  &gt; Male
+  &lt;input type="radio" name="gender" value="female"&gt; Female
+&lt;/form&gt;
+
+klib.<span class="nf">radioSelectedValue</span>(<span class="s">"#memberEditForm", "gender"</span>);
+      <span class="c">//==> Returns selected radio element's value if any one radio selected; "" if none selected</span>
+    </code></pre>
+
+    <form id="memberEditForm">
+      <label><input type="radio" name="gender" value="male"  /> Male</label>
+      <label><input type="radio" name="gender" value="female"/> Female</label>
+
+      | <a href="javascript:$('#testEl4radioSelectedValueResult').html('');klib.radioClearSelection('#memberEditForm', 'gender');">Clear</a>
+    </form>
+    <p><a href="javascript:$('#testEl4radioSelectedValueResult').html(''+klib.radioSelectedValue('#memberEditForm', 'gender'));">Checked Value</a>
+      ==&gt; <span id="testEl4radioSelectedValueResult"></span>
+    </p>
+
+  </div>
+
+  <h3 id="klib-radioSelectForValue">klib.radioSelectForValue(formId, elName, elValueToBeSelected)</h3>
+  <p>formId: String (with #);</p>
+  <p>elName: String (without #); *Name* of the radio element; *NOT ID*</p>
+  <p>elValueToBeSelected: String; radio element's value to be checked</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;form id="memberProfileEditForm"&gt;
+  &lt;input type="radio" name="gender" value="M" &gt; Male
+  &lt;input type="radio" name="gender" value="F" &gt; Female
+&lt;/form&gt;
+
+klib.<span class="nf">radioSelectForValue</span>(<span class="s">"#memberProfileEditForm", "gender", "f"</span>);
+      <span class="c">//==>selects radio element female (case insensitive)</span>
+
+klib.<span class="nf">radioSelectForValue</span>(<span class="s">"#memberProfileEditForm", "gender", ""</span>);
+      <span class="c">//==>clears radio element selection</span>
+    </code></pre>
+
+    <form id="memberProfileEditForm">
+      <label><input type="radio" name="gender" value="M"  /> Male</label>
+      <label><input type="radio" name="gender" value="F"/> Female</label>
+
+      | <a href="javascript:klib.radioClearSelection('#memberProfileEditForm', 'gender');">Clear</a>
+    </form>
+    <p><a href="javascript:(klib.radioSelectForValue('#memberProfileEditForm', 'gender', 'M'));">M</a>
+      | <a href="javascript:(klib.radioSelectForValue('#memberProfileEditForm', 'gender', 'f'));">f</a>
+      | <a href="javascript:(klib.radioSelectForValue('#memberProfileEditForm', 'gender', ''));">""</a>
+    </p>
+
+  </div>
+
+  <h3 id="klib-radioClearSelection">klib.radioClearSelection(formId, elName)</h3>
+  <p>formId: String (with #);</p>
+  <p>elName: String (without #); *Name* of the radio element; *NOT ID*</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;form id="memberRegistrationForm"&gt;
+  &lt;input type="radio" name="gender" value="M" &gt; Male
+  &lt;input type="radio" name="gender" value="F" &gt; Female
+&lt;/form&gt;
+
+klib.<span class="nf">radioSelectForValue</span>(<span class="s">"#memberRegistrationForm", "gender"</span>);
+      <span class="c">//==>clears radio element selection</span>
+    </code></pre>
+
+    <form id="memberRegistrationForm">
+      <label><input type="radio" name="gender" value="M"  /> Male</label>
+      <label><input type="radio" name="gender" value="F"/> Female</label>
+
+      | <a href="javascript:klib.radioClearSelection('#memberRegistrationForm', 'gender');">Clear</a>
+    </form>
+
+  </div>
+
+
+</div>
+
+<!-- Document Element(s)
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="doc-el">Document Element(s)</h1>
+  </div>
+
+  <h3 id="klib-getDocObj">klib.getDocObj(objectId) : HTML Element [object]</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>NOTE: Returns first element, if more elements with same ID exist</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">getDocObj</span>(<span class="s">"klib-getDocObj"</span>);  <span class="c">//==> [object HTML Element]</span>
+      klib.<span class="nf">getDocObj</span>(<span class="s">"#klib-getDocObj"</span>); <span class="c">//==> [object HTML Element]</span>
+    </code></pre>
+  </div>
+
+  <h3 id="klib-getDocObjs">klib.getDocObjs(objectId) : [ HTML Element (object) ]</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>NOTE: returns Array </p>
+  <div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">getDocObjs</span>(<span class="s">"klib-getDocObj"</span>);  <span class="c">//==> [ [object HTML Element] ]</span>
+      klib.<span class="nf">getDocObjs</span>(<span class="s">"#klib-getDocObj"</span>); <span class="c">//==> [ [object HTML Element] ]</span>
+    </code></pre>
+  </div>
+
+  <h3 id="klib-isElementExist">klib.isElementExist(elSelector) : Boolean</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">isElementExist</span>(<span class="s">"#klib-isElementExist"</span>); <span class="c">//==> true</span>
+      klib.<span class="nf">isElementExist</span>(<span class="s">"#UnknownElementId"</span>);    <span class="c">//==> false</span>
+    </code></pre>
+  </div>
+
+  <h3 id="klib-setFocus">klib.setFocus(objectId, forceSelect) : void</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>[forceSelect: Boolean]</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">setFocus</span>(<span class="s">"#testEl1SetFocus"</span>); <span class="c">//==> set Focus on element </span>
+    </code></pre>
+    <input type=text id="testEl1SetFocus" value="Hello" /> <a href="javascript:klib.setFocus('testEl1SetFocus');">focus</a>
+
+    <pre><code class="javascript">
+      klib.<span class="nf">setFocus</span>(<span class="s">"#testEl2SetFocus", true</span>); <span class="c">//==> set Focus and Select </span>
+    </code></pre>
+    <input type=text id="testEl2SetFocus" value="Hello" /> <a href="javascript:klib.setFocus('testEl2SetFocus', true);">focus</a>
+
+  </div>
+
+  <h3 id="klib-swapObjClass">klib.swapObjClass(elSelector, oldClassName, newClassName) : void</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">swapObjClass</span>(<span class="s">".active", "active", "inactive"</span>); <span class="c">//==> removes class "active" and adds class "inactive"</span>
+    </code></pre>
+  </div>
+
+</div>
+
+<!-- Form:Element (Get/Set Value)
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="form-el-value">Form:Element (Get/Set Value)</h1>
+  </div>
+
+  <h3 id="klib-docObjValue">klib.docObjValue(objectId, newValue) : String</h3>
+  <p>objectId: String (with/without #)</p>
+  <p>[newValue: String]</p>
+  <p>NOTE: returns old/current value and sets newValue if given</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">docObjValue</span>(<span class="s">"testEl3SetFocus", "Hi"</span>); <span class="c">//==> "Hello" (see in developer console)</span>
+    </code></pre>
+    <p><input type=text id="testEl3docObjValue" value="Hello" /></p>
+    <p>Set
+      <a href="javascript:$('#testEl5docObjValue').html(klib.docObjValue('testEl3docObjValue', 'Hi'));">Hi</a>
+      | <a href="javascript:$('#testEl5docObjValue').html(klib.docObjValue('testEl3docObjValue', 'Hello'));">Hello</a>
+      ==&gt; <span id="testEl5docObjValue"></span>
+    </p>
+  </div>
+
+</div>
+
+<!-- String
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="string">String</h1>
+  </div>
+
+  <h3 id="string-trim">String.trim() : String</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+      (<span class="s">"  I am a      string   "</span>).<span class="nf">trim</span>(); <span class="c">//==> "I am a      string"</span>
+    </code></pre>
+  </div>
+
+  <h3 id="string-normalize">String.normalize() : String</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+      (<span class="s">" I am a      string "</span>).<span class="nf">normalize</span>(); <span class="c">//==> "I am a string"</span>
+    </code></pre>
+  </div>
+
+  <h3 id="string-toProperCase">String.toProperCase() : String</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+      (<span class="s">"  I am a      string   "</span>).<span class="nf">toProperCase</span>(true); <span class="c">//==> "I Am A String"</span>;
+    </code></pre>
+  </div>
+
+  <h3 id="string-isBlank">String.isBlank() : Boolean</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+      (<span class="s">""</span>).<span class="nf">isBlank</span>(); <span class="c">//==> true</span>
+      (<span class="s">"    "</span>).<span class="nf">isBlank</span>(); <span class="c">//==> true</span>
+      (<span class="s">"I am a      string"</span>).<span class="nf">isBlank</span>(); <span class="c">//==> false</span>
+    </code></pre>
+  </div>
+
+  <h3 id="string-ifBlank">String.ifBlank(String) | String.ifBlank() : String</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+      (<span class="s">""</span>).<span class="nf">ifBlank</span>("Another String"); <span class="c">//==> "Another String"</span>
+      (<span class="s">"    "</span>).<span class="nf">ifBlank</span>("Another String"); <span class="c">//==> "Another String"</span>
+      (<span class="s">"    "</span>).<span class="nf">ifBlank</span>();                 <span class="c">//==> ""</span>
+      (<span class="s">"  I am a string  "</span>).<span class="nf">ifBlank</span>("Another String"); <span class="c">//==> "I am a string"</span>
+    </code></pre>
+  </div>
+
+  <h3 id="string-isNumber">String.isNumber() : Boolean</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+      (<span class="s">"123"</span>).<span class="nf">isNumber</span>(); <span class="c">//==> true</span>
+      (<span class="s">" 123 "</span>).<span class="nf">isNumber</span>(); <span class="c">//==> true</span>
+      (<span class="s">" 123.45 "</span>).<span class="nf">isNumber</span>(); <span class="c">//==> true</span>
+      (<span class="s">"$ 123.45"</span>).<span class="nf">isNumber</span>(); <span class="c">//==> false</span>
+      (<span class="s">"USD 123.45"</span>).<span class="nf">isNumber</span>(); <span class="c">//==> false</span>
+    </code></pre>
+  </div>
+
+  <h3 id="string-beginsWith">String.beginsWith(String) : Boolean</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+      (<span class="s">"I am a string"</span>).<span class="nf">beginsWith</span>(<span class="s">"I am"</span>);      <span class="c">//==> true</span>
+      (<span class="s">"I am a string"</span>).<span class="nf">beginsWith</span>(<span class="s">"i am"</span>);      <span class="c">//==> false; Case Sensitive</span>
+      (<span class="s">"I am a string"</span>).<span class="nf">beginsWith</span>(<span class="s">"i am"</span>, <span class="s">"i"</span>); <span class="c">//==> true; Ignore Case</span>
+    </code></pre>
+  </div>
+
+  <h3 id="string-endsWith">String.endsWith(String) : Boolean</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+      (<span class="s">"I am a string"</span>).<span class="nf">endsWith</span>(<span class="s">"ing"</span>);      <span class="c">//==> true</span>
+      (<span class="s">"I am a string"</span>).<span class="nf">endsWith</span>(<span class="s">"iNg"</span>);      <span class="c">//==> false; Case Sensitive</span>
+      (<span class="s">"I am a string"</span>).<span class="nf">endsWith</span>(<span class="s">"InG"</span>, <span class="s">"i"</span>); <span class="c">//==> true; Ignore Case</span>
+    </code></pre>
+  </div>
+
+  <h3 id="string-equals">String.equals() : Boolean</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+      (<span class="s">"I am a string"</span>).<span class="nf">equals</span>("I am a string"); <span class="c">//==> true</span>
+      (<span class="s">" I am a string "</span>).<span class="nf">equals</span>("I am a string"); <span class="c">//==> false</span>
+    </code></pre>
+  </div>
+
+  <h3 id="string-equalsIgnoreCase">String.equalsIgnoreCase() : Boolean</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+      (<span class="s">"I am a string"</span>).<span class="nf">equalsIgnoreCase</span>("I Am A String"); <span class="c">//==> true</span>
+      (<span class="s">" I am a string "</span>).<span class="nf">equalsIgnoreCase</span>("I Am A String"); <span class="c">//==> false</span>
+    </code></pre>
+  </div>
+
+  <h3 id="string-toJSON">String.toJSON() : JSON Object</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+      (<span class="s">"{ name:'My Name', age: 18, active: true }"</span>).<span class="nf">toJSON</span>(); <span class="c">//==> JSON Object</span>
+    </code></pre>
+  </div>
+
+  <h3 id="string-toBoolean">String.toBoolean() : Boolean</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+      (<span class="s">""</span>).<span class="nf">toBoolean</span>(); <span class="c">//==> false</span>
+      (<span class="s">"     "</span>).<span class="nf">toBoolean</span>(); <span class="c">//==> false</span>
+      (<span class="s">"0"</span>).<span class="nf">toBoolean</span>(); <span class="c">//==> false</span>
+      (<span class="s">"false"</span>).<span class="nf">toBoolean</span>(); <span class="c">//==> false</span>
+      (<span class="s">"123"</span>).<span class="nf">toBoolean</span>(); <span class="c">//==> true</span>
+      (<span class="s">"abc"</span>).<span class="nf">toBoolean</span>(); <span class="c">//==> true</span>
+      (<span class="s">"true"</span>).<span class="nf">toBoolean</span>(); <span class="c">//==> true</span>
+    </code></pre>
+  </div>
+
+  <h3 id="string-pad">String.pad(length, padString, type) : String</h3>
+  <p>length: Integer; padString repeat count</p>
+  <p>[padString: String; Default='']</p>
+  <p>[type: Integer; 0 = left, 1 = right, 2 = both sides; Default=0;]</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+      (<span class="s">"Hello"</span>).<span class="nf">pad</span>(5, "-", 2); <span class="c">//==> "-----Hello-----"</span>
+    </code></pre>
+  </div>
+
+</div>
+
+<!-- K-Lib wrapper for String Ops
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="string-klib">K-Lib wrapper for String Ops</h1>
+  </div>
+
+  <h3 id="string-klib-isBlank">klib.isBlank(checkFor) : Boolean</h3>
+  <p>checkFor: String | Integer | Float</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">isBlank</span>(<span class="s">undefined</span>); <span class="c">//==> true</span>
+      klib.<span class="nf">isBlank</span>(<span class="s">null</span>);      <span class="c">//==> true</span>
+      klib.<span class="nf">isBlank</span>(<span class="s">""</span>);        <span class="c">//==> true</span>
+      klib.<span class="nf">isBlank</span>(<span class="s">"   "</span>);     <span class="c">//==> true</span>
+      klib.<span class="nf">isBlank</span>(<span class="s">1234</span>);      <span class="c">//==> false</span>
+      klib.<span class="nf">isBlank</span>(<span class="s">123.45</span>);    <span class="c">//==> false</span>
+      klib.<span class="nf">isBlank</span>(<span class="s">"Hello"</span>);   <span class="c">//==> false</span>
+    </code></pre>
+  </div>
+
+  <h3 id="string-klib-isNumber">klib.isNumber(checkFor) : Boolean</h3>
+  <p>checkFor: String | Integer | Float</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">isNumber</span>(<span class="s">123</span>);          <span class="c">//==> true</span>
+      klib.<span class="nf">isNumber</span>(<span class="s">123.45</span>);       <span class="c">//==> true</span>
+      klib.<span class="nf">isNumber</span>(<span class="s">"123"</span>);        <span class="c">//==> true</span>
+      klib.<span class="nf">isNumber</span>(<span class="s">" 123 "</span>);      <span class="c">//==> true</span>
+      klib.<span class="nf">isNumber</span>(<span class="s">" 123.45 "</span>);   <span class="c">//==> true</span>
+      klib.<span class="nf">isNumber</span>(<span class="s">"$ 123.45"</span>);   <span class="c">//==> false</span>
+      klib.<span class="nf">isNumber</span>(<span class="s">"USD 123.45"</span>); <span class="c">//==> false</span>
+      klib.<span class="nf">isNumber</span>(<span class="s">undefined</span>);    <span class="c">//==> false</span>
+      klib.<span class="nf">isNumber</span>(<span class="s">null</span>);         <span class="c">//==> false</span>
+    </code></pre>
+  </div>
+
+  <h3 id="string-klib-toBoolean">klib.toBoolean(input) : Boolean</h3>
+  <p>input: String | Integer | Float</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">toBoolean</span>(<span class="s">""</span>);        <span class="c">//==> false</span>
+      klib.<span class="nf">toBoolean</span>(<span class="s">"     "</span>);   <span class="c">//==> false</span>
+      klib.<span class="nf">toBoolean</span>(<span class="s">"0"</span>);       <span class="c">//==> false</span>
+      klib.<span class="nf">toBoolean</span>(<span class="s">0</span>);         <span class="c">//==> false</span>
+      klib.<span class="nf">toBoolean</span>(<span class="s">"false"</span>);   <span class="c">//==> false</span>
+      klib.<span class="nf">toBoolean</span>(<span class="s">false</span>);     <span class="c">//==> false</span>
+      klib.<span class="nf">toBoolean</span>(<span class="s">undefined</span>); <span class="c">//==> false</span>
+      klib.<span class="nf">toBoolean</span>(<span class="s">null</span>);      <span class="c">//==> false</span>
+
+      klib.<span class="nf">toBoolean</span>(<span class="s">"123"</span>);     <span class="c">//==> true</span>
+      klib.<span class="nf">toBoolean</span>(<span class="s">123</span>);       <span class="c">//==> true</span>
+      klib.<span class="nf">toBoolean</span>(<span class="s">"abc"</span>);     <span class="c">//==> true</span>
+      klib.<span class="nf">toBoolean</span>(<span class="s">"true"</span>);    <span class="c">//==> true</span>
+    </code></pre>
+  </div>
+
+  <h3 id="string-klib-toJSON">klib.toJSON(String) : JSON Object</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">toJSON</span>(<span class="s">"{ name:'My Name', age: 18, active: true }"</span>); <span class="c">//==> JSON Object</span>
+    </code></pre>
+  </div>
+
+  <h3 id="string-klib-toInt">klib.toInt(input) : Int</h3>
+  <p>input: String | Integer | Float</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">toInt</span>(<span class="s">"123"</span>);      <span class="c">//==> 123</span>
+      klib.<span class="nf">toInt</span>(<span class="s">"  123 "</span>);   <span class="c">//==> 123</span>
+      klib.<span class="nf">toInt</span>(<span class="s">123</span>);        <span class="c">//==> 123</span>
+      klib.<span class="nf">toInt</span>(<span class="s">"$ 123.45"</span>); <span class="c">//==> 123</span>
+      klib.<span class="nf">toInt</span>(<span class="s">123.45</span>);     <span class="c">//==> 123</span>
+      klib.<span class="nf">toInt</span>(<span class="s">".12"</span>);      <span class="c">//==> 0</span>
+      klib.<span class="nf">toInt</span>(<span class="s">.12</span>);        <span class="c">//==> 0</span>
+      klib.<span class="nf">toInt</span>(<span class="s">""</span>);         <span class="c">//==> 0</span>
+      klib.<span class="nf">toInt</span>(<span class="s">"   "</span>);      <span class="c">//==> 0</span>
+      klib.<span class="nf">toInt</span>(<span class="s">undefined</span>);  <span class="c">//==> 0</span>
+      klib.<span class="nf">toInt</span>(<span class="s">null</span>);       <span class="c">//==> 0</span>
+      klib.<span class="nf">toInt</span>(<span class="s">"ABCED"</span>);    <span class="c">//==> 0</span>
+    </code></pre>
+  </div>
+
+  <h3 id="string-klib-toFloat">klib.toFloat(input) : Float</h3>
+  <p>input: String | Integer | Float</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">toFloat</span>(<span class="s">"123"</span>);      <span class="c">//==> 123</span>
+      klib.<span class="nf">toFloat</span>(<span class="s">"  123 "</span>);   <span class="c">//==> 123</span>
+      klib.<span class="nf">toFloat</span>(<span class="s">123</span>);        <span class="c">//==> 123</span>
+      klib.<span class="nf">toFloat</span>(<span class="s">"$ 123.45"</span>); <span class="c">//==> 123.45</span>
+      klib.<span class="nf">toFloat</span>(<span class="s">123.456</span>);    <span class="c">//==> 123.456</span>
+      klib.<span class="nf">toFloat</span>(<span class="s">".1234"</span>);    <span class="c">//==> 0.1234</span>
+      klib.<span class="nf">toFloat</span>(<span class="s">.1234</span>);      <span class="c">//==> 0.1234</span>
+      klib.<span class="nf">toFloat</span>(<span class="s">""</span>);         <span class="c">//==> 0</span>
+      klib.<span class="nf">toFloat</span>(<span class="s">"   "</span>);      <span class="c">//==> 0</span>
+      klib.<span class="nf">toFloat</span>(<span class="s">undefined</span>);  <span class="c">//==> 0</span>
+      klib.<span class="nf">toFloat</span>(<span class="s">null</span>);       <span class="c">//==> 0</span>
+      klib.<span class="nf">toFloat</span>(<span class="s">"ABCED"</span>);    <span class="c">//==> 0</span>
+    </code></pre>
+  </div>
+
+  <h3 id="string-klib-range">klib.range(rangeSpec) : Array</h3>
+  <p>rangeSpec: String; range specification "N1..N2:StepBy"</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+      klib.<span class="nf">range</span>(<span class="s">"1..10"</span>);
+      <span class="c">//==> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</span>
+      klib.<span class="nf">range</span>(<span class="s">"-5..5"</span>);
+      <span class="c">//==> [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]</span>
+      klib.<span class="nf">range</span>(<span class="s">"0..50:10"</span>);
+      <span class="c">//==> [0, 10, 20, 30, 40, 50]</span>
+
+      klib.<span class="nf">range</span>(<span class="s">"y..y+5"</span>);
+      <span class="c">//==> <script>document.write("["+klib.range("y..y+5")+"]");</script></span>
+      klib.<span class="nf">range</span>(<span class="s">"y-5..y"</span>);
+      <span class="c">//==> <script>document.write("["+klib.range("y-5..y")+"]");</script></span>
+      klib.<span class="nf">range</span>(<span class="s">"y-2..y+2"</span>);
+      <span class="c">//==> <script>document.write("["+klib.range("y-2..y+2")+"]");</script></span>
+      klib.<span class="nf">range</span>(<span class="s">"y-5..y+5:2"</span>);
+      <span class="c">//==> <script>document.write("["+klib.range("y-5..y+5:2")+"]");</script></span>
+    </code></pre>
+  </div>
+
+</div>
+
+<!-- Other
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="other">Other</h1>
+  </div>
+  <h3 id="klib-urlParams">klib.urlParams(urlQueryString)</h3>
+  <p>[urlQueryString: String (Optional); default: window.location.search]</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">urlParams</span>(<span class="s">"https://xyz.com/page?param0=value0&amp;param1=value1&amp;paramX=valueA&amp;paramX=valueB"</span>);
+klib.<span class="nf">urlParams</span>(<span class="s">"//xyz.com/page?param0=value0&amp;param1=value1&amp;paramX=valueA&amp;paramX=valueB"</span>);
+klib.<span class="nf">urlParams</span>(<span class="s">"?param0=value0&amp;param1=value1&amp;paramX=valueA&amp;paramX=valueB"</span>);
+klib.<span class="nf">urlParams</span>(<span class="s">"param0=value0&amp;param1=value1&amp;paramX=valueA&amp;paramX=valueB"</span>);
+<span class="c">//==> {param0: "value0", param1:"value1", paramX:["valueA", "valueB"]}</span>
+
+if <span class="nf">document URL</span> = <span class="s">https://xyz.com/page?param0=value0&amp;param1=value1&amp;paramX=valueA&amp;paramX=valueB"</span>;
+klib.<span class="nf">urlParams()</span><span class="s">["param0"]</span>; <span class="c">//==> "value0"</span>
+klib.<span class="nf">urlParams()</span>.<span class="s">param0</span>; <span class="c">//==> "value0"</span>
+klib.<span class="nf">urlParams()</span>.<span class="s">paramX</span>; <span class="c">//==> ["valueA", "valueB"]</span>
+klib.<span class="nf">urlParams()</span>.<span class="s">paramZ</span>; <span class="c">//==> undefined</span>
+      </code></pre>
+  </div>
+
+  <h3 id="klib-urlParam">klib.urlParam(paramName, urlQueryString)</h3>
+  <p>paramName: String</p>
+  <p>[urlQueryString: String (Optional); default: window.location.search]</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+if <span class="nf">document URL</span> = <span class="s">https://xyz.com/page?param0=value0&amp;param1=value1&amp;paramX=valueA&amp;paramX=valueB"</span>;
+klib.<span class="nf">urlParam</span>(<span class="s">"param0"</span>); <span class="c">//==> "value0"</span>
+klib.<span class="nf">urlParam</span>(<span class="s">"paramX"</span>); <span class="c">//==> ["valueA", "valueB"]</span>
+klib.<span class="nf">urlParam</span>(<span class="s">"paramZ"</span>); <span class="c">//==> undefined</span>
+    </code></pre>
+  </div>
+
+  <h3 id="klib-urlHash">klib.urlHash(returnOf, hashDelimiter)</h3>
+  <p>[returnOf: Number | Array (Optional)]</p>
+  <p>[hashDelimiter: String (Optional); default: "/"]</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+if <span class="nf">document URL</span> = <span class="s">"http://xyz.com/page#/hash0/hash1/hash2"</span>;
+klib.<span class="nf">urlHash</span>(); <span class="c">//==> "/hashA/hashB/hashC"</span>
+klib.<span class="nf">urlHash</span>(<span class="s">1</span>); <span class="c">//==> "hashB"</span>
+klib.<span class="nf">urlHash</span>(<span class="s">[]</span>); <span class="c">//==> ["hashA", "hashB", "hashC"]</span>
+klib.<span class="nf">urlHash</span>(<span class="s">["keyX", "keyY", "keyZ"]</span>); <span class="c">//==> {"keyX":"hashA", "keyY":"hashB", "keyZ":"hashC"}</span>
+    </code></pre>
+  </div>
+
+  <h3 id="klib-addScript">klib.addScript(scriptId, scriptSrc)</h3>
+  <p>scriptId: String (without #)</p>
+  <p>scriptSrc: String (URL)</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">addScript</span>(<span class="s">"jQuery", "//codeorigin.jquery.com/jquery-1.10.2.min.js"</span>);
+<span class="c">//==> Adds new script tag to document if script tag with id="jQuery" not found</span>
+<blockquote>&lt;script id="jQuery" src="//codeorigin.jquery.com/jquery-1.10.2.min.js" type="text/javascript"&gt;&lt;/script&gt;</blockquote></code></pre>
+  </div>
+
+  <h3 id="klib-loadScript">klib.loadScript(scriptId, scriptSrc [, useScriptTag, ajaxQue])</h3>
+  <p>scriptId: String (without #)</p>
+  <p>scriptSrc: String (URL)</p>
+  <p>[useScriptTag: Boolean] default:false</p>
+  <p>[ajaxQue: Array] default:[ ]</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">loadScript</span>(<span class="s">"jQuery", "//codeorigin.jquery.com/jquery-1.10.2.min.js", true</span>);
+<blockquote>//same as klib.<span class="nf">addScript</span>(<span class="s">"jQuery", "//codeorigin.jquery.com/jquery-1.10.2.min.js"</span>);</blockquote>
+
+klib.<span class="nf">loadScript</span>(<span class="s">"jQuery", "//codeorigin.jquery.com/jquery-1.10.2.min.js"</span>);
+<blockquote>&lt;script&gt;
+  //content of "//codeorigin.jquery.com/jquery-1.10.2.min.js" comes here...
+&lt;/script&gt;</blockquote></code></pre>
+  </div>
+
+  <h3 id="klib-addStyle">klib.addStyle(styleId, styleSrc)</h3>
+  <p>styleId: String (without #)</p>
+  <p>styleSrc: String (URL)</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">addStyle</span>(<span class="s">"memProfileStyle", "/styles/mem-profile.css"</span>);
+<span class="c">//Adds new link tag to document if link tag with id="memProfileStyle" not found</span>
+<blockquote>&lt;link id="memProfileStyle" href="/styles/mem-profile.css" type="text/css" rel="stylesheet" /&gt;</blockquote></code></pre>
+  </div>
+
+  <h3 id="klib-loadStyle">klib.loadStyle(styleId, styleSrc [, useLinkTag, ajaxQue])</h3>
+  <p>styleId: String (without #)</p>
+  <p>styleSrc: String (URL)</p>
+  <p>[useLinkTag: Boolean] default:false</p>
+  <p>[ajaxQue: Array] default:[ ]</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">loadStyle</span>(<span class="s">"memProfileStyle", "/styles/mem-profile.css", true</span>);
+<blockquote>//same as klib.<span class="nf">addStyle</span>(<span class="s">"memProfileStyle", "/styles/mem-profile.css"</span>);</blockquote>
+
+klib.<span class="nf">loadStyle</span>(<span class="s">"memProfileStyle", "/styles/mem-profile.css"</span>);
+<blockquote>&lt;head&gt;
+  ... ... ...
+  ... ... ...
+
+  &lt;style id="memProfileStyle" type="text/css"&gt;
+    //content of "/styles/mem-profile.css" comes here...
+  &lt;/style&gt;
+
+&lt;/head&gt;</blockquote></code></pre>
+  </div>
+
+  <h3 id="klib-now">klib.now() : Number</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">now</span>();
+      <span class="c">//==> Current Time Stamp in milli seconds</span>
+    </code></pre>
+  </div>
+
+  <h3 id="klib-year">klib.year(N) : Integer</h3>
+  <p>[N: (+/-)Integer] default:0 </p>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">year</span>();
+      <span class="c">//==> Current Year (YYYY) (Based on Browser/Local Time)</span>
+
+klib.<span class="nf">year</span>(-1);
+      <span class="c">//==> Previous Year (YYYY) (Based on Browser/Local Time)</span>
+
+klib.<span class="nf">year</span>(1);
+      <span class="c">//==> Next Year (YYYY) (Based on Browser/Local Time)</span>
+
+    </code></pre>
+  </div>
+
+  <h3 id="klib-randomPassword">klib.randomPassword(length) : String</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">randomPassword</span>(<span class="s">8</span>);
+      <span class="c">//==> random password with 8 character length</span>
+    </code></pre>
+  </div>
+
+  <h3 id="klib-rand">klib.rand(min, max) : Integer</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">rand</span>(<span class="s">1, 100</span>);
+      <span class="c">//==> radom number between 1 and 100</span>
+    </code></pre>
+  </div>
+
+  <h3 id="klib-range">klib.range(rangeSpec) : Array</h3>
+  <p>rangeSpec: String; range specification "N1..N2:StepBy"</p>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">range</span>(<span class="s">"1..10"</span>);
+      <span class="c">//==> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</span>
+klib.<span class="nf">range</span>(<span class="s">"-5..5"</span>);
+      <span class="c">//==> [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]</span>
+klib.<span class="nf">range</span>(<span class="s">"0..50:10"</span>);
+      <span class="c">//==> [0, 10, 20, 30, 40, 50]</span>
+
+klib.<span class="nf">range</span>(<span class="s">"y..y+5"</span>);
+      <span class="c">//==> <script>document.write("["+klib.range("y..y+5")+"]");</script></span>
+klib.<span class="nf">range</span>(<span class="s">"y-5..y"</span>);
+      <span class="c">//==> <script>document.write("["+klib.range("y-5..y")+"]");</script></span>
+klib.<span class="nf">range</span>(<span class="s">"y-2..y+2"</span>);
+      <span class="c">//==> <script>document.write("["+klib.range("y-2..y+2")+"]");</script></span>
+klib.<span class="nf">range</span>(<span class="s">"y-5..y+5:2"</span>);
+      <span class="c">//==> <script>document.write("["+klib.range("y-5..y+5:2")+"]");</script></span>
+    </code></pre>
+  </div>
+
+  <h3 id="klib-htmlEncode">klib.htmlEncode(value) : String</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">htmlEncode</span>(<span class="s">"&lt;strong&gt;Hello&lt;/strong&gt;"</span>);
+      <span class="c">//==> "&amp;lt;strong&amp;gt;Hello&amp;lt;/strong&amp;gt;"</span>
+    </code></pre>
+  </div>
+
+  <h3 id="klib-htmlDecode">klib.htmlDecode(value) : String</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">htmlDecode</span>(<span class="s">"&amp;lt;strong&amp;gt;Hello&amp;lt;/strong&amp;gt;"</span>);
+      <span class="c">//==> "&lt;strong&gt;Hello&lt;/strong&gt;"</span>
+    </code></pre>
+  </div>
+
+
+  <h3 id="klib-sleep">klib.sleep(seconds)</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">sleep</span>(<span class="s">"10"</span>);
+      <span class="c">//==> Sleeps for 10 seconds</span>
+    </code></pre>
+  </div>
+
+  <h3 id="klib-isIE">klib.isIE : Boolean</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">isIE</span>;
+      <span class="c">//==> "true" on Internet Explorer; "false" on Other Browsers</span>
+    </code></pre>
+  </div>
+
+  <h3 id="klib-isNonIE">klib.isNonIE : Boolean</h3>
+  <div class="highlight">
+    <pre><code class="javascript">
+klib.<span class="nf">isNonIE</span>;
+      <span class="c">//==> "false" on Internet Explorer; "true" on Other Browsers</span>
+    </code></pre>
+  </div>
+
+  <h3 id="klib-initKeyTracking">klib.initKeyTracking([elementSelector: String])</h3>
+  <p>[elementSelector: String] jQuery Element Selector; default: "[data-disable-keys],[data-focus-next],[data-focus-back]"</p>
+  <p>Use this <ul>
+  <li>to prevent keys on specified elements</li>
+  <li>to set focus next (Tab Key) to the specified element</li>
+  <li>to set focus back (Shift+Tab Key) to the specified element</li>
+</ul>
+  for javascript key codes refer
+  <ul>
+  <li>http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes</li>
+  <li>http://unixpapa.com/js/key.html</li>
+  <li>http://whatthekeycode.com/</li>
+  <li>http://www.asquare.net/javascript/tests/KeyCode.html</li>
+  </ul>
+
+  NOTE: use with caution as it does not work as expected in some browsers!
+  </p>
+  <div class="highlight">
+    <pre><code class="javascript">
+&lt;input type="text" name="userName" id="userName" value="" data-disable-keys="191,220,189" /&gt;
+
+klib.<span class="nf">initKeyTracking</span>(<span class="s">"#userName"</span>);
+<span class="c">// Disabled keys are forward-slash(/), back-slash(\) and dash(-) </span>
+
+<input type="text" name="testFld4KeyTrack" id="testFld4KeyTrack" value="" data-disable-keys="189,191,220,111">
+<script>klib.initKeyTracking("#");</script>
+    </code></pre>
+  </div>
+
+</div>
+
+
+<!-- jQuery Extension
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="jquery">jQuery Extensions</h1>
+  </div>
+
+  <h3 id="jquery-serializeFormToJSON">jQuery.serializeFormToJSON()</h3>
+  <p><blockquote>same as <a href="#klib-serializeFormToJSON">klib.serializeFormToJSON()</a></blockquote></p>
+  <div class="highlight">
+    <pre><code class="javascript">
+$("#formId").<span class="nf">serializeFormToJSON</span>();
+  <span class="c">//same as klib.<span class="nf">serializeFormToJSON</span>("#formId");</span>
+    </code></pre>
+  </div>
+
+  <h3 id="jquery-serializeFormToObject">jQuery.serializeFormToObject()</h3>
+  <p><blockquote>same as <a href="#klib-serializeFormToObject">klib.serializeFormToObject()</a></blockquote></p>
+  <div class="highlight">
+    <pre><code class="javascript">
+$("#formId").<span class="nf">serializeFormToObject</span>();
+  <span class="c">//same as klib.<span class="nf">serializeFormToObject</span>("#formId");</span>
+    </code></pre>
+  </div>
+
+  <h3 id="jquery-kRender">jQuery.kRender()</h3>
+  <p><blockquote>same as <a href="#klib-render">klib.render()</a></blockquote></p>
+  <div class="highlight">
+    <pre><code class="javascript">
+$("#memberList").<span class="nf">kRender</span>(<span class="s"></span>);
+  <span class="c">//same as klib.<span class="nf">render</span>("#memberList");</span>
+    </code></pre>
+  </div>
+
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<!-- Footer
+==========================async======================== -->
+<footer class="bs-footer" role="contentinfo">
+  <div class="container">
+    <p>code licensed under <a href="get-started.html#license">MIT</a>, documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+    <ul class="footer-links" data-render="true" data-url="local:klib.properties">
+      <li>version {{version}}</li>
+      <li class="muted">&middot;</li>
+      <li>&copy; Kumar</li>
+    </ul>
+  </div>
+</footer>
+
+
+<!-- JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="xlib/bootstrap/3.0.0/js/bootstrap-minus-scrollspy.min.js"></script>
+<script src="xlib/bootstrap/3.0.0/js/bootstrap-scrollspy-fix.min.js"></script>
+<script src="xlib/bootstrap/3.0.0/assets/js/holder.js"></script>
+<script src="xlib/bootstrap/3.0.0/assets/js/application.js"></script>
+
+<!-- Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments);},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-43775599-1', 'k-lib.info');
+  ga('send', 'pageview');
+</script>
+
+</body>
+</html>

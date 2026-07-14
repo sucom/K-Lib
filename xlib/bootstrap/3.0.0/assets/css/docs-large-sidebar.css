@@ -1,0 +1,37 @@
+ /* Widen the fixed sidebar */
+  .bs-sidebar.affix,
+  .bs-sidebar.affix-bottom {
+    width: 313px;
+  }
+    
+  .bs-sidenav {
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  @media screen and (min-width: 1200px) {
+  /* Widen the fixed sidebar again */
+  .bs-sidebar.affix-bottom,
+  .bs-sidebar.affix {
+    width: 363px;
+  }
+}
+
+
+.bs-docs-section h2[id] {
+  padding-top: 80px;
+  margin-top: -45px;
+}
+
+.bs-docs-section h3[id] {
+  padding-top: 80px;
+  margin-top: -45px;
+}
+
+.bs-docs-section h4[id] {
+  padding-top: 80px;
+  margin-top: -45px;
+}
+
+

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Meta, title, CSS, favicons, etc. -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="K-Lib get started">
+  <meta name="author" content="Kumararaja <sucom.kumar@gmail.com>">
+
+  <!-- Favicons -->
+  <link rel="shortcut icon" href="img/ico/favicon.png">
+
+  <title>
+    Get started &middot; K-Lib
+  </title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="xlib/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Documentation extras -->
+  <link href="xlib/bootstrap/3.0.0/assets/css/docs.css" rel="stylesheet">
+  <link href="xlib/bootstrap/3.0.0/assets/css/docs-jumbotrons-old.css" rel="stylesheet">
+  <link href="xlib/bootstrap/3.0.0/assets/css/pygments-manni.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="xlib/html5shiv/dist/html5shiv.js"></script>
+  <script src="xlib/bootstrap/3.0.0/assets/js/respond.min.js"></script>
+  <![endif]-->
+
+  <script src="xlib/jquery/jquery-2.1.4.min.js"           ></script>
+  <script src="xlib/lodash/lodash.min.js"                 ></script>
+
+  <script src="xlib/handlebars/handlebars.min.js"         ></script>
+
+  <script src="js/klib.js"></script>
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-43775599-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+</head>
+<body>
+<a class="sr-only" href="#content">Skip navigation</a>
+
+<!-- Docs master nav -->
+<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="../" class="navbar-brand">K-Lib</a>
+    </div>
+    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+      <ul class="nav navbar-nav">
+        <li class="">
+          <a href="./index.html">Home</a>
+        </li>
+        <li class="active">
+          <a href="./get-started.html">Get started</a>
+        </li>
+        <li class="">
+          <a href="./doc.html">Documentation</a>
+        </li>
+        <li class="">
+          <a href="./demo1/">Examples</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- Docs page layout -->
+<div class="jumbotron subhead" id="content">
+  <div class="container">
+    <h1>Get started</h1>
+    <p>An overview of K-Lib, how to use, examples, and more.</p>
+  </div>
+</div>
+
+<div class="container bs-docs-container">
+<div class="row">
+<div class="col-md-3">
+  <div class="bs-sidebar hidden-print" role="complementary">
+    <ul class="nav bs-sidenav">
+
+      <li>
+        <a href="#download">Download</a>
+      </li>
+      <li>
+        <a href="#whats-included">What's included</a>
+      </li>
+      <li>
+        <a href="#template">Basic template</a>
+      </li>
+      <li>
+        <a href="#browsers">Browser support</a>
+      </li>
+      <li>
+        <a href="#third-parties">Third party support</a>
+      </li>
+      <li>
+        <a href="#license-faqs">License FAQs</a>
+      </li>
+      <li>
+        <a href="#license">Full License</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="col-md-9" role="main">
+<!-- Get started
+================================================== -->
+
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="download">Download K-Lib</h1>
+  </div>
+  <p class="lead">There are a few easy ways to quickly get started with K-Lib, each one appealing to a different skill level and use case. Read through to see what suits your particular needs.</p>
+
+  <h3 id="download-compiled">Compiled JS</h3>
+  <p>The fastest way to get K-Lib is to download the compiled and minified versions of the library. No documentation or original source files are included.</p>
+  <p data-render="true" data-url="local:klib.properties"><a class="btn btn-lg btn-primary" href="dist/klib.zip" onclick="_gaq.push(['_trackEvent', 'actions', 'Download', 'Download {{version}}']);">Download K-Lib</a></p>
+
+  <h3 id="download-additional">Additional downloads</h3>
+  <div class="bs-docs-dl-options">
+    K-Lib's hard dependencies are jQuery(>=1.10.2) and underscore.js (>=1.5.1)
+    <ul>
+      <li><a target="_blank" href="http://www.jquery.com">jQuery</a></li>
+      <li><a target="_blank" href="http://underscorejs.org/">underscore.js</a></li>
+    </ul>
+
+    Also, you may need the following libraries if you intend to use K-Lib for rendering UI with respective framework/library.
+    <ul>
+      <li><a target="_blank" href="https://github.com/jashkenas/backbone">Backbone</a></li>
+      <li><a target="_blank" href="https://github.com/walmartlabs/thorax">Thorax</a></li>
+      <li><a target="_blank" href="https://github.com/wycats/handlebars.js">Handlebars</a></li>
+      <li><a target="_blank" href="https://github.com/janl/mustache.js">Mustache</a></li>
+      <li><a target="_blank" href="https://github.com/BorisMoore/jquery-tmpl">jquery-tmpl</a></li>
+      <li><a target="_blank" href="https://github.com/BorisMoore/jsrender">jsrender</a></li>
+      <li><a target="_blank" href="https://github.com/akdubya/dustjs">dust</a></li>
+      <li><a target="_blank" href="https://github.com/twitter/hogan.js">hogan</a></li>
+      <li><a target="_blank" href="https://github.com/leonidas/transparency">transparency</a></li>
+      <li><a target="_blank" href="https://github.com/tmpvar/weld">weld</a></li>
+      <li><a target="_blank" href="https://github.com/olado/doT">doT</a></li>
+      <li><a target="_blank" href="https://github.com/jasonmoo/t.js">tjs</a></li>
+    </ul>
+
+  </div>
+</div>
+
+
+
+<!-- File structure
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="whats-included">What's included</h1>
+  </div>
+  <p class="lead">Within the download you'll find the following directories and files, providing both compiled and minified variations.</p>
+  <p>Once downloaded, unzip the compressed folder to see the structure of K-Lib. You'll see something like this:</p>
+
+  <div class="highlight">
+    <pre><code class="bash">klib/
+    ├── js/
+    │   ├── klib.js       | for development use, with comments + debugging info
+    │   ├── klib.min.js   | for production use, NO comments, NO Debugging info
+    </code></pre>
+  </div>
+
+  <p>This is the most basic form of K-Lib: compiled files for quick drop-in usage in nearly any web project.</p>
+  <div class="bs-callout bs-callout-danger">
+    <h4>jQuery and underscore are required</h4>
+    <p>Please note that K-lib <strong>requires jQuery and underscore</strong> to be included, prior to K-Lib.js</p>
+  </div>
+</div>
+
+
+
+<!-- Template
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="template">Basic template</h1>
+  </div>
+  <p class="lead">Make use of a super basic HTML template to get started.</p>
+
+  <p>Copy and paste the HTML from below to get started with a bare bones K-Lib document.</p>
+  <div class="highlight"><pre><code class="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>K-Lib Boilerplate<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="nt">&gt;</span>
+
+    <span class="c">&lt;!-- HTML5 shim for IE8 support of HTML5 elements --&gt;</span>
+    <span class="c">&lt;!--[if lt IE 9]&gt;</span>
+    <span class="c">      &lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js&quot;&gt;&lt;/script&gt;</span>
+    <span class="c">    &lt;![endif]--&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>Hello, world!<span class="nt">&lt;/h1&gt;</span>
+
+    <span class="c">&lt;!-- jQuery &amp; underscore (necessary for K-Lib) --&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;//code.jquery.com/jquery.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="c">&lt;!-- Include K-Lib --&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/klib.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+  </code></pre></div>
+</div>
+
+<!-- Browser support
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="browsers">Browser support</h1>
+  </div>
+  <p class="lead">K-Lib is built to work best in the latest desktop and mobile browsers, meaning older and less advanced browsers might not work as expected.</p>
+
+  <h3>Supported browsers</h3>
+  <p>Specifically, we support the latest versions of the following:</p>
+  <ul>
+    <li>Chrome (Mac, Windows, iOS, and Android)</li>
+    <li>Safari (Mac and iOS only, as Windows has more or less been discontinued)</li>
+    <li>Firefox (Mac, Windows)</li>
+    <li>Internet Explorer</li>
+  </ul>
+  <p>Unofficially, K-Lib should behave well enough in Chromium for Linux and Internet Explorer 7, though they are not officially supported.</p>
+
+  <h3>Internet Explorer 8 and 9</h3>
+  <p>Internet Explorer 8 and 9 are also supported, however, please be aware that many CSS3 properties and html 5 attributes like <code>placeholder</code> are not supported in either of these versions. visit <a target="_blank" href="http://html5test.com/">HTML5 Test</a> for capability check.</p>
+
+  <h3>IE Compatibility modes</h3>
+  <p>K-Lib may not be supported in the old Internet Explorer compatibility modes. To be sure you're using the latest rendering mode for IE, consider including the appropriate <code>&lt;meta&gt;</code> tag in your pages:</p>
+  <div class="highlight"><pre><code class="html"><span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content=</span><span class="s">&quot;IE=edge&quot;</span><span class="nt">&gt;</span>
+  </code></pre></div>
+  <p>See <a target="_blank" href="http://stackoverflow.com/questions/6771258/whats-the-difference-if-meta-http-equiv-x-ua-compatible-content-ie-edge">this StackOverflow question</a> for more information.</p>
+
+</div>
+
+
+
+<!-- Third party support
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="third-parties">Third party support</h1>
+  </div>
+  <p class="lead">We don't officially support any third party plugins or add-ons.</p>
+</div>
+
+
+<!-- License FAQs
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="license-faqs">License FAQs</h1>
+  </div>
+  <p class="lead">K-Lib is released under the MIT license and is copyright 2000 - <script>document.write(klib.year())</script> Kumar. Boiled down to smaller chunks, it can be described with the following conditions.</p>
+
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <h4>It allows you to:</h4>
+      <ul>
+        <li>Freely download and use K-Lib, in whole or in part, for personal, company internal or commercial purposes</li>
+        <li>Use K-Lib in packages or distributions that you create</li>
+      </ul>
+    </div>
+    <div class="col-12 col-lg-6">
+      <h4>It forbids you to:</h4>
+      <ul>
+        <li>Redistribute any piece of K-Lib without proper attribution</li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <h4>It requires you to:</h4>
+      <ul>
+        <li>Include a copy of the license in any redistribution you may make that includes K-Lib</li>
+        <li>Provide clear attribution to author for any distributions that include K-Lib</li>
+      </ul>
+    </div>
+    <div class="col-12 col-lg-6">
+      <h4>It does not require you to:</h4>
+      <ul>
+        <li>Include the source of K-Lib itself, or of any modifications you may have made to it, in any redistribution you may assemble that includes it</li>
+        <li>Submit changes that you make to K-Lib back to the K-Lib project (though such feedback is encouraged)</li>
+      </ul>
+    </div>
+  </div>
+  <p>The full K-Lib license is located <a href="#license">here</a> for more information.</p>
+</div><!-- /.bs-docs-section -->
+
+
+<!-- License FAQs
+================================================== -->
+<div class="bs-docs-section">
+  <div class="page-header">
+    <h1 id="license">Full License</h1>
+  </div>
+  <p class="lead">K-Lib is released under the MIT license.</p>
+
+  <div class="row">
+    <div class="col-12">
+      <pre><code>
+Copyright (c) 2000-<script>document.write(klib.year())</script> Kumar
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+      </code></pre>
+
+    </div>
+  </div>
+</div><!-- /.bs-docs-section -->
+
+</div>
+</div>
+
+</div>
+
+<!-- Footer
+================================================== -->
+<footer class="bs-footer" role="contentinfo">
+  <div class="container">
+    <p>code licensed under <a href="#license">MIT</a>, documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+    <ul class="footer-links" data-render="true" data-url="local:klib.properties">
+      <li>version {{version}}</li>
+      <li class="muted">&middot;</li>
+      <li>&copy; Kumar</li>
+    </ul>
+  </div>
+</footer>
+
+
+<!-- JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="xlib/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="xlib/bootstrap/3.0.0/assets/js/holder.js"></script>
+<script src="xlib/bootstrap/3.0.0/assets/js/application.js"></script>
+
+<!-- Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-43775599-1', 'k-lib.info');
+  ga('send', 'pageview');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <!-- meta tags begins -->
+    <meta charset="utf-8" />
+    
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" id="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0" />
+    <link rel="shortcut icon" href="/img/ico/favicon.png">
+  
+    <title>K-Lib in action</title>
+
+    <!-- bootstrap original style -->
+    <link rel="stylesheet" href="../xlib/bootstrap/2.3.2/css/bootstrap.min.css" />
+  </head>
+
+  <body>
+    <!-- Main div begin -->
+    <div class="container-fluid" id="viewMain">
+      <!-- header begin -->
+      <header class="row-fluid">
+        <div class="span12">
+          <div class="span8">
+            <div><h2><a class="brand" href="/index.html">K-Lib</a> Demo</h2> | <a href="#list/refresh" onclick="klib.render('#viewMemberList');">Refresh</a> | <a href="#list/clear" onclick="clearViews();">Clear</a> |</div>
+          </div>
+        </div>
+      </header>
+      <!-- header end -->
+
+      <!-- List Begins -->
+      <section class="row-fluid">
+        <div class="span12">
+          <table class="table table-striped table-condensed table-hover">
+            <thead>
+            <tr>
+              <th>Name</th>
+              <th>Company / eMail / Phone</th>
+              <th>Address</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="viewMemberList"
+                   data-url="api/member/list.json"
+                   data-styles="{cssMemList:'modules/memlist/memlist-styles.css'}"
+                   data-templates="{tmplMemberList:'modules/memlist/memlist-view.html'}"
+              >
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <!-- List Ends -->
+
+      <section class="row-fluid">
+        <!-- view begins -->
+        <div class="span6" id="viewMemberDetails"
+             data-templates="{templateMemberView:'modules/memview/memview-view.html'}"
+          >
+        </div>
+        <!-- view ends -->
+
+        <!-- edit begins -->
+        <div class="span6" id="editMemberDetails"
+             data-templates="{templateMemberEdit:'modules/memedit/memedit-view.html'}"
+             data-template-engine="handlebars"
+             data-scripts="{actionsMemberEdit:'modules/memedit/memedit-actions.js'}"
+             data-render-engine="Backbone"
+          >
+        </div>
+        <!-- edit ends -->
+      </section>
+
+      <!-- footer begin //using local data and in-line template-->
+      <footer id="footerX" class="row-fluid"
+              data-url="local:appDetails"
+              rel="kRender">
+        <div class="span12 text-right">v<span>{{version}}</span> &copy; <span>{{author}}</span></div>
+      </footer>
+      <!-- footer end -->
+
+    </div>
+    <!-- Main div end -->
+
+  <!-- common Javascript Libraries begin -->
+  <div class="hidden">
+    <script src="../xlib/jquery/jquery-2.1.4.min.js"           ></script> <!-- jQuery core lib -->
+    <script src="../xlib/lodash/lodash.min.js"                 ></script> <!-- lodash core lib -->
+    
+    <script src="../xlib/backbone/backbone-min.js"             ></script> <!-- lodash core lib -->
+    <script src="../xlib/handlebars/handlebars.min.js"         ></script> <!-- lodash core lib -->
+    
+    <script src="../xlib/bootstrap/2.3.2/js/bootstrap.min.js"  ></script> <!-- Bootstrap core lib -->
+    <script src="../js/klib.min.js"                            ></script> <!-- K core lib -->
+
+    <script src="modules/common/com-settings.js"     ></script>
+    
+    <!-- scripts for list view -->
+    <script src="modules/memlist/memlist-actions.js" ></script>
+    <script src="modules/common/com-actions.js"      ></script>
+    
+  </div>
+  <!-- common Javascript Libraries end -->
+
+  <!-- Analytics -->
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-43775599-1', 'k-lib.info');
+    ga('send', 'pageview');
+  </script>
+
+  </body>
+</html>

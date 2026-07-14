@@ -1,0 +1,21 @@
+{{#each members}}
+<tr>
+  <td><span class="boldK">{{name}}</span></td>
+  <td>
+    <div>{{company}}</div>
+    <div>{{email}}</div>
+    <div>{{phone}}</div>
+  </td>
+  <td>
+    <div>{{address.street}}</div>
+    <div>{{address.city}}</div>
+    <div>{{address.state}} {{address.country}} {{address.zip}}</div>
+  </td>
+  <td><span>{{isActive}}</span></td>
+  <td>
+    <a href="#/view/MemberDetails/{{memid}}"   onclick="viewMemberDetails('{{memid}}');">View</a> |
+    <a href="#/edit/MemberDetails/{{memid}}"   onclick="editMemberDetails('{{memid}}');">Edit</a> |
+    <a href="#/remove/MemberDetails/{{memid}}" onclick="removeMemberDetails('{{memid}}');">Remove</a>
+  </td>
+</tr>
+{{/each}}
