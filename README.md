@@ -24,7 +24,7 @@ K-Lib is built on top of jQuery and lodash. visit [Official site](https://sucom.
 ##License
 The MIT License
 
-Copyright (c) 2000-2022 Kumar
+Copyright (c) 2000-Present - Kumar
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
